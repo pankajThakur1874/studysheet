@@ -110,11 +110,12 @@
 <!-- Full-Screen Diagram Lightbox Modal -->
 <div id="diagram-modal" class="fixed inset-0 z-[100] hidden bg-black/85 backdrop-blur-md flex flex-col items-center justify-center p-4 transition-all duration-300">
     <!-- Modal Toolbar -->
-    <div class="absolute top-4 right-4 flex items-center gap-1.5 z-10 flex-wrap justify-end">
-        <button type="button" onclick="zoomDiagram(1.25)" class="px-2.5 py-1.5 rounded-lg bg-gray-800 text-gray-200 hover:bg-gray-700 text-xs font-semibold shadow-lg">🔍 +</button>
-        <button type="button" onclick="zoomDiagram(0.8)" class="px-2.5 py-1.5 rounded-lg bg-gray-800 text-gray-200 hover:bg-gray-700 text-xs font-semibold shadow-lg">🔍 -</button>
-        <button type="button" onclick="resetDiagramZoom()" class="px-2.5 py-1.5 rounded-lg bg-gray-800 text-gray-200 hover:bg-gray-700 text-xs font-semibold shadow-lg">🔄 Reset</button>
-        <button type="button" onclick="closeDiagramModal()" class="px-3 py-1.5 rounded-lg bg-rose-600 text-white hover:bg-rose-700 text-xs font-bold shadow-lg">✕ Close</button>
+    <div class="absolute top-4 right-4 flex items-center gap-1.5 z-10 flex-wrap justify-end font-mono text-xs">
+        <button type="button" onclick="zoomDiagram(1.25)" class="px-3 py-1.5 rounded-md bg-stone-800 text-stone-200 hover:bg-stone-700 font-semibold shadow-lg">🔍 +</button>
+        <button type="button" onclick="zoomDiagram(0.8)" class="px-3 py-1.5 rounded-md bg-stone-800 text-stone-200 hover:bg-stone-700 font-semibold shadow-lg">🔍 -</button>
+        <button type="button" onclick="resetDiagramZoom()" class="px-3 py-1.5 rounded-md bg-stone-800 text-stone-200 hover:bg-stone-700 font-semibold shadow-lg">🔄 Reset</button>
+        <button type="button" onclick="downloadDiagramSvg()" class="px-3 py-1.5 rounded-md bg-amber-500 text-[#0B0C0E] hover:bg-amber-400 font-bold shadow-lg">📥 Download SVG</button>
+        <button type="button" onclick="closeDiagramModal()" class="px-3 py-1.5 rounded-md bg-rose-600 text-white hover:bg-rose-700 font-bold shadow-lg">✕ Close</button>
     </div>
 
     <!-- Modal Content Box -->
@@ -147,9 +148,9 @@
         if (currentHeadingId) {
             document.querySelectorAll("#toc-nav a, #mobile-toc-nav a").forEach(link => {
                 if (link.getAttribute("href") === "#" + currentHeadingId) {
-                    link.classList.add("bg-indigo-50", "dark:bg-indigo-950", "text-indigo-600", "dark:text-indigo-400", "font-bold");
+                    link.classList.add("bg-amber-50", "dark:bg-amber-950/40", "text-amber-600", "dark:text-[#FFB84D]", "font-bold");
                 } else {
-                    link.classList.remove("bg-indigo-50", "dark:bg-indigo-950", "text-indigo-600", "dark:text-indigo-400", "font-bold");
+                    link.classList.remove("bg-amber-50", "dark:bg-amber-950/40", "text-amber-600", "dark:text-[#FFB84D]", "font-bold");
                 }
             });
         }
@@ -171,7 +172,7 @@
             mainContainer.classList.remove("max-w-6xl");
             mainContainer.classList.add("max-w-3xl");
             focusBtn.textContent = "📖 Exit Focus";
-            focusBtn.classList.add("ring-2", "ring-indigo-500");
+            focusBtn.classList.add("ring-2", "ring-amber-500");
         } else {
             if (sidebar) sidebar.classList.remove("hidden");
             articleCol.classList.remove("lg:col-span-4");
@@ -179,7 +180,7 @@
             mainContainer.classList.remove("max-w-3xl");
             mainContainer.classList.add("max-w-6xl");
             focusBtn.textContent = "🎯 Focus Mode";
-            focusBtn.classList.remove("ring-2", "ring-indigo-500");
+            focusBtn.classList.remove("ring-2", "ring-amber-500");
         }
     }
 
@@ -221,6 +222,21 @@
         applyDiagramScale();
     }
 
+    function downloadDiagramSvg() {
+        const container = document.getElementById("modal-diagram-container");
+        const svg = container ? container.querySelector("svg") : null;
+        if (!svg) return;
+        const svgData = new XMLSerializer().serializeToString(svg);
+        const blob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "architecture-diagram.svg";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
     function applyDiagramScale() {
         const container = document.getElementById("modal-diagram-container");
         const svg = container.querySelector("svg");
@@ -242,7 +258,7 @@
         }
     });
 
-    // 5. Build Table of Contents, Code Copy Buttons & Mermaid Lightbox Handlers
+    // 5. Build Table of Contents, Code Copy Buttons & Language Badges
     document.addEventListener("DOMContentLoaded", function() {
         const article = document.getElementById("note-article");
         const tocNav = document.getElementById("toc-nav");
@@ -265,13 +281,13 @@
                     const link = document.createElement("a");
                     link.href = "#" + heading.id;
                     link.textContent = heading.textContent;
-                    link.className = "block py-1.5 px-2.5 rounded hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-indigo-600 dark:hover:text-indigo-400 transition truncate";
+                    link.className = "block py-1.5 px-2.5 rounded hover:bg-stone-100 dark:hover:bg-[#121418] hover:text-amber-600 dark:hover:text-[#FFB84D] transition truncate";
 
                     const tag = heading.tagName.toLowerCase();
                     if (tag === "h2") {
                         link.classList.add("pl-4");
                     } else if (tag === "h3") {
-                        link.classList.add("pl-7", "text-gray-400", "text-[0.7rem]");
+                        link.classList.add("pl-7", "text-stone-400", "dark:text-[#6B7280]", "text-[0.7rem]");
                     } else {
                         link.classList.add("font-semibold");
                     }
@@ -293,7 +309,7 @@
                 mermaidBlocks.forEach(codeBlock => {
                     const pre = codeBlock.parentElement;
                     const div = document.createElement("div");
-                    div.className = "mermaid mermaid-container flex justify-center my-6 p-4 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm overflow-x-auto";
+                    div.className = "mermaid mermaid-container flex justify-center my-6 p-4 rounded-xl border border-stone-200 dark:border-[#1E2126] bg-white dark:bg-[#0B0C0E] shadow-sm overflow-x-auto cursor-pointer hover:border-amber-500 dark:hover:border-[#FFB84D] transition";
                     div.dataset.mermaidSrc = codeBlock.textContent;
                     div.textContent = codeBlock.textContent;
                     div.onclick = function() { openDiagramModal(div); };
@@ -342,22 +358,34 @@
                 }
             }
 
-            // Add Copy Code Buttons (excluding Mermaid diagrams)
+            // Add Copy Code Buttons & Language Badges (excluding Mermaid diagrams)
             article.querySelectorAll("pre").forEach(pre => {
                 if (pre.querySelector("code.language-mermaid")) return;
                 pre.classList.add("relative", "group");
+
+                // Add language badge if present
+                const code = pre.querySelector("code");
+                if (code) {
+                    const match = code.className.match(/language-(\w+)/);
+                    if (match) {
+                        const badge = document.createElement("span");
+                        badge.className = "absolute top-2 left-3 text-[10px] font-mono font-bold uppercase tracking-wider text-amber-500 dark:text-[#FFB84D] opacity-75 pointer-events-none";
+                        badge.textContent = match[1];
+                        pre.appendChild(badge);
+                    }
+                }
+
                 const btn = document.createElement("button");
                 btn.className = "code-copy-btn";
                 btn.textContent = "Copy";
                 btn.onclick = function() {
-                    const code = pre.querySelector("code");
                     const text = code ? code.innerText : pre.innerText;
                     navigator.clipboard.writeText(text).then(() => {
                         btn.textContent = "Copied! ✨";
-                        btn.classList.add("bg-emerald-600", "text-white");
+                        btn.classList.add("bg-amber-500", "text-[#0B0C0E]");
                         setTimeout(() => {
                             btn.textContent = "Copy";
-                            btn.classList.remove("bg-emerald-600", "text-white");
+                            btn.classList.remove("bg-amber-500", "text-[#0B0C0E]");
                         }, 2000);
                     });
                 };

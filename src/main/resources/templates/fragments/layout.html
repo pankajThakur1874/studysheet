@@ -142,9 +142,10 @@
             <a href="/#work" class="hover:text-amber-600 dark:hover:text-[#FFB84D] transition">Work</a>
             <a href="/#experience" class="hover:text-amber-600 dark:hover:text-[#FFB84D] transition">Experience</a>
             <a href="/#stack" class="hover:text-amber-600 dark:hover:text-[#FFB84D] transition">Stack</a>
-            <form action="/notes" method="get" class="flex items-center">
-                <input type="text" name="q" placeholder="Search guides…"
-                       class="px-3 py-1 text-xs rounded-md border border-stone-300 dark:border-[#2A2E35] bg-stone-50 dark:bg-[#121418] text-slate-800 dark:text-[#EDEDE9] w-40 focus:ring-1 focus:ring-[#FFB84D] outline-none transition font-sans"/>
+            <form action="/notes" method="get" class="flex items-center relative">
+                <input type="text" name="q" placeholder="Search (⌘K)…" onclick="openCmdKModal()" readonly
+                       class="px-3 py-1 text-xs rounded-md border border-stone-300 dark:border-[#2A2E35] bg-stone-50 dark:bg-[#121418] text-slate-800 dark:text-[#EDEDE9] w-40 focus:ring-1 focus:ring-[#FFB84D] outline-none transition font-sans cursor-pointer"/>
+                <span class="absolute right-2 text-[10px] font-mono text-stone-400 dark:text-[#6B7280] pointer-events-none">⌘K</span>
             </form>
             <a href="/notes" class="px-3.5 py-1.5 rounded-md bg-amber-500 hover:bg-amber-400 dark:bg-[#FFB84D] dark:hover:bg-[#ffd598] text-[#0B0C0E] font-bold transition shadow-xs">
                 📚 Architecture Hub ↗
@@ -155,6 +156,7 @@
 
         <!-- Mobile Controls (Hamburger + Quick Theme Toggle) -->
         <div class="flex lg:hidden items-center gap-2">
+            <button type="button" onclick="openCmdKModal()" class="font-mono text-[11px] uppercase tracking-wider font-bold text-slate-700 dark:text-[#EDEDE9] bg-stone-200 dark:bg-[#1E2126] px-2 py-1 rounded-md">⌘K</button>
             <a href="/notes" class="font-mono text-[11px] uppercase tracking-wider font-bold text-[#0B0C0E] bg-amber-500 dark:bg-[#FFB84D] px-2.5 py-1 rounded-md">📚 Hub</a>
             <button type="button" onclick="toggleTheme()" title="Toggle theme"
                     class="text-stone-600 dark:text-[#7C838C] text-base p-1">🌓</button>
@@ -167,16 +169,61 @@
 
     <!-- Mobile Collapsible Menu Drawer -->
     <div id="mobile-menu" class="hidden lg:hidden border-t border-stone-200 dark:border-[#1E2126] bg-white dark:bg-[#0B0C0E] px-4 py-3 space-y-3 font-mono text-xs">
-        <form action="/notes" method="get" class="w-full">
-            <input type="text" name="q" placeholder="Search guides…"
-                   class="w-full px-3 py-2 text-xs rounded-md border border-stone-300 dark:border-[#2A2E35] bg-stone-50 dark:bg-[#121418] text-slate-800 dark:text-[#EDEDE9] font-sans"/>
-        </form>
+        <button type="button" onclick="openCmdKModal()" class="w-full text-left px-3 py-2 text-xs rounded-md border border-stone-300 dark:border-[#2A2E35] bg-stone-50 dark:bg-[#121418] text-slate-500 dark:text-[#6B7280] font-sans flex justify-between items-center">
+            <span>Search study guides & topics…</span>
+            <span class="font-mono text-[10px]">⌘K</span>
+        </button>
         <div class="grid grid-cols-3 gap-2 uppercase tracking-wider text-center">
             <a href="/#work" onclick="toggleMobileMenu()" class="p-2.5 rounded-md border border-stone-200 dark:border-[#1E2126] hover:text-[#FFB84D]">Work</a>
             <a href="/#experience" onclick="toggleMobileMenu()" class="p-2.5 rounded-md border border-stone-200 dark:border-[#1E2126] hover:text-[#FFB84D]">Experience</a>
             <a href="/#stack" onclick="toggleMobileMenu()" class="p-2.5 rounded-md border border-stone-200 dark:border-[#1E2126] hover:text-[#FFB84D]">Stack</a>
         </div>
         <a href="/notes" class="block w-full py-2.5 text-center font-bold uppercase tracking-wider bg-amber-500 dark:bg-[#FFB84D] text-[#0B0C0E] rounded-md shadow-xs">📚 System Architecture Hub ↗</a>
+    </div>
+
+    <!-- Global Command Palette Modal (Cmd + K) -->
+    <div id="cmd-k-modal" class="fixed inset-0 z-[100] hidden bg-black/75 backdrop-blur-sm flex items-start justify-center pt-16 sm:pt-24 px-4 transition-all">
+        <div class="w-full max-w-xl bg-white dark:bg-[#0B0C0E] border border-stone-300 dark:border-[#1E2126] rounded-xl shadow-2xl overflow-hidden animate-fade-in font-sans">
+            <!-- Search Bar Header -->
+            <form action="/notes" method="get" class="flex items-center border-b border-stone-200 dark:border-[#1E2126] px-4 py-3 bg-stone-50 dark:bg-[#121418]">
+                <span class="text-stone-400 dark:text-[#6B7280] text-sm mr-3">🔍</span>
+                <input type="text" id="cmd-k-input" name="q" placeholder="Type a guide title, tag, or architecture concept..."
+                       class="w-full bg-transparent text-sm text-slate-900 dark:text-[#EDEDE9] outline-none font-sans" autocomplete="off"/>
+                <button type="button" onclick="closeCmdKModal()" class="text-xs font-mono px-2 py-1 rounded border border-stone-300 dark:border-[#2A2E35] text-stone-500 dark:text-[#6B7280] ml-2">ESC</button>
+            </form>
+
+            <!-- Quick Navigation Shortcuts -->
+            <div class="p-4 space-y-4 max-h-[60vh] overflow-y-auto font-mono text-xs">
+                <div>
+                    <div class="text-[10px] uppercase tracking-widest text-slate-400 dark:text-[#6B7280] mb-2">Popular Study Topics</div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <a href="/notes" class="p-2.5 rounded-lg border border-stone-200 dark:border-[#1E2126] hover:border-amber-500 dark:hover:border-[#FFB84D] hover:bg-stone-50 dark:hover:bg-[#121418] transition flex items-center gap-2">
+                            <span>📚</span>
+                            <span class="text-slate-800 dark:text-[#EDEDE9]">All 58 Architecture Guides</span>
+                        </a>
+                        <a href="/topics" class="p-2.5 rounded-lg border border-stone-200 dark:border-[#1E2126] hover:border-amber-500 dark:hover:border-[#FFB84D] hover:bg-stone-50 dark:hover:bg-[#121418] transition flex items-center gap-2">
+                            <span>📁</span>
+                            <span class="text-slate-800 dark:text-[#EDEDE9]">System Design Topics</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="text-[10px] uppercase tracking-widest text-slate-400 dark:text-[#6B7280] mb-2">Quick Commands</div>
+                    <div class="space-y-1.5 text-slate-700 dark:text-[#A2A9B1]">
+                        <a href="/#work" onclick="closeCmdKModal()" class="block p-2 rounded hover:bg-stone-100 dark:hover:bg-[#121418] transition">↗ View Selected Engineering Work</a>
+                        <a href="/#experience" onclick="closeCmdKModal()" class="block p-2 rounded hover:bg-stone-100 dark:hover:bg-[#121418] transition">↗ View Staff Engineer Experience</a>
+                        <a href="mailto:pankajpream524@gmail.com" class="block p-2 rounded hover:bg-stone-100 dark:hover:bg-[#121418] text-amber-600 dark:text-[#FFB84D] transition">📬 Contact Pankaj Thakur</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Hint -->
+            <div class="px-4 py-2.5 bg-stone-100 dark:bg-[#121418] border-t border-stone-200 dark:border-[#1E2126] text-[11px] font-mono text-slate-400 dark:text-[#6B7280] flex justify-between items-center">
+                <span>Press <kbd class="px-1 py-0.5 rounded bg-white dark:bg-[#1E2126] border border-stone-300 dark:border-[#2A2E35]">Enter</kbd> to search</span>
+                <span>StudySheet ⌘K Spotlight</span>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -193,6 +240,38 @@
             const menu = document.getElementById('mobile-menu');
             if (menu) menu.classList.toggle('hidden');
         }
+
+        function openCmdKModal() {
+            const modal = document.getElementById('cmd-k-modal');
+            const input = document.getElementById('cmd-k-input');
+            if (modal) {
+                modal.classList.remove('hidden');
+                setTimeout(() => input && input.focus(), 50);
+            }
+        }
+
+        function closeCmdKModal() {
+            const modal = document.getElementById('cmd-k-modal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+                e.preventDefault();
+                const modal = document.getElementById('cmd-k-modal');
+                if (modal && !modal.classList.contains('hidden')) {
+                    closeCmdKModal();
+                } else {
+                    openCmdKModal();
+                }
+            } else if (e.key === 'Escape') {
+                closeCmdKModal();
+            }
+        });
+
+        document.getElementById('cmd-k-modal')?.addEventListener('click', function(e) {
+            if (e.target === this) closeCmdKModal();
+        });
     </script>
 </nav>
 
