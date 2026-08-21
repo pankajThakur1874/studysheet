@@ -4,49 +4,49 @@
 <body class="bg-[#faf9f6] dark:bg-[#0B0C0E] text-slate-900 dark:text-[#EDEDE9] min-h-screen">
 <nav th:replace="~{fragments/layout :: nav}"></nav>
 
-<main class="max-w-5xl mx-auto px-4 py-8">
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+<main class="max-w-6xl mx-auto px-4 sm:px-6 py-8 space-y-8">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-stone-200 dark:border-[#1E2126]">
         <div>
-            <h1 class="text-2xl font-bold">🗂️ Study Topics</h1>
-            <p class="text-xs text-gray-500 mt-1">Organize your study guides into subject categories</p>
+            <h1 class="text-2xl sm:text-3xl font-medium tracking-tight text-slate-900 dark:text-[#EDEDE9]">🗂️ Study Topics</h1>
+            <p class="font-mono text-xs text-slate-400 dark:text-[#6B7280] mt-1">Organize your study guides into subject categories</p>
         </div>
         <form action="/topics/sync-files" method="post">
-            <button type="submit" class="text-xs font-semibold px-3.5 py-2 rounded-md border border-indigo-300 dark:border-indigo-700 bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 transition shadow-sm flex items-center gap-1.5">
+            <button type="submit" class="font-mono text-xs font-semibold px-3.5 py-2 rounded-sm border border-stone-300 dark:border-[#2A2E35] bg-stone-100 dark:bg-[#121418] text-slate-800 dark:text-[#EDEDE9] hover:bg-stone-200 dark:hover:bg-[#1A1D23] transition shadow-xs flex items-center gap-1.5 cursor-pointer">
                 <span>🔄 Sync Local Files</span>
             </button>
         </form>
     </div>
 
     <!-- Alert / Message -->
-    <div th:if="${message}" class="mb-6 p-3.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 text-xs font-medium">
+    <div th:if="${message}" class="p-4 rounded-md bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/60 font-mono text-amber-800 dark:text-[#FFB84D] text-xs font-medium">
         <span th:text="${message}">Message</span>
     </div>
 
     <!-- Empty State -->
-    <div th:if="${topics.isEmpty()}" class="text-gray-500 text-center py-12 border rounded-xl bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 text-sm">
+    <div th:if="${topics.isEmpty()}" class="font-mono text-slate-400 text-center py-12 border rounded-md bg-white dark:bg-[#0B0C0E] border-stone-200 dark:border-[#1E2126] text-xs">
         No study topics loaded yet. Click <strong>"🔄 Sync Local Files"</strong> above to import your Markdown study guides!
     </div>
 
     <!-- Topics Grid Cards -->
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <div th:each="t : ${topics}"
-             class="group relative flex flex-col justify-between p-5 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 hover:border-indigo-300 dark:hover:border-indigo-700 hover:shadow-lg transition-all duration-200">
-            <a th:href="@{/notes(topicId=${t.id})}" class="block space-y-2">
-                <div class="flex items-center justify-between">
-                    <h3 class="font-bold text-lg text-gray-900 dark:text-gray-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition" th:text="${t.name}">Topic Name</h3>
-                    <span class="px-2.5 py-1 text-xs rounded-full bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-semibold border border-indigo-200 dark:border-indigo-800"
+             class="group relative flex flex-col justify-between p-6 rounded-md border border-stone-200 dark:border-[#1E2126] bg-white dark:bg-[#0B0C0E] hover:border-amber-500 dark:hover:border-[#FFB84D] hover:bg-stone-50/50 dark:hover:bg-[#121418]/50 transition-all duration-200">
+            <a th:href="@{/notes(topicId=${t.id})}" class="block space-y-3">
+                <div class="flex items-center justify-between gap-2">
+                    <h3 class="font-medium text-lg text-slate-900 dark:text-[#EDEDE9] group-hover:text-amber-600 dark:group-hover:text-[#FFB84D] transition" th:text="${t.name}">Topic Name</h3>
+                    <span class="px-2.5 py-1 text-xs font-mono rounded-sm bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-[#FFB84D] font-bold border border-amber-200 dark:border-amber-900/60 shrink-0"
                           th:text="${topicNoteCounts.get(t.id)} + ' docs'">0 docs</span>
                 </div>
-                <p class="text-xs text-gray-500 line-clamp-2" th:text="${t.description != null and !t.description.isBlank()} ? ${t.description} : 'No description provided.'">Description</p>
+                <p class="text-xs text-slate-500 dark:text-[#8E959D] line-clamp-2" th:text="${t.description != null and !t.description.isBlank()} ? ${t.description} : 'No description provided.'">Description</p>
             </a>
 
-            <div class="flex items-center justify-between mt-4 pt-3 border-t border-gray-100 dark:border-gray-800 text-xs">
-                <a th:href="@{/notes(topicId=${t.id})}" class="text-indigo-600 dark:text-indigo-400 font-medium hover:underline flex items-center gap-1">
+            <div class="flex items-center justify-between mt-5 pt-3.5 border-t border-stone-100 dark:border-[#16191D] font-mono text-xs">
+                <a th:href="@{/notes(topicId=${t.id})}" class="text-amber-600 dark:text-[#FFB84D] font-medium hover:underline flex items-center gap-1">
                     Explore Docs &rarr;
                 </a>
                 <form th:action="@{/topics/{id}/delete(id=${t.id})}" method="post"
                       onsubmit="return confirm('Delete this topic? Notes will keep their content but lose this topic.');">
-                    <button class="text-gray-400 hover:text-rose-600 transition">Delete</button>
+                    <button class="text-slate-400 hover:text-rose-600 transition">Delete</button>
                 </form>
             </div>
         </div>
