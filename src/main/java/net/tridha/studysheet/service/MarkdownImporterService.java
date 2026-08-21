@@ -39,6 +39,13 @@ public class MarkdownImporterService {
     }
 
     @Transactional
+    public int cleanAndImportMarkdownFiles(String baseDirPath) {
+        log.info("Performing clean sync — purging existing notes before re-importing from " + baseDirPath);
+        noteRepository.deleteAll();
+        return importMarkdownFiles(baseDirPath);
+    }
+
+    @Transactional
     public int importMarkdownFiles(String baseDirPath) {
         Path baseDir = Paths.get(baseDirPath);
         if (!Files.exists(baseDir) || !Files.isDirectory(baseDir)) {

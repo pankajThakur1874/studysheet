@@ -80,8 +80,8 @@ public class TopicController {
 
     @PostMapping("/sync-files")
     public String syncFiles(RedirectAttributes redirectAttributes) {
-        int count = markdownImporterService.importMarkdownFiles("./files");
-        redirectAttributes.addFlashAttribute("message", "Successfully imported/synced " + count + " markdown study guides!");
-        return "redirect:/topics";
+        int count = markdownImporterService.cleanAndImportMarkdownFiles("./files");
+        redirectAttributes.addFlashAttribute("message", "Clean sync complete! Database reset and " + count + " markdown study guides imported.");
+        return "redirect:/notes";
     }
 }
