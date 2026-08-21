@@ -4,16 +4,16 @@
 <body class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 min-h-screen">
 <nav th:replace="~{fragments/layout :: nav}"></nav>
 
-<main class="max-w-6xl mx-auto px-4 py-8 space-y-10">
+<main class="max-w-6xl mx-auto px-4 py-8 space-y-16">
 
-    <!-- 1. Eye-Catching Glassmorphism Hero Portfolio Banner -->
-    <div class="relative rounded-3xl overflow-hidden border border-indigo-200 dark:border-indigo-900/60 bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 text-white shadow-2xl p-6 md:p-10">
-        <!-- Glowing Background Accents -->
-        <div class="absolute -top-20 -left-20 w-80 h-80 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="absolute -bottom-20 -right-20 w-80 h-80 bg-purple-500/20 rounded-full blur-3xl pointer-events-none"></div>
+    <!-- 1. HERO SECTION -->
+    <section id="hero" class="relative rounded-3xl overflow-hidden border border-indigo-200 dark:border-indigo-900/60 bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 text-white shadow-2xl p-6 md:p-10">
+        <!-- Ambient Light Accents -->
+        <div class="absolute -top-24 -left-24 w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl pointer-events-none"></div>
 
         <div class="relative z-10 space-y-6">
-            <!-- Top Badges -->
+            <!-- Badges -->
             <div class="flex flex-wrap items-center gap-2">
                 <span class="px-3.5 py-1 rounded-full bg-indigo-500/20 border border-indigo-400/30 text-indigo-300 text-xs font-bold tracking-wider uppercase backdrop-blur-md">
                     ⚡ Staff Backend Engineer
@@ -26,17 +26,20 @@
                 </span>
             </div>
 
-            <!-- Headline & Bio -->
+            <!-- Name & Tagline -->
             <div class="space-y-3 max-w-3xl">
                 <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
-                    Architecting High-Throughput <span class="bg-gradient-to-r from-indigo-400 via-purple-300 to-pink-400 bg-clip-text text-transparent">Backend & Distributed Systems</span>
+                    Pankaj Thakur
                 </h1>
+                <p class="text-lg sm:text-xl font-medium bg-gradient-to-r from-indigo-300 via-purple-200 to-pink-300 bg-clip-text text-transparent">
+                    Architecting High-Throughput Backend Services, Distributed Systems & AI Infrastructure
+                </p>
                 <p class="text-sm sm:text-base text-slate-300 leading-relaxed">
-                    Senior engineering leader with 6+ years designing scale backend services in Java & Spring Boot. Architected nested segmentation engines processing <strong class="text-indigo-300 font-bold">240M+ events per minute</strong> at CleverTap. Deep specialization in distributed storage, event-driven pipelines, AI engineering, and enterprise billing.
+                    Staff Backend Engineer with 6+ years of experience designing and scaling fault-tolerant backend systems in Java and Spring Boot. Architected nested-object segmentation engines processing <strong class="text-indigo-300 font-bold">240M+ events per minute</strong>. Deep expertise in event-driven microservices, database optimization, cloud microservices, and AI engineering.
                 </p>
             </div>
 
-            <!-- 4 Interactive Key Impact Metric Cards -->
+            <!-- Key Impact Metric Cards -->
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5 pt-2">
                 <div class="p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15 hover:bg-white/15 transition shadow-sm">
                     <div class="text-2xl sm:text-3xl font-extrabold text-indigo-300">240M+</div>
@@ -44,236 +47,384 @@
                 </div>
                 <div class="p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15 hover:bg-white/15 transition shadow-sm">
                     <div class="text-2xl sm:text-3xl font-extrabold text-emerald-300">6+ Yrs</div>
-                    <div class="text-[0.7rem] sm:text-xs font-semibold text-slate-300 mt-1 uppercase tracking-wider">Scale Backend Exp</div>
+                    <div class="text-[0.7rem] sm:text-xs font-semibold text-slate-300 mt-1 uppercase tracking-wider">Backend Scale Exp</div>
                 </div>
                 <div class="p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15 hover:bg-white/15 transition shadow-sm">
-                    <div class="text-2xl sm:text-3xl font-extrabold text-purple-300" th:text="${totalNotes} > 0 ? ${totalNotes} : '14+'">14+</div>
-                    <div class="text-[0.7rem] sm:text-xs font-semibold text-slate-300 mt-1 uppercase tracking-wider">System Design Guides</div>
-                </div>
-                <div class="p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15 hover:bg-white/15 transition shadow-sm">
-                    <div class="text-2xl sm:text-3xl font-extrabold text-pink-300">150+</div>
+                    <div class="text-2xl sm:text-3xl font-extrabold text-purple-300">150+</div>
                     <div class="text-[0.7rem] sm:text-xs font-semibold text-slate-300 mt-1 uppercase tracking-wider">Enterprise ERP Integrations</div>
+                </div>
+                <div class="p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15 hover:bg-white/15 transition shadow-sm">
+                    <div class="text-2xl sm:text-3xl font-extrabold text-pink-300" th:text="${totalNotes} > 0 ? ${totalNotes} : '14+'">14+</div>
+                    <div class="text-[0.7rem] sm:text-xs font-semibold text-slate-300 mt-1 uppercase tracking-wider">System Architecture Guides</div>
                 </div>
             </div>
 
-            <!-- Call to Actions -->
+            <!-- CTAs -->
             <div class="flex flex-wrap items-center gap-3 pt-3">
-                <a href="mailto:pankajpream524@gmail.com"
+                <a href="#contact"
                    class="px-5 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-lg hover:shadow-indigo-500/30 flex items-center gap-2 transition cursor-pointer">
                     <span>📬 Get in Touch</span>
+                </a>
+                <a href="/notes"
+                   class="px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-lg flex items-center gap-2 transition cursor-pointer">
+                    <span>📚 System Architecture Hub ↗</span>
                 </a>
                 <a href="https://github.com/pankajThakur1874" target="_blank" rel="noopener"
                    class="px-5 py-3 rounded-xl bg-white/15 hover:bg-white/25 text-white font-bold text-xs border border-white/20 flex items-center gap-2 transition backdrop-blur-md">
                     <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
                     <span>GitHub @pankajThakur1874 ↗</span>
                 </a>
-                <a href="#system-design-hub"
-                   class="px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs border border-slate-700 flex items-center gap-2 transition">
-                    <span>📚 Explore Architecture Hub</span>
-                </a>
-                <form action="/topics/sync-files" method="post" class="inline">
-                    <button type="submit" class="px-4 py-3 rounded-xl bg-emerald-600/90 hover:bg-emerald-600 text-white font-bold text-xs flex items-center gap-1.5 transition cursor-pointer">
-                        <span>🔄 Sync Guides</span>
-                    </button>
-                </form>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- 2. Core Technical Competencies & Architecture Stack Radar -->
-    <section class="space-y-4">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <div>
-                <h2 class="text-xl font-extrabold text-gray-900 dark:text-gray-100 flex items-center gap-2">
-                    <span>🛠️ Technical Competencies & Stack</span>
-                </h2>
-                <p class="text-xs text-gray-500 mt-0.5">Engineering pillars built over 6+ years scaling distributed systems</p>
-            </div>
+    <!-- 2. ABOUT ME SECTION -->
+    <section id="about" class="p-6 md:p-8 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm space-y-4">
+        <div class="flex items-center gap-2 border-b border-gray-100 dark:border-gray-800 pb-3">
+            <span class="text-xl">👤</span>
+            <h2 class="text-xl font-black text-gray-900 dark:text-gray-100">About Me</h2>
+        </div>
+        <div class="prose dark:prose-invert max-w-none text-sm leading-relaxed text-gray-600 dark:text-gray-300 space-y-3">
+            <p>
+                I am a <strong>Staff Backend Engineer</strong> with over 6 years of experience building, scaling, and maintaining high-availability RESTful APIs and distributed backend infrastructure using <strong>Java and Spring Boot</strong>. My engineering focus centers on high-volume data streams, complex data modeling, and enterprise billing/metering architectures.
+            </p>
+            <p>
+                At <strong>CleverTap</strong>, I lead critical architecture initiatives within the analytics and segmentation engines processing <strong>240M+ events per minute</strong>. I have a proven track record of reducing technical debt incrementally while delivering customer-facing features, mentoring engineering teams, and incorporating AI-driven automation into Agile engineering workflows.
+            </p>
+        </div>
+    </section>
+
+    <!-- 3. SKILLS SECTION -->
+    <section id="skills" class="space-y-4">
+        <div class="border-b border-gray-200 dark:border-gray-800 pb-3">
+            <h2 class="text-xl font-black text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                <span>🛠️ Technical Skills & Architecture Stack</span>
+            </h2>
+            <p class="text-xs text-gray-500 mt-0.5">Core technologies and frameworks used across production environments</p>
         </div>
 
-        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <!-- Pillar 1 -->
-            <div class="p-5 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm hover:shadow-md transition">
-                <div class="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold text-lg mb-3">🗄️</div>
-                <h3 class="font-bold text-sm text-gray-900 dark:text-gray-100 mb-2">Data & Messaging</h3>
-                <p class="text-xs text-gray-500 leading-relaxed mb-3">High-throughput event streaming & storage engines</p>
-                <div class="flex flex-wrap gap-1.5">
-                    <span class="px-2 py-0.5 text-[0.7rem] font-semibold rounded-md bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300">Kafka</span>
-                    <span class="px-2 py-0.5 text-[0.7rem] font-semibold rounded-md bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300">Redis</span>
-                    <span class="px-2 py-0.5 text-[0.7rem] font-semibold rounded-md bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300">PostgreSQL</span>
-                    <span class="px-2 py-0.5 text-[0.7rem] font-semibold rounded-md bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300">MongoDB</span>
-                    <span class="px-2 py-0.5 text-[0.7rem] font-semibold rounded-md bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300">Elasticsearch</span>
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <!-- Skill Group 1 -->
+            <div class="p-5 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm space-y-2">
+                <div class="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">Languages & Frameworks</div>
+                <div class="flex flex-wrap gap-1.5 pt-1">
+                    <span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300">Java 21</span>
+                    <span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300">Spring Boot 3</span>
+                    <span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300">REST APIs</span>
+                    <span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300">Microservices</span>
+                    <span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300">JPA / Hibernate</span>
                 </div>
             </div>
 
-            <!-- Pillar 2 -->
-            <div class="p-5 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm hover:shadow-md transition">
-                <div class="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-lg mb-3">⚙️</div>
-                <h3 class="font-bold text-sm text-gray-900 dark:text-gray-100 mb-2">Backend & Systems</h3>
-                <p class="text-xs text-gray-500 leading-relaxed mb-3">Fault-tolerant microservices & RESTful APIs</p>
-                <div class="flex flex-wrap gap-1.5">
-                    <span class="px-2 py-0.5 text-[0.7rem] font-semibold rounded-md bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">Java 21</span>
-                    <span class="px-2 py-0.5 text-[0.7rem] font-semibold rounded-md bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">Spring Boot 3</span>
-                    <span class="px-2 py-0.5 text-[0.7rem] font-semibold rounded-md bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">Event-Driven</span>
-                    <span class="px-2 py-0.5 text-[0.7rem] font-semibold rounded-md bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">Microservices</span>
-                    <span class="px-2 py-0.5 text-[0.7rem] font-semibold rounded-md bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">JPA / Hibernate</span>
+            <!-- Skill Group 2 -->
+            <div class="p-5 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm space-y-2">
+                <div class="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Data & Messaging</div>
+                <div class="flex flex-wrap gap-1.5 pt-1">
+                    <span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">Apache Kafka</span>
+                    <span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">Redis</span>
+                    <span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">PostgreSQL</span>
+                    <span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">MongoDB</span>
+                    <span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">Elasticsearch</span>
                 </div>
             </div>
 
-            <!-- Pillar 3 -->
-            <div class="p-5 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm hover:shadow-md transition">
-                <div class="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold text-lg mb-3">🤖</div>
-                <h3 class="font-bold text-sm text-gray-900 dark:text-gray-100 mb-2">AI Engineering</h3>
-                <p class="text-xs text-gray-500 leading-relaxed mb-3">LLM pipelines, sentiment analytics & metering</p>
-                <div class="flex flex-wrap gap-1.5">
-                    <span class="px-2 py-0.5 text-[0.7rem] font-semibold rounded-md bg-purple-50 dark:bg-purple-950 text-purple-700 dark:text-purple-300">Claude Integration</span>
-                    <span class="px-2 py-0.5 text-[0.7rem] font-semibold rounded-md bg-purple-50 dark:bg-purple-950 text-purple-700 dark:text-purple-300">LangChain</span>
-                    <span class="px-2 py-0.5 text-[0.7rem] font-semibold rounded-md bg-purple-50 dark:bg-purple-950 text-purple-700 dark:text-purple-300">RAG</span>
-                    <span class="px-2 py-0.5 text-[0.7rem] font-semibold rounded-md bg-purple-50 dark:bg-purple-950 text-purple-700 dark:text-purple-300">Vector Search</span>
-                    <span class="px-2 py-0.5 text-[0.7rem] font-semibold rounded-md bg-purple-50 dark:bg-purple-950 text-purple-700 dark:text-purple-300">Prompt Eng</span>
+            <!-- Skill Group 3 -->
+            <div class="p-5 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm space-y-2">
+                <div class="text-xs font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400">Cloud & DevOps</div>
+                <div class="flex flex-wrap gap-1.5 pt-1">
+                    <span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-purple-50 dark:bg-purple-950 text-purple-700 dark:text-purple-300">AWS</span>
+                    <span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-purple-50 dark:bg-purple-950 text-purple-700 dark:text-purple-300">Azure</span>
+                    <span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-purple-50 dark:bg-purple-950 text-purple-700 dark:text-purple-300">Docker</span>
+                    <span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-purple-50 dark:bg-purple-950 text-purple-700 dark:text-purple-300">Kubernetes</span>
+                    <span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-purple-50 dark:bg-purple-950 text-purple-700 dark:text-purple-300">Terraform</span>
+                    <span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-purple-50 dark:bg-purple-950 text-purple-700 dark:text-purple-300">CI/CD Pipelines</span>
                 </div>
             </div>
 
-            <!-- Pillar 4 -->
-            <div class="p-5 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm hover:shadow-md transition">
-                <div class="w-10 h-10 rounded-xl bg-pink-50 dark:bg-pink-950/60 text-pink-600 dark:text-pink-400 flex items-center justify-center font-bold text-lg mb-3">☁️</div>
-                <h3 class="font-bold text-sm text-gray-900 dark:text-gray-100 mb-2">Cloud & Integrations</h3>
-                <p class="text-xs text-gray-500 leading-relaxed mb-3">DevOps, enterprise billing & observability</p>
-                <div class="flex flex-wrap gap-1.5">
-                    <span class="px-2 py-0.5 text-[0.7rem] font-semibold rounded-md bg-pink-50 dark:bg-pink-950 text-pink-700 dark:text-pink-300">AWS / Azure</span>
-                    <span class="px-2 py-0.5 text-[0.7rem] font-semibold rounded-md bg-pink-50 dark:bg-pink-950 text-pink-700 dark:text-pink-300">Docker</span>
-                    <span class="px-2 py-0.5 text-[0.7rem] font-semibold rounded-md bg-pink-50 dark:bg-pink-950 text-pink-700 dark:text-pink-300">NetSuite</span>
-                    <span class="px-2 py-0.5 text-[0.7rem] font-semibold rounded-md bg-pink-50 dark:bg-pink-950 text-pink-700 dark:text-pink-300">ChargeBee</span>
-                    <span class="px-2 py-0.5 text-[0.7rem] font-semibold rounded-md bg-pink-50 dark:bg-pink-950 text-pink-700 dark:text-pink-300">Grafana</span>
+            <!-- Skill Group 4 -->
+            <div class="p-5 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm space-y-2">
+                <div class="text-xs font-bold uppercase tracking-wider text-pink-600 dark:text-pink-400">AI Engineering</div>
+                <div class="flex flex-wrap gap-1.5 pt-1">
+                    <span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-pink-50 dark:bg-pink-950 text-pink-700 dark:text-pink-300">LLM Integration (Claude)</span>
+                    <span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-pink-50 dark:bg-pink-950 text-pink-700 dark:text-pink-300">LangChain</span>
+                    <span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-pink-50 dark:bg-pink-950 text-pink-700 dark:text-pink-300">RAG</span>
+                    <span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-pink-50 dark:bg-pink-950 text-pink-700 dark:text-pink-300">Vector Search</span>
+                </div>
+            </div>
+
+            <!-- Skill Group 5 -->
+            <div class="p-5 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm space-y-2">
+                <div class="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">Enterprise Integrations</div>
+                <div class="flex flex-wrap gap-1.5 pt-1">
+                    <span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300">Salesforce</span>
+                    <span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300">HubSpot</span>
+                    <span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300">NetSuite</span>
+                    <span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300">ChargeBee</span>
+                </div>
+            </div>
+
+            <!-- Skill Group 6 -->
+            <div class="p-5 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm space-y-2">
+                <div class="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">Architecture & System Design</div>
+                <div class="flex flex-wrap gap-1.5 pt-1">
+                    <span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-300">System Design</span>
+                    <span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-300">Event-Driven Architecture</span>
+                    <span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-300">High Availability</span>
+                    <span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-300">Scalability</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 3. Career Experience & Scale Impact -->
-    <section class="p-6 md:p-8 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm space-y-6">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 dark:border-gray-800 pb-4">
-            <div>
-                <h2 class="text-xl font-extrabold text-gray-900 dark:text-gray-100 flex items-center gap-2">
-                    <span>💼 Engineering Experience & Scale Impact</span>
-                </h2>
-                <p class="text-xs text-gray-500 mt-0.5">Track record of building revenue-generating microservices & scaling architectures</p>
-            </div>
-            <a href="mailto:pankajpream524@gmail.com" class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
-                Contact: pankajpream524@gmail.com ✉️
-            </a>
+    <!-- 4. EXPERIENCE TIMELINE -->
+    <section id="experience" class="p-6 md:p-8 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm space-y-6">
+        <div class="border-b border-gray-100 dark:border-gray-800 pb-3">
+            <h2 class="text-xl font-black text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                <span>💼 Work Experience & Measurable Impact</span>
+            </h2>
+            <p class="text-xs text-gray-500 mt-0.5">Track record across high-growth platforms and enterprise solutions</p>
         </div>
 
-        <div class="grid gap-6 md:grid-cols-3">
-            <!-- CleverTap Staff -->
-            <div class="p-4 rounded-xl bg-gray-50 dark:bg-gray-850 border border-gray-200 dark:border-gray-800 space-y-2">
-                <div class="flex items-center justify-between">
-                    <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400">CleverTap</span>
-                    <span class="text-[0.7rem] text-gray-500 font-semibold">Jul 2024 — Present</span>
+        <div class="space-y-8">
+            <!-- Experience Item 1 -->
+            <div class="relative pl-6 border-l-2 border-indigo-500 space-y-2">
+                <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-indigo-600 border-4 border-white dark:border-gray-900"></div>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between">
+                    <div>
+                        <h3 class="font-bold text-base text-gray-900 dark:text-gray-100">Staff Backend Engineer — <span class="text-indigo-600 dark:text-indigo-400">CleverTap</span></h3>
+                    </div>
+                    <span class="text-xs font-semibold text-gray-500 bg-gray-100 dark:bg-gray-800 px-2.5 py-1 rounded-md self-start sm:self-auto mt-1 sm:mt-0">Jul 2024 — Present · Mumbai, India</span>
                 </div>
-                <h3 class="font-bold text-sm text-gray-900 dark:text-gray-100">Staff Backend Engineer</h3>
-                <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
-                    Architected nested-object segmentation engine processing <strong>240M+ events/min</strong>. Built AI-powered sentiment analysis and monetized AI consumption rating into invoicing pipelines.
-                </p>
+                <ul class="list-disc list-inside text-xs text-gray-600 dark:text-gray-300 space-y-1.5 pt-1 leading-relaxed">
+                    <li>Architected nested-object modeling in the analytics and segmentation engine of a platform processing <strong>240M+ events per minute</strong>, enabling customers to query and segment structured event payloads.</li>
+                    <li>Built AI-powered features leveraging sentiment analysis and NPS classification on customer feedback, surfacing actionable product insights.</li>
+                    <li>Designed metering and billing pipelines for AI feature consumption, rating per-account usage and establishing AI as a billable revenue stream.</li>
+                    <li>Addressed technical debt incrementally while shipping customer features on tight timelines.</li>
+                </ul>
             </div>
 
-            <!-- CleverTap Senior -->
-            <div class="p-4 rounded-xl bg-gray-50 dark:bg-gray-850 border border-gray-200 dark:border-gray-800 space-y-2">
-                <div class="flex items-center justify-between">
-                    <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400">CleverTap</span>
-                    <span class="text-[0.7rem] text-gray-500 font-semibold">Jan 2023 — Jun 2024</span>
+            <!-- Experience Item 2 -->
+            <div class="relative pl-6 border-l-2 border-gray-300 dark:border-gray-700 space-y-2">
+                <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-gray-400 dark:bg-gray-600 border-4 border-white dark:border-gray-900"></div>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between">
+                    <div>
+                        <h3 class="font-bold text-base text-gray-900 dark:text-gray-100">Senior Software Engineer — <span class="text-indigo-600 dark:text-indigo-400">CleverTap</span></h3>
+                    </div>
+                    <span class="text-xs font-semibold text-gray-500 bg-gray-100 dark:bg-gray-800 px-2.5 py-1 rounded-md self-start sm:self-auto mt-1 sm:mt-0">Jan 2023 — Jun 2024 · Mumbai, India</span>
                 </div>
-                <h3 class="font-bold text-sm text-gray-900 dark:text-gray-100">Senior Software Engineer</h3>
-                <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
-                    Designed enterprise billing system on My Plan page. Led CleverTap for Startups (C4S) with NetSuite & ChargeBee automation. Built event lifecycle analytics for 100+ customers.
-                </p>
+                <ul class="list-disc list-inside text-xs text-gray-600 dark:text-gray-300 space-y-1.5 pt-1 leading-relaxed">
+                    <li>Designed and implemented a unified enterprise usage and billing system on the My Plan page, enabling real-time tracking, overage calculation, and historical analytics.</li>
+                    <li>Led end-to-end development of CleverTap for Startups (C4S), including automated billing integrations with NetSuite and ChargeBee.</li>
+                    <li>Enabled end-to-end campaign delivery analytics by building support for notification sent/failed event lifecycle tracking across 100+ enterprise clients.</li>
+                </ul>
             </div>
 
-            <!-- Dunzo & ClearTax -->
-            <div class="p-4 rounded-xl bg-gray-50 dark:bg-gray-850 border border-gray-200 dark:border-gray-800 space-y-2">
-                <div class="flex items-center justify-between">
-                    <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400">Dunzo & ClearTax</span>
-                    <span class="text-[0.7rem] text-gray-500 font-semibold">2020 — 2022</span>
+            <!-- Experience Item 3 -->
+            <div class="relative pl-6 border-l-2 border-gray-300 dark:border-gray-700 space-y-2">
+                <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-gray-400 dark:bg-gray-600 border-4 border-white dark:border-gray-900"></div>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between">
+                    <div>
+                        <h3 class="font-bold text-base text-gray-900 dark:text-gray-100">Software Engineer — <span class="text-indigo-600 dark:text-indigo-400">CleverTap</span></h3>
+                    </div>
+                    <span class="text-xs font-semibold text-gray-500 bg-gray-100 dark:bg-gray-800 px-2.5 py-1 rounded-md self-start sm:self-auto mt-1 sm:mt-0">Nov 2021 — Dec 2022 · Mumbai, India</span>
                 </div>
-                <h3 class="font-bold text-sm text-gray-900 dark:text-gray-100">Software Engineer</h3>
-                <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
-                    Enforced account overage billing (+30% revenue). Automated customer support workflows (60% auto-resolution). Delivered e-invoice print engine & led 150+ ERP integrations.
+                <ul class="list-disc list-inside text-xs text-gray-600 dark:text-gray-300 space-y-1.5 pt-1 leading-relaxed">
+                    <li>Built overage reminders and soft-lock enforcement for accounts exceeding contracted limits, closing revenue leakage and <strong>increasing billing revenue by 30%</strong>.</li>
+                    <li>Centralized operational dashboards, reducing recurring manual reporting requests from ~20-30/month to 1-2 (cutting overhead by 90%).</li>
+                </ul>
+            </div>
+
+            <!-- Experience Item 4 & 5 -->
+            <div class="relative pl-6 border-l-2 border-gray-300 dark:border-gray-700 space-y-2">
+                <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-gray-400 dark:bg-gray-600 border-4 border-white dark:border-gray-900"></div>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between">
+                    <div>
+                        <h3 class="font-bold text-base text-gray-900 dark:text-gray-100">Software Engineer — <span class="text-indigo-600 dark:text-indigo-400">Dunzo & ClearTax</span></h3>
+                    </div>
+                    <span class="text-xs font-semibold text-gray-500 bg-gray-100 dark:bg-gray-800 px-2.5 py-1 rounded-md self-start sm:self-auto mt-1 sm:mt-0">Mar 2020 — Nov 2021 · Bangalore, India</span>
+                </div>
+                <ul class="list-disc list-inside text-xs text-gray-600 dark:text-gray-300 space-y-1.5 pt-1 leading-relaxed">
+                    <li><strong>Dunzo</strong>: Automated critical support workflows, reducing manual execution time from hours to seconds and auto-resolving ~60% of recurring support issues.</li>
+                    <li><strong>ClearTax</strong>: Delivered e-invoice print template engine (onboarding 100+ customers week 1) and led 150+ ERP integrations.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. FEATURED PROJECTS SECTION -->
+    <section id="projects" class="space-y-4">
+        <div class="border-b border-gray-200 dark:border-gray-800 pb-3">
+            <h2 class="text-xl font-black text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                <span>🚀 Featured Engineering Projects & Case Studies</span>
+            </h2>
+            <p class="text-xs text-gray-500 mt-0.5">High-scale architecture problems solved with measurable business impact</p>
+        </div>
+
+        <div class="grid gap-6 md:grid-cols-2">
+            <!-- Project 1 -->
+            <div class="p-6 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm space-y-4">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950 px-2.5 py-1 rounded-md">High-Scale Analytics</span>
+                    <span class="text-xs font-mono text-gray-400">CleverTap</span>
+                </div>
+                <h3 class="font-bold text-base text-gray-900 dark:text-gray-100">Nested Object Analytics & Segmentation Engine</h3>
+                <div class="space-y-2 text-xs leading-relaxed text-gray-600 dark:text-gray-300">
+                    <p><strong>Problem:</strong> Flat event properties could not express complex, nested customer interactions on a platform ingesting 240M+ events/min.</p>
+                    <p><strong>Solution:</strong> Architected nested-object modeling in the core segmentation engine with optimized indexing and memory layout.</p>
+                    <p><strong>Impact:</strong> Enabled enterprise customers to segment on deep structured arrays with zero latency penalty.</p>
+                </div>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="p-6 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm space-y-4">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950 px-2.5 py-1 rounded-md">Billing & Revenue</span>
+                    <span class="text-xs font-mono text-gray-400">CleverTap</span>
+                </div>
+                <h3 class="font-bold text-base text-gray-900 dark:text-gray-100">Unified Metering & Enterprise Billing Engine</h3>
+                <div class="space-y-2 text-xs leading-relaxed text-gray-600 dark:text-gray-300">
+                    <p><strong>Problem:</strong> Decentralized billing led to overage revenue leakage and heavy manual finance reporting.</p>
+                    <p><strong>Solution:</strong> Designed real-time usage rating pipelines integrated with NetSuite and ChargeBee, plus soft-lock enforcement.</p>
+                    <p><strong>Impact:</strong> Increased billing revenue by 30% and cut manual reporting overhead by 90%.</p>
+                </div>
+            </div>
+
+            <!-- Project 3 -->
+            <div class="p-6 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm space-y-4">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950 px-2.5 py-1 rounded-md">AI & Monetization</span>
+                    <span class="text-xs font-mono text-gray-400">CleverTap</span>
+                </div>
+                <h3 class="font-bold text-base text-gray-900 dark:text-gray-100">AI Sentiment Engine & Usage Invoicing Pipeline</h3>
+                <div class="space-y-2 text-xs leading-relaxed text-gray-600 dark:text-gray-300">
+                    <p><strong>Problem:</strong> Needed to extract product insights from customer reviews while monetizing LLM API consumption.</p>
+                    <p><strong>Solution:</strong> Built LLM sentiment and NPS classification workflows, rating per-account usage into billable invoices.</p>
+                    <p><strong>Impact:</strong> Established AI features as a direct billable revenue line for the platform.</p>
+                </div>
+            </div>
+
+            <!-- Project 4 (System Architecture Hub) -->
+            <div class="p-6 rounded-2xl border border-indigo-300 dark:border-indigo-800 bg-gradient-to-br from-indigo-50/50 to-white dark:from-indigo-950/30 dark:to-gray-900 shadow-sm space-y-4">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-100 dark:bg-indigo-900/60 px-2.5 py-1 rounded-md">Distributed Systems</span>
+                    <span class="text-xs font-mono text-gray-400">Open Source</span>
+                </div>
+                <h3 class="font-bold text-base text-gray-900 dark:text-gray-100">System Design & Architecture Hub (StudySheet)</h3>
+                <div class="space-y-2 text-xs leading-relaxed text-gray-600 dark:text-gray-300">
+                    <p><strong>Problem:</strong> Complex distributed system trade-offs are hard to visualize and review efficiently.</p>
+                    <p><strong>Solution:</strong> Built a Java 21 & Spring Boot platform featuring Markdown ingestion, full-screen Mermaid Lightbox, and reading tracking.</p>
+                    <p><a href="/notes" class="inline-flex items-center gap-1 font-bold text-indigo-600 dark:text-indigo-400 hover:underline"><strong>Explore Architecture Hub ↗</strong></a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. ENGINEERING EXPERTISE SECTION -->
+    <section id="expertise" class="p-6 md:p-8 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm space-y-4">
+        <div class="border-b border-gray-100 dark:border-gray-800 pb-3">
+            <h2 class="text-xl font-black text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                <span>⚡ Core Engineering Expertise</span>
+            </h2>
+            <p class="text-xs text-gray-500 mt-0.5">Staff-level architectural principles applied in practice</p>
+        </div>
+
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 text-xs leading-relaxed">
+            <div class="p-4 rounded-xl bg-gray-50 dark:bg-gray-850 space-y-1">
+                <h3 class="font-bold text-sm text-gray-900 dark:text-gray-100">Backend Microservices</h3>
+                <p class="text-gray-500">Designing modular REST APIs, clean domain boundaries, transaction isolation, and DDL fallback handling in Spring Boot.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-gray-50 dark:bg-gray-850 space-y-1">
+                <h3 class="font-bold text-sm text-gray-900 dark:text-gray-100">Distributed Systems</h3>
+                <p class="text-gray-500">Understanding trade-offs across single-leader replication, partitioning, consensus, linearizability, and network faults.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-gray-50 dark:bg-gray-850 space-y-1">
+                <h3 class="font-bold text-sm text-gray-900 dark:text-gray-100">Storage & Indexing</h3>
+                <p class="text-gray-500">Evaluating LSM-Trees vs B-Trees, OLTP vs OLAP column storage, database indexing, and query optimization.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-gray-50 dark:bg-gray-850 space-y-1">
+                <h3 class="font-bold text-sm text-gray-900 dark:text-gray-100">High Availability & Scale</h3>
+                <p class="text-gray-500">Handling 240M+ events/min with low-latency caching (Redis), async message brokers (Kafka), and circuit breakers.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-gray-50 dark:bg-gray-850 space-y-1">
+                <h3 class="font-bold text-sm text-gray-900 dark:text-gray-100">Reliability & Observability</h3>
+                <p class="text-gray-500">Soft-lock enforcement, graceful degradation, health checks, Splunk/Grafana monitoring, and automated support resolution.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-gray-50 dark:bg-gray-850 space-y-1">
+                <h3 class="font-bold text-sm text-gray-900 dark:text-gray-100">Engineering Leadership</h3>
+                <p class="text-gray-500">Mentoring engineers, reducing technical debt incrementally, and accelerating feature delivery in Agile environments.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. AI & SOFTWARE ENGINEERING SECTION -->
+    <section id="ai-engineering" class="p-6 md:p-8 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm space-y-4">
+        <div class="border-b border-gray-100 dark:border-gray-800 pb-3">
+            <h2 class="text-xl font-black text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                <span>🤖 AI & Modern Software Engineering</span>
+            </h2>
+            <p class="text-xs text-gray-500 mt-0.5">How I leverage AI models and LLM automation to build products and accelerate development</p>
+        </div>
+
+        <div class="grid gap-4 md:grid-cols-2 text-xs leading-relaxed">
+            <div class="p-4 rounded-xl bg-purple-50/50 dark:bg-purple-950/30 border border-purple-100 dark:border-purple-900/40 space-y-2">
+                <h3 class="font-bold text-sm text-purple-900 dark:text-purple-300">Product AI Integration</h3>
+                <p class="text-gray-600 dark:text-gray-300">
+                    Built customer-facing LLM workflows (Claude, MiniMax) leveraging sentiment analysis and NPS classification on feedback payloads. Designed rating pipelines to monetize per-account AI consumption.
+                </p>
+            </div>
+            <div class="p-4 rounded-xl bg-purple-50/50 dark:bg-purple-950/30 border border-purple-100 dark:border-purple-900/40 space-y-2">
+                <h3 class="font-bold text-sm text-purple-900 dark:text-purple-300">AI-Driven Engineering Productivity</h3>
+                <p class="text-gray-600 dark:text-gray-300">
+                    Utilize AI agentic coding, RAG document search, and prompt engineering to accelerate prototyping, automate unit testing, and perform incremental code debt refactoring safely.
                 </p>
             </div>
         </div>
     </section>
 
-    <!-- 4. Interactive System Design & Architecture Hub -->
-    <section id="system-design-hub" class="space-y-6 pt-4">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-200 dark:border-gray-800 pb-4">
+    <!-- 8. EDUCATION SECTION -->
+    <section id="education" class="p-6 md:p-8 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm space-y-3">
+        <h2 class="text-xl font-black text-gray-900 dark:text-gray-100 flex items-center gap-2">
+            <span>🎓 Education & Academic Background</span>
+        </h2>
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between text-xs pt-1">
             <div>
-                <h2 class="text-2xl font-black text-gray-900 dark:text-gray-100 flex items-center gap-2">
-                    <span>📚 System Architecture Hub</span>
-                </h2>
-                <p class="text-xs text-gray-500 mt-1">Interactive DDIA study guides & system design breakdowns with full-screen flowchart diagrams</p>
+                <h3 class="font-bold text-sm text-gray-900 dark:text-gray-100">B.Tech in Computer Science & Engineering</h3>
+                <p class="text-gray-500">SRM University — Kattankulathur, Chennai</p>
             </div>
-            <a href="/notes" class="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1">
-                Explore All Architecture Notes &rarr;
+            <span class="font-semibold text-gray-500 mt-1 sm:mt-0">Graduated: May 2020</span>
+        </div>
+    </section>
+
+    <!-- 9. CONTACT & FOOTER SECTION -->
+    <section id="contact" class="p-8 rounded-3xl border border-indigo-200 dark:border-indigo-900/60 bg-gradient-to-br from-indigo-900 via-indigo-950 to-slate-950 text-white shadow-xl space-y-6 text-center">
+        <div class="max-w-xl mx-auto space-y-3">
+            <h2 class="text-2xl sm:text-3xl font-black text-white">Let's Connect & Build</h2>
+            <p class="text-xs sm:text-sm text-slate-300">
+                Interested in high-scale backend engineering, distributed data architectures, or system design? Feel free to reach out directly.
+            </p>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-center gap-3 text-xs font-semibold">
+            <a href="mailto:pankajpream524@gmail.com"
+               class="px-5 py-3 rounded-xl bg-white text-indigo-950 hover:bg-slate-100 shadow-lg font-bold transition">
+                ✉️ pankajpream524@gmail.com
+            </a>
+            <a href="tel:+919771186585"
+               class="px-5 py-3 rounded-xl bg-white/15 hover:bg-white/25 text-white border border-white/20 transition">
+                📞 +91 97711 86585
+            </a>
+            <a href="https://github.com/pankajThakur1874" target="_blank" rel="noopener"
+               class="px-5 py-3 rounded-xl bg-white/15 hover:bg-white/25 text-white border border-white/20 transition">
+                💻 GitHub @pankajThakur1874 ↗
+            </a>
+            <a href="/notes"
+               class="px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold transition shadow-sm">
+                📚 Open System Architecture Hub ↗
             </a>
         </div>
 
-        <!-- Learning Mastery Progress Bar -->
-        <div class="p-5 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm space-y-3">
-            <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-gray-700 dark:text-gray-300">Syllabus Mastery Progress</span>
-                <span class="text-xs font-extrabold text-emerald-600 dark:text-emerald-400" th:text="${masteryPercentage} + '% Mastered'">0% Mastered</span>
-            </div>
-            <div class="w-full bg-gray-200 dark:bg-gray-800 rounded-full h-2.5 overflow-hidden flex">
-                <div class="bg-emerald-500 h-2.5 transition-all duration-300" th:style="'width: ' + ${masteryPercentage} + '%'"></div>
-            </div>
-        </div>
-
-        <!-- Pinned Architecture Notes -->
-        <div th:if="${!pinnedNotes.isEmpty()}" class="space-y-3">
-            <h3 class="text-xs font-bold uppercase tracking-wider text-gray-500">📌 Pinned Deep-Dive Guides</h3>
-            <div class="grid gap-3 sm:grid-cols-2">
-                <a th:each="n : ${pinnedNotes}" th:href="@{/notes/{id}(id=${n.id})}"
-                   class="block p-4 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 hover:border-indigo-400 dark:hover:border-indigo-600 hover:shadow-md transition">
-                    <div class="flex items-start justify-between gap-2">
-                        <div class="font-bold text-sm text-gray-900 dark:text-gray-100 hover:text-indigo-600" th:text="${n.title}">Title</div>
-                        <span th:class="'text-[0.65rem] px-2 py-0.5 rounded-full border font-semibold shrink-0 ' + ${n.status.badgeCssClass}"
-                              th:text="${n.status.displayName}">Status</span>
-                    </div>
-                    <div class="flex items-center gap-2 mt-2 text-xs text-gray-500">
-                        <span th:if="${n.topic != null}" class="px-2 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-medium" th:text="${n.topic.name}">Topic</span>
-                        <span class="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 font-medium" th:text="'⏱️ ' + ${n.estimatedReadingTime}">Read time</span>
-                    </div>
-                </a>
-            </div>
-        </div>
-
-        <!-- Recent Architecture Notes Grid -->
-        <div class="space-y-3">
-            <h3 class="text-xs font-bold uppercase tracking-wider text-gray-500">🕒 Recent Architecture Notes</h3>
-            <div class="grid gap-3 sm:grid-cols-2">
-                <a th:each="n : ${recentNotes}" th:href="@{/notes/{id}(id=${n.id})}"
-                   class="block p-4 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 hover:border-indigo-400 dark:hover:border-indigo-600 hover:shadow-md transition">
-                    <div class="flex items-start justify-between gap-2">
-                        <div class="font-bold text-sm text-gray-900 dark:text-gray-100 hover:text-indigo-600" th:text="${n.title}">Title</div>
-                        <span th:class="'text-[0.65rem] px-2 py-0.5 rounded-full border font-semibold shrink-0 ' + ${n.status.badgeCssClass}"
-                              th:text="${n.status.displayName}">Status</span>
-                    </div>
-                    <div class="flex items-center gap-2 mt-2 text-xs text-gray-500">
-                        <span th:if="${n.topic != null}" class="px-2 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-medium" th:text="${n.topic.name}">Topic</span>
-                        <span class="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 font-medium" th:text="'⏱️ ' + ${n.estimatedReadingTime}">Read time</span>
-                    </div>
-                </a>
-            </div>
-        </div>
-
-        <!-- Subject Categories -->
-        <div class="space-y-3 pt-2">
-            <h3 class="text-xs font-bold uppercase tracking-wider text-gray-500">🗂️ Browse Subject Categories</h3>
-            <div class="flex flex-wrap gap-2">
-                <a th:each="t : ${topics}" th:href="@{/notes(topicId=${t.id})}"
-                   class="px-4 py-2 text-xs font-bold rounded-full bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 hover:bg-indigo-100 transition shadow-2xs"
-                   th:text="${t.name}">Topic</a>
-            </div>
+        <div class="pt-4 border-t border-white/10 text-[0.7rem] text-slate-400">
+            © 2026 Pankaj Thakur · Staff Backend Engineer. All rights reserved.
         </div>
     </section>
 
