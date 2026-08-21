@@ -1,4 +1,4 @@
-# Graph Models & Query Languages
+# 06 - Graph Models & Query Languages
 
 **Prerequisites:** Topic 4 (Relational vs Document)
 **Difficulty:** Intermediate

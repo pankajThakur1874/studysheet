@@ -1,4 +1,4 @@
-# The Trouble with Distributed Systems: Unreliable Networks
+# 11 - The Trouble with Distributed Systems: Unreliable Networks
 
 **Prerequisites:** Topic 10 (replication/failover), Topic 1 (reliability)
 **Difficulty:** Intermediate

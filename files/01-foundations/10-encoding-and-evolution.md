@@ -1,4 +1,4 @@
-# Encoding, Schemas & Evolution
+# 10 - Encoding, Schemas & Evolution
 
 **Prerequisites:** Topic 4 (data models)
 **Difficulty:** Intermediate

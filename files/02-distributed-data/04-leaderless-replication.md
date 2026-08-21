@@ -1,4 +1,4 @@
-# Leaderless Replication & Quorums
+# 04 - Leaderless Replication & Quorums
 
 **Prerequisites:** Topics 10, 11, 12
 **Difficulty:** Advanced

@@ -1,4 +1,4 @@
-# Serializability
+# 10 - Serializability
 
 **Prerequisites:** Topics 17, 18 (transactions, weak isolation)
 **Difficulty:** Advanced

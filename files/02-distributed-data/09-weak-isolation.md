@@ -1,4 +1,4 @@
-# Weak Isolation Levels & Race Conditions
+# 09 - Weak Isolation Levels & Race Conditions
 
 **Prerequisites:** Topic 17 (transactions & ACID)
 **Difficulty:** Advanced

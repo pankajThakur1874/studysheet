@@ -1,4 +1,4 @@
-# Transactions & ACID
+# 08 - Transactions & ACID
 
 **Prerequisites:** none (helps to know Topic 1)
 **Difficulty:** Intermediate

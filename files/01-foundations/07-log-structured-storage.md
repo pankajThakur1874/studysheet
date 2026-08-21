@@ -1,4 +1,4 @@
-# Log-Structured Storage: Hash Indexes, SSTables & LSM-Trees
+# 07 - Log-Structured Storage: Hash Indexes, SSTables & LSM-Trees
 
 **Prerequisites:** none (helps to know what an index is)
 **Difficulty:** Intermediate

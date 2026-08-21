@@ -1,4 +1,4 @@
-# Part II — Distributed Data
+# 00 - Part II: Distributed Data Systems
 
 **Covers:** Chapters 5–9 of DDIA
 **Scope:** what changes when data lives on **more than one machine**. This is the hard part of the book, and the highest-yield part for senior/staff interviews.

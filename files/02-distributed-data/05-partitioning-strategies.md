@@ -1,4 +1,4 @@
-# Partitioning Strategies
+# 05 - Partitioning Strategies
 
 **Prerequisites:** Topic 10 (replication)
 **Difficulty:** Intermediate

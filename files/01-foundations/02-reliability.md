@@ -1,4 +1,4 @@
-# Reliability & Fault Tolerance
+# 02 - Reliability & Fault Tolerance
 
 **Prerequisites:** none
 **Difficulty:** Beginner

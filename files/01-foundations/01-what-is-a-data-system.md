@@ -1,4 +1,4 @@
-# What Is a Data-Intensive Application?
+# 01 - What Is a Data-Intensive Application?
 
 **Prerequisites:** none
 **Difficulty:** Beginner

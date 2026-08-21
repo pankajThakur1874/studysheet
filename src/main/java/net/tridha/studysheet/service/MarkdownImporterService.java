@@ -109,16 +109,6 @@ public class MarkdownImporterService {
     }
 
     private String extractTitle(String content, String fileName, String pathStr) {
-        if (pathStr.endsWith("01-foundations/README.md")) {
-            return "Part I — Foundations of Data Systems (Overview)";
-        }
-        if (pathStr.endsWith("02-distributed-data/README.md")) {
-            return "Part II — Distributed Data Systems (Overview)";
-        }
-        if (fileName.equalsIgnoreCase("README.md")) {
-            return "DDIA Master Learning Guide & Roadmap";
-        }
-
         for (String line : content.split("\\r?\\n")) {
             String trimmed = line.trim();
             if (trimmed.startsWith("# ")) {

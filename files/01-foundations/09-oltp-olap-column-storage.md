@@ -1,4 +1,4 @@
-# OLTP vs OLAP & Column-Oriented Storage
+# 09 - OLTP vs OLAP & Column-Oriented Storage
 
 **Prerequisites:** Topics 6, 7 (storage engines)
 **Difficulty:** Intermediate

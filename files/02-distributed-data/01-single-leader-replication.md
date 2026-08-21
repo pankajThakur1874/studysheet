@@ -1,4 +1,4 @@
-# Single-Leader Replication
+# 01 - Single-Leader Replication
 
 **Prerequisites:** Topic 1 (reliability), Topic 6 (the log idea)
 **Difficulty:** Intermediate

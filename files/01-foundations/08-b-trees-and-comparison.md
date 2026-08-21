@@ -1,4 +1,4 @@
-# B-Trees & the Central Storage Trade-off
+# 08 - B-Trees & Storage Engine Trade-offs
 
 **Prerequisites:** Topic 6 (Log-Structured Storage)
 **Difficulty:** Intermediate

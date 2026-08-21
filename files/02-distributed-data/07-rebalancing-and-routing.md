@@ -1,4 +1,4 @@
-# Rebalancing Partitions & Request Routing
+# 07 - Rebalancing Partitions & Request Routing
 
 **Prerequisites:** Topic 14 (partitioning strategies)
 **Difficulty:** Intermediate

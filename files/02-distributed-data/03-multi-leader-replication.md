@@ -1,4 +1,4 @@
-# Multi-Leader Replication
+# 03 - Multi-Leader Replication
 
 **Prerequisites:** Topics 10, 11
 **Difficulty:** Advanced

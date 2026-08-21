@@ -1,4 +1,4 @@
-# Replication Lag & Read-After-Write Guarantees
+# 02 - Replication Lag & Consistency Guarantees
 
 **Prerequisites:** Topic 10 (single-leader replication)
 **Difficulty:** Intermediate

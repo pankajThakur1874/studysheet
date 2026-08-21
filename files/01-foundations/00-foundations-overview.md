@@ -1,4 +1,4 @@
-# Part I — Foundations of Data Systems
+# 00 - Part I: Foundations of Data Systems
 
 **Covers:** Chapters 1–4 of DDIA
 **Scope:** everything here works on a *single machine*. No network partitions, no replication, no consensus. That comes in Part II.

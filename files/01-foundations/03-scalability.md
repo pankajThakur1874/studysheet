@@ -1,4 +1,4 @@
-# Scalability, Load & Percentiles
+# 03 - Scalability, Load & Percentiles
 
 **Prerequisites:** Topic 1 (Reliability)
 **Difficulty:** Beginner (but the ideas are used constantly at every level)

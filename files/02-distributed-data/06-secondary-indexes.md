@@ -1,4 +1,4 @@
-# Partitioning Secondary Indexes
+# 06 - Partitioning Secondary Indexes
 
 **Prerequisites:** Topic 14 (partitioning strategies)
 **Difficulty:** Advanced
