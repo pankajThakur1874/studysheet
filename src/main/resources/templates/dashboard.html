@@ -1,28 +1,53 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/layout :: head('Dashboard')}"></head>
+<head th:replace="~{fragments/layout :: head('Pankaj Thakur · Portfolio & Architecture Notes')}"></head>
 <body class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 min-h-screen">
 <nav th:replace="~{fragments/layout :: nav}"></nav>
 
 <main class="max-w-5xl mx-auto px-4 py-8">
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-        <div>
-            <h1 class="text-2xl font-bold">Welcome back 👋</h1>
-            <p class="text-xs text-gray-500 mt-1">Track and master your data systems study guides</p>
+    <!-- Personal Portfolio Hero Card -->
+    <div class="mb-8 p-6 md:p-8 rounded-2xl border border-indigo-200 dark:border-indigo-900/60 bg-gradient-to-br from-indigo-900 via-indigo-950 to-slate-950 text-white shadow-xl relative overflow-hidden">
+        <div class="absolute -top-12 -right-12 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+            <div class="space-y-3 max-w-2xl">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-400/30 text-indigo-300 text-xs font-semibold">
+                    <span>⚡ Software Engineer & Architecture Notes</span>
+                </div>
+                <h1 class="text-3xl md:text-4xl font-extrabold text-white tracking-tight">Pankaj Thakur</h1>
+                <p class="text-sm md:text-base text-slate-300 leading-relaxed">
+                    Building high-throughput backend services and distributed systems. Documenting core architectural trade-offs in storage engines, replication, consensus, and system scalability.
+                </p>
+                <div class="flex flex-wrap items-center gap-2 pt-2 text-xs">
+                    <span class="px-2.5 py-1 rounded-md bg-white/10 text-slate-200 font-mono font-medium">Java 21</span>
+                    <span class="px-2.5 py-1 rounded-md bg-white/10 text-slate-200 font-mono font-medium">Spring Boot 3</span>
+                    <span class="px-2.5 py-1 rounded-md bg-white/10 text-slate-200 font-mono font-medium">Distributed Data</span>
+                    <span class="px-2.5 py-1 rounded-md bg-white/10 text-slate-200 font-mono font-medium">System Design</span>
+                    <span class="px-2.5 py-1 rounded-md bg-white/10 text-slate-200 font-mono font-medium">Docker & Cloud</span>
+                </div>
+            </div>
+
+            <!-- Social Links & Action Buttons -->
+            <div class="flex flex-col sm:flex-row md:flex-col gap-2.5 shrink-0">
+                <a href="https://github.com/pankajThakur1874" target="_blank" rel="noopener"
+                   class="px-4 py-2.5 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs font-semibold flex items-center justify-center gap-2 border border-white/20 transition shadow-sm">
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                    <span>GitHub @pankajThakur1874</span>
+                </a>
+                <form action="/topics/sync-files" method="post">
+                    <button type="submit" class="w-full px-4 py-2.5 rounded-xl bg-indigo-500 hover:bg-indigo-600 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition shadow-sm cursor-pointer">
+                        <span>🔄 Sync Local Files</span>
+                    </button>
+                </form>
+            </div>
         </div>
-        <form action="/topics/sync-files" method="post">
-            <button type="submit" class="text-xs font-semibold px-3.5 py-2 rounded-md border border-indigo-300 dark:border-indigo-700 bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 transition shadow-sm flex items-center gap-1.5 cursor-pointer">
-                <span>🔄 Sync Local Files</span>
-            </button>
-        </form>
     </div>
 
     <!-- Study Progress Summary -->
     <section class="mb-8 p-5 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
             <div>
-                <h2 class="text-lg font-bold text-gray-900 dark:text-gray-100">🎓 Learning Progress</h2>
-                <p class="text-xs text-gray-500 mt-0.5" th:text="${totalNotes} + ' total study notes logged'">0 study notes</p>
+                <h2 class="text-lg font-bold text-gray-900 dark:text-gray-100">🎓 Learning Mastery & Tracked Progress</h2>
+                <p class="text-xs text-gray-500 mt-0.5" th:text="${totalNotes} + ' total study guides logged'">0 study notes</p>
             </div>
             <div class="flex items-center gap-2">
                 <span class="text-2xl font-extrabold text-emerald-600 dark:text-emerald-400" th:text="${masteryPercentage} + '%'">0%</span>
@@ -56,9 +81,9 @@
         </div>
     </section>
 
-    <!-- Pinned -->
+    <!-- Pinned Notes -->
     <section th:if="${!pinnedNotes.isEmpty()}" class="mb-8">
-        <h2 class="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">📌 Pinned Notes</h2>
+        <h2 class="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">📌 Pinned Architecture Notes</h2>
         <div class="grid gap-3 sm:grid-cols-2">
             <a th:each="n : ${pinnedNotes}" th:href="@{/notes/{id}(id=${n.id})}"
                class="block p-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 hover:shadow-md transition">
@@ -72,11 +97,11 @@
         </div>
     </section>
 
-    <!-- Recent -->
+    <!-- Recent Notes -->
     <section class="mb-8">
-        <h2 class="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">🕒 Recent Notes</h2>
+        <h2 class="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">🕒 Recent Study Guides</h2>
         <div th:if="${recentNotes.isEmpty()}" class="text-gray-500 text-sm">
-            No notes yet. <a href="/notes/new" class="text-indigo-600 underline">Create your first note</a>.
+            No notes yet. Click <strong>"🔄 Sync Local Files"</strong> above to import your Markdown guides.
         </div>
         <div class="grid gap-3 sm:grid-cols-2">
             <a th:each="n : ${recentNotes}" th:href="@{/notes/{id}(id=${n.id})}"
@@ -93,13 +118,13 @@
 
     <!-- Topics -->
     <section>
-        <h2 class="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">🗂️ Topics</h2>
+        <h2 class="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">🗂️ Subject Categories</h2>
         <div th:if="${topics.isEmpty()}" class="text-gray-500 text-sm">
-            No topics yet. <a href="/topics" class="text-indigo-600 underline">Add topics</a> to organize your notes.
+            No topics loaded yet.
         </div>
         <div class="flex flex-wrap gap-2">
             <a th:each="t : ${topics}" th:href="@{/notes(topicId=${t.id})}"
-               class="px-3 py-1.5 text-sm rounded-full bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 hover:bg-indigo-100 transition"
+               class="px-3.5 py-1.5 text-xs font-semibold rounded-full bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 hover:bg-indigo-100 transition"
                th:text="${t.name}">Topic</a>
         </div>
     </section>
