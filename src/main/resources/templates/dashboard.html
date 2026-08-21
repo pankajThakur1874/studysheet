@@ -1,84 +1,85 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/layout :: head('Pankaj Thakur · Staff Backend Engineer')}"></head>
-<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen font-sans antialiased">
+<head th:replace="~{fragments/layout :: head('Pankaj Thakur · Staff Backend Engineer Portfolio')}"></head>
+<body class="bg-[#faf9f6] dark:bg-[#0b0f19] text-slate-900 dark:text-slate-100 min-h-screen font-sans antialiased selection:bg-indigo-500 selection:text-white">
 <nav th:replace="~{fragments/layout :: nav}"></nav>
 
 <main class="max-w-5xl mx-auto px-4 py-10 space-y-12">
 
-    <!-- 1. NATURAL, EDITORIAL HERO SECTION -->
-    <section id="hero" class="p-8 md:p-12 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm space-y-8">
-        <!-- Top Status Bar -->
+    <!-- 1. HERO SECTION (Modern Editorial Light + Subtle Animations) -->
+    <section id="hero" class="animate-fade-in p-8 md:p-12 rounded-3xl border border-stone-200/80 dark:border-slate-800 bg-white dark:bg-[#121827] shadow-sm space-y-8 relative overflow-hidden">
+        <!-- Status Bar with Pulsing Indicator -->
         <div class="flex flex-wrap items-center justify-between gap-3 text-xs">
             <div class="flex flex-wrap items-center gap-2">
-                <span class="px-3 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-semibold tracking-wide">
-                    Staff Backend Engineer
+                <span class="px-3 py-1 rounded-md bg-stone-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-semibold tracking-wide flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span>Staff Backend Engineer</span>
                 </span>
-                <span class="px-3 py-1 rounded-md bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 font-medium border border-emerald-200 dark:border-emerald-900">
+                <span class="px-3 py-1 rounded-md bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 font-medium border border-emerald-200/60 dark:border-emerald-900/60">
                     📍 Mumbai, India (Open to Relocation)
                 </span>
             </div>
-            <span class="text-slate-400 font-mono">6+ Years Exp · CleverTap · Dunzo · ClearTax</span>
+            <span class="text-slate-400 font-mono">6+ Years Scale Exp · CleverTap · Dunzo · ClearTax</span>
         </div>
 
-        <!-- Name & Core Summary -->
+        <!-- Name & Tagline -->
         <div class="space-y-4 max-w-3xl">
-            <h1 class="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
                 Pankaj Thakur
             </h1>
-            <p class="text-lg sm:text-xl font-medium text-slate-700 dark:text-slate-300 leading-snug">
-                Architecting high-throughput backend services, distributed data pipelines, and real-time event platforms.
+            <p class="text-xl sm:text-2xl font-bold text-indigo-700 dark:text-indigo-400 leading-snug tracking-tight">
+                Architecting High-Throughput Microservices, Event Architectures & Distributed Systems
             </p>
-            <p class="text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed">
-                Staff Backend Engineer with over 6 years of experience building fault-tolerant microservices and RESTful APIs in Java and Spring Boot. Architected nested-object segmentation engines processing <strong>240M+ events per minute</strong> at CleverTap, while leading enterprise billing, storage optimization, and AI engineering initiatives.
+            <p class="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
+                Staff Backend Engineer with over 6 years of experience building fault-tolerant microservices and RESTful APIs in Java and Spring Boot. Architected nested-object segmentation engines processing <strong class="text-slate-900 dark:text-white font-bold underline decoration-indigo-500/50 decoration-2">240M+ events per minute</strong> at CleverTap, while leading enterprise billing, storage optimization, and AI engineering initiatives.
             </p>
         </div>
 
-        <!-- Metric Cards Grid -->
+        <!-- Metric Highlight Cards with Hover Lift -->
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2">
-            <div class="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-850">
-                <div class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white font-mono">240M+</div>
+            <div class="p-4.5 rounded-2xl border border-stone-200/80 dark:border-slate-800 bg-stone-50/60 dark:bg-slate-900/60 hover:-translate-y-1 hover:shadow-md hover:border-indigo-300 dark:hover:border-indigo-700 transition-all duration-300">
+                <div class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white font-mono">240M+</div>
                 <div class="text-xs text-slate-500 font-medium mt-1">Events / Min Processed</div>
             </div>
-            <div class="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-850">
-                <div class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white font-mono">6+ Yrs</div>
+            <div class="p-4.5 rounded-2xl border border-stone-200/80 dark:border-slate-800 bg-stone-50/60 dark:bg-slate-900/60 hover:-translate-y-1 hover:shadow-md hover:border-indigo-300 dark:hover:border-indigo-700 transition-all duration-300">
+                <div class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white font-mono">6+ Yrs</div>
                 <div class="text-xs text-slate-500 font-medium mt-1">Scale Engineering</div>
             </div>
-            <div class="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-850">
-                <div class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white font-mono">150+</div>
+            <div class="p-4.5 rounded-2xl border border-stone-200/80 dark:border-slate-800 bg-stone-50/60 dark:bg-slate-900/60 hover:-translate-y-1 hover:shadow-md hover:border-indigo-300 dark:hover:border-indigo-700 transition-all duration-300">
+                <div class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white font-mono">150+</div>
                 <div class="text-xs text-slate-500 font-medium mt-1">Enterprise Integrations</div>
             </div>
-            <div class="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-850">
-                <div class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white font-mono" th:text="${totalNotes} > 0 ? ${totalNotes} : '14+'">14+</div>
+            <div class="p-4.5 rounded-2xl border border-stone-200/80 dark:border-slate-800 bg-stone-50/60 dark:bg-slate-900/60 hover:-translate-y-1 hover:shadow-md hover:border-indigo-300 dark:hover:border-indigo-700 transition-all duration-300">
+                <div class="text-2xl sm:text-3xl font-extrabold text-indigo-600 dark:text-indigo-400 font-mono" th:text="${totalNotes} > 0 ? ${totalNotes} : '14+'">14+</div>
                 <div class="text-xs text-slate-500 font-medium mt-1">Architecture Guides</div>
             </div>
         </div>
 
-        <!-- Natural Action Buttons -->
+        <!-- Action CTAs with Spring Micro-Interactions -->
         <div class="flex flex-wrap items-center gap-3 pt-2">
             <a href="#contact"
-               class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-900 font-semibold text-xs transition shadow-xs">
-                📬 Get in Touch
+               class="px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-900 font-bold text-xs hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-sm flex items-center gap-2">
+                <span>📬 Get in Touch</span>
             </a>
             <a href="/notes"
-               class="px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-900 dark:text-slate-100 font-semibold text-xs border border-slate-200 dark:border-slate-700 transition">
-                📚 System Architecture Hub ↗
+               class="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-sm flex items-center gap-2">
+                <span>📚 System Architecture Hub ↗</span>
             </a>
             <a href="https://github.com/pankajThakur1874" target="_blank" rel="noopener"
-               class="px-5 py-2.5 rounded-xl bg-white hover:bg-slate-50 dark:bg-slate-900 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold text-xs border border-slate-300 dark:border-slate-700 transition">
-                💻 GitHub @pankajThakur1874 ↗
+               class="px-6 py-3 rounded-xl bg-white hover:bg-stone-50 dark:bg-slate-900 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs border border-stone-300 dark:border-slate-700 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
+                <span>💻 GitHub @pankajThakur1874 ↗</span>
             </a>
         </div>
     </section>
 
     <!-- 2. ABOUT ME SECTION -->
-    <section id="about" class="p-8 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm space-y-4">
-        <h2 class="text-lg font-bold text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-800 pb-3">
-            About Me
+    <section id="about" class="animate-fade-in animate-delay-1 p-8 rounded-3xl border border-stone-200/80 dark:border-slate-800 bg-white dark:bg-[#121827] shadow-sm space-y-4">
+        <h2 class="text-lg font-extrabold text-slate-900 dark:text-white border-b border-stone-100 dark:border-slate-800 pb-3 flex items-center gap-2">
+            <span>👤 About Me</span>
         </h2>
         <div class="text-sm leading-relaxed text-slate-600 dark:text-slate-300 space-y-3">
             <p>
-                I am a <strong>Staff Backend Engineer</strong> specializing in scalable distributed microservices and enterprise data architecture built with <strong>Java, Spring Boot, Kafka, and Redis</strong>.
+                I am a <strong>Staff Backend Engineer</strong> specializing in scalable distributed microservices and enterprise data architecture built with <strong>Java 21, Spring Boot 3, Kafka, and Redis</strong>.
             </p>
             <p>
                 At <strong>CleverTap</strong>, I lead core backend architecture for analytics engines handling <strong>240M+ events per minute</strong>. I focus on incremental refactoring to eliminate technical debt, mentoring engineering teams, and integrating LLM-assisted workflows into production pipelines.
@@ -86,91 +87,91 @@
         </div>
     </section>
 
-    <!-- 3. TECHNICAL SKILLS SECTION -->
-    <section id="skills" class="space-y-4">
-        <div class="border-b border-slate-200 dark:border-slate-800 pb-3">
-            <h2 class="text-lg font-bold text-slate-900 dark:text-white">Technical Skills & Architecture Stack</h2>
-            <p class="text-xs text-slate-500">Core technologies used across high-scale production systems</p>
+    <!-- 3. TECHNICAL SKILLS & ARCHITECTURE STACK -->
+    <section id="skills" class="animate-fade-in animate-delay-1 space-y-4">
+        <div class="border-b border-stone-200/80 dark:border-slate-800 pb-3">
+            <h2 class="text-xl font-extrabold text-slate-900 dark:text-white">Technical Skills & Architecture Stack</h2>
+            <p class="text-xs text-slate-500 mt-0.5">Core technologies used across high-scale production systems</p>
         </div>
 
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <!-- Languages & Frameworks -->
-            <div class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm space-y-2">
-                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">Languages & Frameworks</h3>
+            <div class="p-5 rounded-2xl border border-stone-200/80 dark:border-slate-800 bg-white dark:bg-[#121827] shadow-sm space-y-2.5 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">Languages & Frameworks</h3>
                 <div class="flex flex-wrap gap-1.5 pt-1">
-                    <span class="px-2.5 py-1 text-xs rounded-md bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium">Java 21</span>
-                    <span class="px-2.5 py-1 text-xs rounded-md bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium">Spring Boot 3</span>
-                    <span class="px-2.5 py-1 text-xs rounded-md bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium">REST APIs</span>
-                    <span class="px-2.5 py-1 text-xs rounded-md bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium">Microservices</span>
-                    <span class="px-2.5 py-1 text-xs rounded-md bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium">JPA / Hibernate</span>
+                    <span class="px-2.5 py-1 text-xs rounded-md bg-stone-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium hover:bg-indigo-50 dark:hover:bg-indigo-950 transition-colors">Java 21</span>
+                    <span class="px-2.5 py-1 text-xs rounded-md bg-stone-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium hover:bg-indigo-50 dark:hover:bg-indigo-950 transition-colors">Spring Boot 3</span>
+                    <span class="px-2.5 py-1 text-xs rounded-md bg-stone-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium hover:bg-indigo-50 dark:hover:bg-indigo-950 transition-colors">REST APIs</span>
+                    <span class="px-2.5 py-1 text-xs rounded-md bg-stone-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium hover:bg-indigo-50 dark:hover:bg-indigo-950 transition-colors">Microservices</span>
+                    <span class="px-2.5 py-1 text-xs rounded-md bg-stone-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium hover:bg-indigo-50 dark:hover:bg-indigo-950 transition-colors">JPA / Hibernate</span>
                 </div>
             </div>
 
             <!-- Data & Messaging -->
-            <div class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm space-y-2">
-                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">Data & Messaging</h3>
+            <div class="p-5 rounded-2xl border border-stone-200/80 dark:border-slate-800 bg-white dark:bg-[#121827] shadow-sm space-y-2.5 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Data & Messaging</h3>
                 <div class="flex flex-wrap gap-1.5 pt-1">
-                    <span class="px-2.5 py-1 text-xs rounded-md bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium">Apache Kafka</span>
-                    <span class="px-2.5 py-1 text-xs rounded-md bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium">Redis</span>
-                    <span class="px-2.5 py-1 text-xs rounded-md bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium">PostgreSQL</span>
-                    <span class="px-2.5 py-1 text-xs rounded-md bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium">MongoDB</span>
-                    <span class="px-2.5 py-1 text-xs rounded-md bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium">Elasticsearch</span>
+                    <span class="px-2.5 py-1 text-xs rounded-md bg-stone-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium hover:bg-emerald-50 dark:hover:bg-emerald-950 transition-colors">Apache Kafka</span>
+                    <span class="px-2.5 py-1 text-xs rounded-md bg-stone-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium hover:bg-emerald-50 dark:hover:bg-emerald-950 transition-colors">Redis</span>
+                    <span class="px-2.5 py-1 text-xs rounded-md bg-stone-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium hover:bg-emerald-50 dark:hover:bg-emerald-950 transition-colors">PostgreSQL</span>
+                    <span class="px-2.5 py-1 text-xs rounded-md bg-stone-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium hover:bg-emerald-50 dark:hover:bg-emerald-950 transition-colors">MongoDB</span>
+                    <span class="px-2.5 py-1 text-xs rounded-md bg-stone-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium hover:bg-emerald-50 dark:hover:bg-emerald-950 transition-colors">Elasticsearch</span>
                 </div>
             </div>
 
-            <!-- Cloud & DevOps -->
-            <div class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm space-y-2">
-                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">Cloud & Infrastructure</h3>
+            <!-- Cloud & Infrastructure -->
+            <div class="p-5 rounded-2xl border border-stone-200/80 dark:border-slate-800 bg-white dark:bg-[#121827] shadow-sm space-y-2.5 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400">Cloud & Infrastructure</h3>
                 <div class="flex flex-wrap gap-1.5 pt-1">
-                    <span class="px-2.5 py-1 text-xs rounded-md bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium">AWS</span>
-                    <span class="px-2.5 py-1 text-xs rounded-md bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium">Azure</span>
-                    <span class="px-2.5 py-1 text-xs rounded-md bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium">Docker</span>
-                    <span class="px-2.5 py-1 text-xs rounded-md bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium">Kubernetes</span>
-                    <span class="px-2.5 py-1 text-xs rounded-md bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium">Terraform</span>
-                    <span class="px-2.5 py-1 text-xs rounded-md bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium">CI/CD</span>
+                    <span class="px-2.5 py-1 text-xs rounded-md bg-stone-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium hover:bg-purple-50 dark:hover:bg-purple-950 transition-colors">AWS</span>
+                    <span class="px-2.5 py-1 text-xs rounded-md bg-stone-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium hover:bg-purple-50 dark:hover:bg-purple-950 transition-colors">Azure</span>
+                    <span class="px-2.5 py-1 text-xs rounded-md bg-stone-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium hover:bg-purple-50 dark:hover:bg-purple-950 transition-colors">Docker</span>
+                    <span class="px-2.5 py-1 text-xs rounded-md bg-stone-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium hover:bg-purple-50 dark:hover:bg-purple-950 transition-colors">Kubernetes</span>
+                    <span class="px-2.5 py-1 text-xs rounded-md bg-stone-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium hover:bg-purple-50 dark:hover:bg-purple-950 transition-colors">Terraform</span>
+                    <span class="px-2.5 py-1 text-xs rounded-md bg-stone-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium hover:bg-purple-50 dark:hover:bg-purple-950 transition-colors">CI/CD</span>
                 </div>
             </div>
 
             <!-- AI Engineering -->
-            <div class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm space-y-2">
-                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">AI Engineering</h3>
+            <div class="p-5 rounded-2xl border border-stone-200/80 dark:border-slate-800 bg-white dark:bg-[#121827] shadow-sm space-y-2.5 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-pink-600 dark:text-pink-400">AI Engineering</h3>
                 <div class="flex flex-wrap gap-1.5 pt-1">
-                    <span class="px-2.5 py-1 text-xs rounded-md bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium">Claude Integration</span>
-                    <span class="px-2.5 py-1 text-xs rounded-md bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium">LangChain</span>
-                    <span class="px-2.5 py-1 text-xs rounded-md bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium">RAG</span>
-                    <span class="px-2.5 py-1 text-xs rounded-md bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium">Vector Search</span>
+                    <span class="px-2.5 py-1 text-xs rounded-md bg-stone-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium hover:bg-pink-50 dark:hover:bg-pink-950 transition-colors">Claude Integration</span>
+                    <span class="px-2.5 py-1 text-xs rounded-md bg-stone-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium hover:bg-pink-50 dark:hover:bg-pink-950 transition-colors">LangChain</span>
+                    <span class="px-2.5 py-1 text-xs rounded-md bg-stone-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium hover:bg-pink-50 dark:hover:bg-pink-950 transition-colors">RAG</span>
+                    <span class="px-2.5 py-1 text-xs rounded-md bg-stone-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium hover:bg-pink-50 dark:hover:bg-pink-950 transition-colors">Vector Search</span>
                 </div>
             </div>
 
             <!-- Enterprise Integrations -->
-            <div class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm space-y-2">
-                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">Enterprise Integrations</h3>
+            <div class="p-5 rounded-2xl border border-stone-200/80 dark:border-slate-800 bg-white dark:bg-[#121827] shadow-sm space-y-2.5 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">Enterprise Integrations</h3>
                 <div class="flex flex-wrap gap-1.5 pt-1">
-                    <span class="px-2.5 py-1 text-xs rounded-md bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium">Salesforce</span>
-                    <span class="px-2.5 py-1 text-xs rounded-md bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium">HubSpot</span>
-                    <span class="px-2.5 py-1 text-xs rounded-md bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium">NetSuite</span>
-                    <span class="px-2.5 py-1 text-xs rounded-md bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium">ChargeBee</span>
+                    <span class="px-2.5 py-1 text-xs rounded-md bg-stone-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors">Salesforce</span>
+                    <span class="px-2.5 py-1 text-xs rounded-md bg-stone-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors">HubSpot</span>
+                    <span class="px-2.5 py-1 text-xs rounded-md bg-stone-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors">NetSuite</span>
+                    <span class="px-2.5 py-1 text-xs rounded-md bg-stone-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors">ChargeBee</span>
                 </div>
             </div>
 
             <!-- Architecture & System Design -->
-            <div class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm space-y-2">
-                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">System Architecture</h3>
+            <div class="p-5 rounded-2xl border border-stone-200/80 dark:border-slate-800 bg-white dark:bg-[#121827] shadow-sm space-y-2.5 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">System Architecture</h3>
                 <div class="flex flex-wrap gap-1.5 pt-1">
-                    <span class="px-2.5 py-1 text-xs rounded-md bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium">System Design</span>
-                    <span class="px-2.5 py-1 text-xs rounded-md bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium">Event-Driven Architecture</span>
-                    <span class="px-2.5 py-1 text-xs rounded-md bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium">High Availability</span>
-                    <span class="px-2.5 py-1 text-xs rounded-md bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium">Scalability</span>
+                    <span class="px-2.5 py-1 text-xs rounded-md bg-stone-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium hover:bg-amber-50 dark:hover:bg-amber-950 transition-colors">System Design</span>
+                    <span class="px-2.5 py-1 text-xs rounded-md bg-stone-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium hover:bg-amber-50 dark:hover:bg-amber-950 transition-colors">Event-Driven Architecture</span>
+                    <span class="px-2.5 py-1 text-xs rounded-md bg-stone-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium hover:bg-amber-50 dark:hover:bg-amber-950 transition-colors">High Availability</span>
+                    <span class="px-2.5 py-1 text-xs rounded-md bg-stone-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium hover:bg-amber-50 dark:hover:bg-amber-950 transition-colors">Scalability</span>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- 4. WORK EXPERIENCE TIMELINE -->
-    <section id="experience" class="p-8 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm space-y-6">
-        <div class="border-b border-slate-100 dark:border-slate-800 pb-3">
-            <h2 class="text-lg font-bold text-slate-900 dark:text-white">Work Experience & Key Impact</h2>
-            <p class="text-xs text-slate-500">Chronological history across high-scale platforms and enterprise integrations</p>
+    <section id="experience" class="animate-fade-in animate-delay-2 p-8 rounded-3xl border border-stone-200/80 dark:border-slate-800 bg-white dark:bg-[#121827] shadow-sm space-y-6">
+        <div class="border-b border-stone-100 dark:border-slate-800 pb-3">
+            <h2 class="text-xl font-extrabold text-slate-900 dark:text-white">Work Experience & Key Impact</h2>
+            <p class="text-xs text-slate-500 mt-0.5">Chronological history across high-scale platforms and enterprise integrations</p>
         </div>
 
         <div class="space-y-8">
@@ -178,7 +179,7 @@
             <div class="relative pl-6 border-l-2 border-slate-800 dark:border-slate-200 space-y-2">
                 <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-slate-900 dark:bg-slate-100 border-4 border-white dark:border-slate-900"></div>
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between text-sm">
-                    <h3 class="font-bold text-slate-900 dark:text-white">Staff Backend Engineer — <span class="text-slate-600 dark:text-slate-400">CleverTap</span></h3>
+                    <h3 class="font-bold text-slate-900 dark:text-white">Staff Backend Engineer — <span class="text-indigo-600 dark:text-indigo-400 font-semibold">CleverTap</span></h3>
                     <span class="text-xs text-slate-500 font-mono">Jul 2024 — Present · Mumbai</span>
                 </div>
                 <ul class="list-disc list-inside text-xs text-slate-600 dark:text-slate-300 space-y-1.5 pt-1 leading-relaxed">
@@ -189,10 +190,10 @@
             </div>
 
             <!-- CleverTap Senior -->
-            <div class="relative pl-6 border-l-2 border-slate-300 dark:border-slate-700 space-y-2">
-                <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-slate-400 dark:bg-slate-600 border-4 border-white dark:border-slate-900"></div>
+            <div class="relative pl-6 border-l-2 border-stone-300 dark:border-slate-700 space-y-2">
+                <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-stone-400 dark:bg-slate-600 border-4 border-white dark:border-slate-900"></div>
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between text-sm">
-                    <h3 class="font-bold text-slate-900 dark:text-white">Senior Software Engineer — <span class="text-slate-600 dark:text-slate-400">CleverTap</span></h3>
+                    <h3 class="font-bold text-slate-900 dark:text-white">Senior Software Engineer — <span class="text-indigo-600 dark:text-indigo-400 font-semibold">CleverTap</span></h3>
                     <span class="text-xs text-slate-500 font-mono">Jan 2023 — Jun 2024 · Mumbai</span>
                 </div>
                 <ul class="list-disc list-inside text-xs text-slate-600 dark:text-slate-300 space-y-1.5 pt-1 leading-relaxed">
@@ -203,10 +204,10 @@
             </div>
 
             <!-- CleverTap SE -->
-            <div class="relative pl-6 border-l-2 border-slate-300 dark:border-slate-700 space-y-2">
-                <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-slate-400 dark:bg-slate-600 border-4 border-white dark:border-slate-900"></div>
+            <div class="relative pl-6 border-l-2 border-stone-300 dark:border-slate-700 space-y-2">
+                <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-stone-400 dark:bg-slate-600 border-4 border-white dark:border-slate-900"></div>
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between text-sm">
-                    <h3 class="font-bold text-slate-900 dark:text-white">Software Engineer — <span class="text-slate-600 dark:text-slate-400">CleverTap</span></h3>
+                    <h3 class="font-bold text-slate-900 dark:text-white">Software Engineer — <span class="text-indigo-600 dark:text-indigo-400 font-semibold">CleverTap</span></h3>
                     <span class="text-xs text-slate-500 font-mono">Nov 2021 — Dec 2022 · Mumbai</span>
                 </div>
                 <ul class="list-disc list-inside text-xs text-slate-600 dark:text-slate-300 space-y-1.5 pt-1 leading-relaxed">
@@ -216,10 +217,10 @@
             </div>
 
             <!-- Dunzo & ClearTax -->
-            <div class="relative pl-6 border-l-2 border-slate-300 dark:border-slate-700 space-y-2">
-                <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-slate-400 dark:bg-slate-600 border-4 border-white dark:border-slate-900"></div>
+            <div class="relative pl-6 border-l-2 border-stone-300 dark:border-slate-700 space-y-2">
+                <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-stone-400 dark:bg-slate-600 border-4 border-white dark:border-slate-900"></div>
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between text-sm">
-                    <h3 class="font-bold text-slate-900 dark:text-white">Software Engineer — <span class="text-slate-600 dark:text-slate-400">Dunzo & ClearTax</span></h3>
+                    <h3 class="font-bold text-slate-900 dark:text-white">Software Engineer — <span class="text-indigo-600 dark:text-indigo-400 font-semibold">Dunzo & ClearTax</span></h3>
                     <span class="text-xs text-slate-500 font-mono">Mar 2020 — Nov 2021 · Bangalore</span>
                 </div>
                 <ul class="list-disc list-inside text-xs text-slate-600 dark:text-slate-300 space-y-1.5 pt-1 leading-relaxed">
@@ -231,17 +232,17 @@
     </section>
 
     <!-- 5. FEATURED PROJECTS -->
-    <section id="projects" class="space-y-4">
-        <div class="border-b border-slate-200 dark:border-slate-800 pb-3">
-            <h2 class="text-lg font-bold text-slate-900 dark:text-white">Featured Projects & Case Studies</h2>
-            <p class="text-xs text-slate-500">Architecture challenges solved with clear engineering solutions</p>
+    <section id="projects" class="animate-fade-in animate-delay-2 space-y-4">
+        <div class="border-b border-stone-200/80 dark:border-slate-800 pb-3">
+            <h2 class="text-xl font-extrabold text-slate-900 dark:text-white">Featured Projects & Case Studies</h2>
+            <p class="text-xs text-slate-500 mt-0.5">Architecture challenges solved with clear engineering solutions</p>
         </div>
 
         <div class="grid gap-6 md:grid-cols-2">
             <!-- Project 1 -->
-            <div class="p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm space-y-3">
+            <div class="p-6 rounded-2xl border border-stone-200/80 dark:border-slate-800 bg-white dark:bg-[#121827] shadow-sm space-y-3 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
                 <div class="flex items-center justify-between">
-                    <span class="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">Analytics Engine</span>
+                    <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">Analytics Engine</span>
                     <span class="text-xs font-mono text-slate-400">CleverTap</span>
                 </div>
                 <h3 class="font-bold text-base text-slate-900 dark:text-white">Nested Object Analytics & Segmentation Engine</h3>
@@ -253,9 +254,9 @@
             </div>
 
             <!-- Project 2 -->
-            <div class="p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm space-y-3">
+            <div class="p-6 rounded-2xl border border-stone-200/80 dark:border-slate-800 bg-white dark:bg-[#121827] shadow-sm space-y-3 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
                 <div class="flex items-center justify-between">
-                    <span class="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">Billing Systems</span>
+                    <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Billing Systems</span>
                     <span class="text-xs font-mono text-slate-400">CleverTap</span>
                 </div>
                 <h3 class="font-bold text-base text-slate-900 dark:text-white">Unified Metering & Enterprise Billing Engine</h3>
@@ -267,9 +268,9 @@
             </div>
 
             <!-- Project 3 -->
-            <div class="p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm space-y-3">
+            <div class="p-6 rounded-2xl border border-stone-200/80 dark:border-slate-800 bg-white dark:bg-[#121827] shadow-sm space-y-3 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
                 <div class="flex items-center justify-between">
-                    <span class="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">AI & Billing</span>
+                    <span class="text-xs font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400">AI & Billing</span>
                     <span class="text-xs font-mono text-slate-400">CleverTap</span>
                 </div>
                 <h3 class="font-bold text-base text-slate-900 dark:text-white">AI Sentiment Engine & Usage Invoicing Pipeline</h3>
@@ -281,48 +282,48 @@
             </div>
 
             <!-- Project 4 (System Architecture Hub) -->
-            <div class="p-6 rounded-2xl border border-slate-300 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-850/50 shadow-sm space-y-3">
+            <div class="p-6 rounded-2xl border border-indigo-200 dark:border-indigo-900/60 bg-indigo-50/40 dark:bg-indigo-950/20 shadow-sm space-y-3 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
                 <div class="flex items-center justify-between">
-                    <span class="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200">Distributed Systems</span>
+                    <span class="text-xs font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-300">Distributed Systems</span>
                     <span class="text-xs font-mono text-slate-400">Open Source</span>
                 </div>
                 <h3 class="font-bold text-base text-slate-900 dark:text-white">System Design & Architecture Hub (StudySheet)</h3>
                 <div class="space-y-2 text-xs leading-relaxed text-slate-600 dark:text-slate-300">
                     <p><strong>Problem:</strong> Complex distributed system trade-offs are hard to visualize and review efficiently.</p>
                     <p><strong>Solution:</strong> Built a Java 21 & Spring Boot platform featuring Markdown ingestion, full-screen Mermaid Lightbox, and reading tracking.</p>
-                    <p><a href="/notes" class="inline-flex items-center gap-1 font-bold text-slate-900 dark:text-slate-100 hover:underline"><strong>Explore Architecture Hub ↗</strong></a></p>
+                    <p><a href="/notes" class="inline-flex items-center gap-1 font-bold text-indigo-600 dark:text-indigo-400 hover:underline"><strong>Explore Architecture Hub ↗</strong></a></p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- 6. CORE ENGINEERING EXPERTISE -->
-    <section id="expertise" class="p-8 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm space-y-4">
-        <h2 class="text-lg font-bold text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-800 pb-3">
+    <section id="expertise" class="animate-fade-in animate-delay-3 p-8 rounded-3xl border border-stone-200/80 dark:border-slate-800 bg-white dark:bg-[#121827] shadow-sm space-y-4">
+        <h2 class="text-lg font-extrabold text-slate-900 dark:text-white border-b border-stone-100 dark:border-slate-800 pb-3">
             Core Engineering Expertise
         </h2>
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 text-xs leading-relaxed">
-            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-850 border border-slate-100 dark:border-slate-800 space-y-1">
+            <div class="p-4 rounded-xl bg-stone-50/70 dark:bg-slate-900/70 border border-stone-100 dark:border-slate-800 space-y-1">
                 <h3 class="font-bold text-slate-900 dark:text-white">Backend Microservices</h3>
                 <p class="text-slate-500">Designing modular REST APIs, clean domain boundaries, transaction isolation, and DDL fallback handling in Spring Boot.</p>
             </div>
-            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-850 border border-slate-100 dark:border-slate-800 space-y-1">
+            <div class="p-4 rounded-xl bg-stone-50/70 dark:bg-slate-900/70 border border-stone-100 dark:border-slate-800 space-y-1">
                 <h3 class="font-bold text-slate-900 dark:text-white">Distributed Systems</h3>
                 <p class="text-slate-500">Understanding trade-offs across single-leader replication, partitioning, consensus, linearizability, and network faults.</p>
             </div>
-            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-850 border border-slate-100 dark:border-slate-800 space-y-1">
+            <div class="p-4 rounded-xl bg-stone-50/70 dark:bg-slate-900/70 border border-stone-100 dark:border-slate-800 space-y-1">
                 <h3 class="font-bold text-slate-900 dark:text-white">Storage & Indexing</h3>
                 <p class="text-slate-500">Evaluating LSM-Trees vs B-Trees, OLTP vs OLAP column storage, database indexing, and query optimization.</p>
             </div>
-            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-850 border border-slate-100 dark:border-slate-800 space-y-1">
+            <div class="p-4 rounded-xl bg-stone-50/70 dark:bg-slate-900/70 border border-stone-100 dark:border-slate-800 space-y-1">
                 <h3 class="font-bold text-slate-900 dark:text-white">High Availability & Scale</h3>
                 <p class="text-slate-500">Handling 240M+ events/min with low-latency caching (Redis), async message brokers (Kafka), and circuit breakers.</p>
             </div>
-            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-850 border border-slate-100 dark:border-slate-800 space-y-1">
+            <div class="p-4 rounded-xl bg-stone-50/70 dark:bg-slate-900/70 border border-stone-100 dark:border-slate-800 space-y-1">
                 <h3 class="font-bold text-slate-900 dark:text-white">Reliability & Observability</h3>
                 <p class="text-slate-500">Soft-lock enforcement, graceful degradation, health checks, Splunk/Grafana monitoring, and automated support resolution.</p>
             </div>
-            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-850 border border-slate-100 dark:border-slate-800 space-y-1">
+            <div class="p-4 rounded-xl bg-stone-50/70 dark:bg-slate-900/70 border border-stone-100 dark:border-slate-800 space-y-1">
                 <h3 class="font-bold text-slate-900 dark:text-white">Engineering Leadership</h3>
                 <p class="text-slate-500">Mentoring engineers, reducing technical debt incrementally, and accelerating feature delivery in Agile environments.</p>
             </div>
@@ -330,8 +331,8 @@
     </section>
 
     <!-- 7. EDUCATION -->
-    <section id="education" class="p-8 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm space-y-2">
-        <h2 class="text-lg font-bold text-slate-900 dark:text-white">Education & Academic Background</h2>
+    <section id="education" class="animate-fade-in animate-delay-3 p-8 rounded-3xl border border-stone-200/80 dark:border-slate-800 bg-white dark:bg-[#121827] shadow-sm space-y-2">
+        <h2 class="text-lg font-extrabold text-slate-900 dark:text-white">Education & Academic Background</h2>
         <div class="flex flex-col sm:flex-row sm:items-center justify-between text-xs pt-1">
             <div>
                 <h3 class="font-bold text-sm text-slate-900 dark:text-white">B.Tech in Computer Science & Engineering</h3>
@@ -342,29 +343,29 @@
     </section>
 
     <!-- 8. CONTACT FOOTER -->
-    <section id="contact" class="p-8 md:p-12 rounded-3xl border border-slate-200 dark:border-slate-800 bg-slate-900 text-white shadow-md space-y-6 text-center">
+    <section id="contact" class="animate-fade-in animate-delay-3 p-8 md:p-12 rounded-3xl border border-stone-200/80 dark:border-slate-800 bg-slate-900 text-white shadow-md space-y-6 text-center">
         <div class="max-w-xl mx-auto space-y-2">
-            <h2 class="text-2xl font-bold">Let's Connect & Build</h2>
-            <p class="text-xs text-slate-400">
+            <h2 class="text-2xl sm:text-3xl font-black">Let's Connect & Build</h2>
+            <p class="text-xs sm:text-sm text-slate-400">
                 Interested in backend microservices, high-scale event architectures, or system design? Feel free to reach out directly.
             </p>
         </div>
 
-        <div class="flex flex-wrap items-center justify-center gap-3 text-xs font-semibold">
+        <div class="flex flex-wrap items-center justify-center gap-3 text-xs font-bold">
             <a href="mailto:pankajpream524@gmail.com"
-               class="px-5 py-2.5 rounded-xl bg-white text-slate-900 hover:bg-slate-100 transition shadow-xs">
+               class="px-6 py-3 rounded-xl bg-white text-slate-900 hover:bg-slate-100 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-sm">
                 ✉️ pankajpream524@gmail.com
             </a>
             <a href="tel:+919771186585"
-               class="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">
+               class="px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
                 📞 +91 97711 86585
             </a>
             <a href="https://github.com/pankajThakur1874" target="_blank" rel="noopener"
-               class="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">
+               class="px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
                 💻 GitHub @pankajThakur1874 ↗
             </a>
             <a href="/notes"
-               class="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">
+               class="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-sm">
                 📚 Open Architecture Hub ↗
             </a>
         </div>
