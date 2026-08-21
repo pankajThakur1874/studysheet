@@ -57,7 +57,7 @@ public class NoteController {
         java.util.List<Note> activeNotes = (java.util.List<Note>) model.getAttribute("notes");
         if (activeNotes != null) {
             java.util.List<Note> sortedNotes = activeNotes.stream()
-                    .sorted(java.util.Comparator.comparing(Note::getTitle, String.CASE_INSENSITIVE_ORDER))
+                    .sorted(NATURAL_NOTE_COMPARATOR)
                     .toList();
             model.addAttribute("notes", sortedNotes);
 
@@ -75,6 +75,34 @@ public class NoteController {
         model.addAttribute("statuses", StudyStatus.values());
         model.addAttribute("topics", topicRepository.findAllByOrderByNameAsc());
         return "notes/list";
+    }
+
+    public static final java.util.Comparator<Note> NATURAL_NOTE_COMPARATOR = (n1, n2) -> {
+        String t1 = n1.getTitle() != null ? n1.getTitle() : "";
+        String t2 = n2.getTitle() != null ? n2.getTitle() : "";
+
+        Double num1 = extractLeadingNumber(t1);
+        Double num2 = extractLeadingNumber(t2);
+
+        if (num1 != null && num2 != null) {
+            int cmp = Double.compare(num1, num2);
+            if (cmp != 0) return cmp;
+        } else if (num1 != null) {
+            return -1;
+        } else if (num2 != null) {
+            return 1;
+        }
+        return String.CASE_INSENSITIVE_ORDER.compare(t1, t2);
+    };
+
+    private static Double extractLeadingNumber(String text) {
+        java.util.regex.Matcher m = java.util.regex.Pattern.compile("^(\\d+(?:\\.\\d+)?)").matcher(text.trim());
+        if (m.find()) {
+            try {
+                return Double.parseDouble(m.group(1));
+            } catch (NumberFormatException ignored) {}
+        }
+        return null;
     }
 
     @GetMapping("/{id}")

@@ -116,15 +116,42 @@ public class MarkdownImporterService {
     }
 
     private String extractTitle(String content, String fileName, String pathStr) {
+        String h1Title = null;
         for (String line : content.split("\\r?\\n")) {
             String trimmed = line.trim();
             if (trimmed.startsWith("# ")) {
-                return trimmed.substring(2).trim();
+                h1Title = trimmed.substring(2).trim();
+                break;
             }
         }
 
-        // Fallback to formatted filename
-        return fileName.replace(".md", "").replace("-", " ");
+        if (h1Title == null) {
+            h1Title = fileName.replace(".md", "").replace("-", " ").replace("_", " ");
+        }
+
+        // Extract numeric prefix from fileName if present (e.g., "00-", "01-", "05_", "0.0_")
+        String numPrefix = extractNumericPrefixFromFileName(fileName);
+        if (numPrefix != null && !hasNumericPrefix(h1Title)) {
+            return numPrefix + " - " + h1Title;
+        }
+
+        return h1Title;
+    }
+
+    private String extractNumericPrefixFromFileName(String fileName) {
+        java.util.regex.Matcher m = java.util.regex.Pattern.compile("^(\\d+(?:\\.\\d+)?)[\\-_]").matcher(fileName);
+        if (m.find()) {
+            String prefix = m.group(1);
+            if (prefix.length() == 1) {
+                return "0" + prefix;
+            }
+            return prefix;
+        }
+        return null;
+    }
+
+    private boolean hasNumericPrefix(String title) {
+        return title.matches("^\\d+(?:\\.\\d+)?\\s*[-–—:].*") || title.matches("^\\d+\\s+.*");
     }
 
     private Topic resolveTopic(Path path, String baseDirPath, String fileName) {
