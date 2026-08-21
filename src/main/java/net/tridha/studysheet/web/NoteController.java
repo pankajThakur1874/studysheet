@@ -56,7 +56,12 @@ public class NoteController {
         }
         java.util.List<Note> activeNotes = (java.util.List<Note>) model.getAttribute("notes");
         if (activeNotes != null) {
-            java.util.Map<Topic, java.util.List<Note>> groupedNotes = activeNotes.stream()
+            java.util.List<Note> sortedNotes = activeNotes.stream()
+                    .sorted(java.util.Comparator.comparing(Note::getTitle, String.CASE_INSENSITIVE_ORDER))
+                    .toList();
+            model.addAttribute("notes", sortedNotes);
+
+            java.util.Map<Topic, java.util.List<Note>> groupedNotes = sortedNotes.stream()
                     .collect(java.util.stream.Collectors.groupingBy(
                             n -> n.getTopic() != null ? n.getTopic() : new Topic("General Notes", "Uncategorized study guides"),
                             java.util.LinkedHashMap::new,

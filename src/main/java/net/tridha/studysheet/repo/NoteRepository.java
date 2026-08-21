@@ -10,11 +10,15 @@ import java.util.List;
 
 public interface NoteRepository extends JpaRepository<Note, Long> {
 
+    List<Note> findAllByOrderByTitleAsc();
+
     List<Note> findAllByOrderByPinnedDescUpdatedAtDesc();
 
     List<Note> findTop6ByOrderByUpdatedAtDesc();
 
     List<Note> findByPinnedTrueOrderByUpdatedAtDesc();
+
+    List<Note> findByTopicIdOrderByTitleAsc(Long topicId);
 
     List<Note> findByTopicIdOrderByUpdatedAtDesc(Long topicId);
 

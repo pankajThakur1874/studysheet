@@ -22,7 +22,7 @@ public class NoteService {
     }
 
     public List<Note> all() {
-        return noteRepository.findAllByOrderByPinnedDescUpdatedAtDesc();
+        return noteRepository.findAllByOrderByTitleAsc();
     }
 
     public List<Note> recent() {
@@ -34,7 +34,7 @@ public class NoteService {
     }
 
     public List<Note> byTopic(Long topicId) {
-        return noteRepository.findByTopicIdOrderByUpdatedAtDesc(topicId);
+        return noteRepository.findByTopicIdOrderByTitleAsc(topicId);
     }
 
     public List<Note> byTag(Long tagId) {
