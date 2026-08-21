@@ -143,9 +143,10 @@
             <a href="/#experience" class="hover:text-amber-600 dark:hover:text-[#FFB84D] transition">Experience</a>
             <a href="/#stack" class="hover:text-amber-600 dark:hover:text-[#FFB84D] transition">Stack</a>
             <form action="/notes" method="get" class="flex items-center relative">
-                <input type="text" name="q" placeholder="Search (⌘K)…" onclick="openCmdKModal()" readonly
-                       class="px-3 py-1 text-xs rounded-md border border-stone-300 dark:border-[#2A2E35] bg-stone-50 dark:bg-[#121418] text-slate-800 dark:text-[#EDEDE9] w-40 focus:ring-1 focus:ring-[#FFB84D] outline-none transition font-sans cursor-pointer"/>
-                <span class="absolute right-2 text-[10px] font-mono text-stone-400 dark:text-[#6B7280] pointer-events-none">⌘K</span>
+                <input type="text" name="q" placeholder="Search guides…"
+                       class="px-3 py-1 text-xs rounded-md border border-stone-300 dark:border-[#2A2E35] bg-stone-50 dark:bg-[#121418] text-slate-800 dark:text-[#EDEDE9] w-44 focus:ring-1 focus:ring-[#FFB84D] outline-none transition font-sans pr-8"/>
+                <button type="button" onclick="openCmdKModal()" title="Open Command Palette (⌘K)"
+                        class="absolute right-1.5 px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-stone-200 dark:bg-[#1E2126] text-stone-600 dark:text-[#A2A9B1] hover:text-amber-600 dark:hover:text-[#FFB84D] transition cursor-pointer">⌘K</button>
             </form>
             <a href="/notes" class="px-3.5 py-1.5 rounded-md bg-amber-500 hover:bg-amber-400 dark:bg-[#FFB84D] dark:hover:bg-[#ffd598] text-[#0B0C0E] font-bold transition shadow-xs">
                 📚 Architecture Hub ↗
@@ -169,10 +170,11 @@
 
     <!-- Mobile Collapsible Menu Drawer -->
     <div id="mobile-menu" class="hidden lg:hidden border-t border-stone-200 dark:border-[#1E2126] bg-white dark:bg-[#0B0C0E] px-4 py-3 space-y-3 font-mono text-xs">
-        <button type="button" onclick="openCmdKModal()" class="w-full text-left px-3 py-2 text-xs rounded-md border border-stone-300 dark:border-[#2A2E35] bg-stone-50 dark:bg-[#121418] text-slate-500 dark:text-[#6B7280] font-sans flex justify-between items-center">
-            <span>Search study guides & topics…</span>
-            <span class="font-mono text-[10px]">⌘K</span>
-        </button>
+        <form action="/notes" method="get" class="w-full relative">
+            <input type="text" name="q" placeholder="Search guides…"
+                   class="w-full px-3 py-2 text-xs rounded-md border border-stone-300 dark:border-[#2A2E35] bg-stone-50 dark:bg-[#121418] text-slate-800 dark:text-[#EDEDE9] font-sans pr-10"/>
+            <button type="button" onclick="openCmdKModal()" class="absolute right-2 top-2 px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-stone-200 dark:bg-[#1E2126] text-stone-600 dark:text-[#A2A9B1]">⌘K</button>
+        </form>
         <div class="grid grid-cols-3 gap-2 uppercase tracking-wider text-center">
             <a href="/#work" onclick="toggleMobileMenu()" class="p-2.5 rounded-md border border-stone-200 dark:border-[#1E2126] hover:text-[#FFB84D]">Work</a>
             <a href="/#experience" onclick="toggleMobileMenu()" class="p-2.5 rounded-md border border-stone-200 dark:border-[#1E2126] hover:text-[#FFB84D]">Experience</a>
@@ -182,8 +184,8 @@
     </div>
 
     <!-- Global Command Palette Modal (Cmd + K) -->
-    <div id="cmd-k-modal" class="fixed inset-0 z-[100] hidden bg-black/75 backdrop-blur-sm flex items-start justify-center pt-16 sm:pt-24 px-4 transition-all">
-        <div class="w-full max-w-xl bg-white dark:bg-[#0B0C0E] border border-stone-300 dark:border-[#1E2126] rounded-xl shadow-2xl overflow-hidden animate-fade-in font-sans">
+    <div id="cmd-k-modal" class="fixed inset-0 z-[100] hidden bg-black/80 backdrop-blur-sm flex items-start justify-center pt-8 sm:pt-12 px-4 transition-all">
+        <div class="w-full max-w-xl bg-white dark:bg-[#0B0C0E] border border-stone-300 dark:border-[#1E2126] rounded-lg shadow-2xl overflow-hidden font-sans">
             <!-- Search Bar Header -->
             <form action="/notes" method="get" class="flex items-center border-b border-stone-200 dark:border-[#1E2126] px-4 py-3 bg-stone-50 dark:bg-[#121418]">
                 <span class="text-stone-400 dark:text-[#6B7280] text-sm mr-3">🔍</span>
