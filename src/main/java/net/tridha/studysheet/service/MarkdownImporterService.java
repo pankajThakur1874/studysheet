@@ -61,7 +61,7 @@ public class MarkdownImporterService {
                     .toList();
 
             for (Path path : mdFiles) {
-                if (importSingleFile(path)) {
+                if (importSingleFile(path, baseDirPath)) {
                     count++;
                 }
             }
@@ -72,7 +72,7 @@ public class MarkdownImporterService {
         return count;
     }
 
-    private boolean importSingleFile(Path path) {
+    private boolean importSingleFile(Path path, String baseDirPath) {
         try {
             String content = Files.readString(path);
             if (content.isBlank()) return false;
@@ -83,8 +83,8 @@ public class MarkdownImporterService {
             // Extract Title
             String title = extractTitle(content, fileName, pathStr);
 
-            // Determine Topic
-            Topic topic = resolveTopic(pathStr, fileName);
+            // Determine Topic dynamically from parent folder
+            Topic topic = resolveTopic(path, baseDirPath, fileName);
 
             // Determine Tags
             String tagsCsv = resolveTagsCsv(fileName, pathStr);
@@ -127,19 +127,29 @@ public class MarkdownImporterService {
         return fileName.replace(".md", "").replace("-", " ");
     }
 
-    private Topic resolveTopic(String pathStr, String fileName) {
+    private Topic resolveTopic(Path path, String baseDirPath, String fileName) {
+        Path baseDir = Paths.get(baseDirPath).toAbsolutePath().normalize();
+        Path absoluteFilePath = path.toAbsolutePath().normalize();
+        Path relativePath = baseDir.relativize(absoluteFilePath);
+
         String topicName;
         String description;
 
-        if (pathStr.contains("02-distributed-data") || fileName.contains("replication")) {
-            topicName = "DDIA - Distributed Data";
-            description = "Part II: Distributed Data Systems (Replication, Partitioning, Consistency & Consensus)";
-        } else if (fileName.equalsIgnoreCase("README.md") && !pathStr.contains("foundations") && !pathStr.contains("distributed")) {
+        if (relativePath.getNameCount() > 1) {
+            String folderName = relativePath.getName(0).toString();
+            if ("01-foundations".equalsIgnoreCase(folderName)) {
+                topicName = "DDIA - Foundations";
+                description = "Part I: Foundations of Data Systems (Reliability, Scalability, Storage Engines & Data Models)";
+            } else if ("02-distributed-data".equalsIgnoreCase(folderName)) {
+                topicName = "DDIA - Distributed Data";
+                description = "Part II: Distributed Data Systems (Replication, Partitioning, Consistency & Consensus)";
+            } else {
+                topicName = folderName.replace("-", " ").replace("_", " ").trim();
+                description = "Study guides & system design documentation in " + topicName;
+            }
+        } else {
             topicName = "DDIA - Master Guide";
             description = "Designing Data-Intensive Applications Learning Roadmap & Course Outline";
-        } else {
-            topicName = "DDIA - Foundations";
-            description = "Part I: Foundations of Data Systems (Reliability, Scalability, Storage Engines & Data Models)";
         }
 
         String finalTopicName = topicName;
