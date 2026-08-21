@@ -1,46 +1,115 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/layout :: head('Pankaj Thakur · Portfolio & Architecture Notes')}"></head>
+<head th:replace="~{fragments/layout :: head('Pankaj Thakur · Staff Backend Engineer Portfolio')}"></head>
 <body class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 min-h-screen">
 <nav th:replace="~{fragments/layout :: nav}"></nav>
 
 <main class="max-w-5xl mx-auto px-4 py-8">
     <!-- Personal Portfolio Hero Card -->
-    <div class="mb-8 p-6 md:p-8 rounded-2xl border border-indigo-200 dark:border-indigo-900/60 bg-gradient-to-br from-indigo-900 via-indigo-950 to-slate-950 text-white shadow-xl relative overflow-hidden">
-        <div class="absolute -top-12 -right-12 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
-            <div class="space-y-3 max-w-2xl">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-400/30 text-indigo-300 text-xs font-semibold">
-                    <span>⚡ Software Engineer & Architecture Notes</span>
+    <div class="mb-8 p-6 md:p-8 rounded-2xl border border-indigo-200 dark:border-indigo-900/60 bg-gradient-to-br from-indigo-950 via-slate-900 to-indigo-900 text-white shadow-xl relative overflow-hidden">
+        <div class="absolute -top-12 -right-12 w-72 h-72 bg-indigo-500/15 rounded-full blur-3xl pointer-events-none"></div>
+        
+        <div class="flex flex-col lg:flex-row lg:items-start justify-between gap-6 relative z-10">
+            <div class="space-y-4 max-w-3xl">
+                <div class="flex flex-wrap items-center gap-2">
+                    <span class="px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-400/30 text-indigo-300 text-xs font-bold tracking-wide uppercase">
+                        ⚡ Staff Backend Engineer
+                    </span>
+                    <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-semibold">
+                        📍 Mumbai, India (Open to Relocation)
+                    </span>
+                    <span class="px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 text-xs font-semibold">
+                        6+ Years Exp
+                    </span>
                 </div>
+
                 <h1 class="text-3xl md:text-4xl font-extrabold text-white tracking-tight">Pankaj Thakur</h1>
+
                 <p class="text-sm md:text-base text-slate-300 leading-relaxed">
-                    Building high-throughput backend services and distributed systems. Documenting core architectural trade-offs in storage engines, replication, consensus, and system scalability.
+                    Staff Backend Engineer with 6+ years of experience designing and scaling high-throughput backend systems in Java & Spring Boot. Architected nested segmentation models for platforms processing <strong class="text-indigo-300">240M+ events per minute</strong> at CleverTap. Deep expertise in distributed data systems, event-driven microservices, AI engineering, and enterprise billing infrastructure.
                 </p>
-                <div class="flex flex-wrap items-center gap-2 pt-2 text-xs">
-                    <span class="px-2.5 py-1 rounded-md bg-white/10 text-slate-200 font-mono font-medium">Java 21</span>
-                    <span class="px-2.5 py-1 rounded-md bg-white/10 text-slate-200 font-mono font-medium">Spring Boot 3</span>
-                    <span class="px-2.5 py-1 rounded-md bg-white/10 text-slate-200 font-mono font-medium">Distributed Data</span>
-                    <span class="px-2.5 py-1 rounded-md bg-white/10 text-slate-200 font-mono font-medium">System Design</span>
-                    <span class="px-2.5 py-1 rounded-md bg-white/10 text-slate-200 font-mono font-medium">Docker & Cloud</span>
+
+                <!-- Technical Competencies Pills -->
+                <div class="space-y-2 pt-1">
+                    <div class="text-[0.7rem] font-bold uppercase tracking-wider text-slate-400">Core Technical Stack</div>
+                    <div class="flex flex-wrap items-center gap-1.5 text-xs">
+                        <span class="px-2.5 py-1 rounded-md bg-white/10 text-slate-200 font-mono">Java 21</span>
+                        <span class="px-2.5 py-1 rounded-md bg-white/10 text-slate-200 font-mono">Spring Boot</span>
+                        <span class="px-2.5 py-1 rounded-md bg-white/10 text-slate-200 font-mono">Kafka</span>
+                        <span class="px-2.5 py-1 rounded-md bg-white/10 text-slate-200 font-mono">Redis</span>
+                        <span class="px-2.5 py-1 rounded-md bg-white/10 text-slate-200 font-mono">PostgreSQL</span>
+                        <span class="px-2.5 py-1 rounded-md bg-white/10 text-slate-200 font-mono">MongoDB</span>
+                        <span class="px-2.5 py-1 rounded-md bg-white/10 text-slate-200 font-mono">Elasticsearch</span>
+                        <span class="px-2.5 py-1 rounded-md bg-white/10 text-slate-200 font-mono">AWS / Docker</span>
+                        <span class="px-2.5 py-1 rounded-md bg-white/10 text-slate-200 font-mono">LLM / RAG Integration</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- Social Links & Action Buttons -->
-            <div class="flex flex-col sm:flex-row md:flex-col gap-2.5 shrink-0">
+            <!-- Contact & Social Action Badges -->
+            <div class="flex flex-col sm:flex-row lg:flex-col gap-2.5 shrink-0 self-start">
                 <a href="https://github.com/pankajThakur1874" target="_blank" rel="noopener"
                    class="px-4 py-2.5 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs font-semibold flex items-center justify-center gap-2 border border-white/20 transition shadow-sm">
                     <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
                     <span>GitHub @pankajThakur1874</span>
                 </a>
-                <form action="/topics/sync-files" method="post">
+                <a href="mailto:pankajpream524@gmail.com"
+                   class="px-4 py-2.5 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs font-semibold flex items-center justify-center gap-2 border border-white/20 transition shadow-sm">
+                    <span>✉️ pankajpream524@gmail.com</span>
+                </a>
+                <a href="tel:+919771186585"
+                   class="px-4 py-2.5 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs font-semibold flex items-center justify-center gap-2 border border-white/20 transition shadow-sm">
+                    <span>📞 +91 97711 86585</span>
+                </a>
+                <form action="/topics/sync-files" method="post" class="mt-1">
                     <button type="submit" class="w-full px-4 py-2.5 rounded-xl bg-indigo-500 hover:bg-indigo-600 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition shadow-sm cursor-pointer">
-                        <span>🔄 Sync Local Files</span>
+                        <span>🔄 Sync Markdown Guides</span>
                     </button>
                 </form>
             </div>
         </div>
     </div>
+
+    <!-- Career Experience Timeline Card -->
+    <section class="mb-8 p-6 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm">
+        <h2 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
+            <span>💼 Career & Engineering Impact</span>
+        </h2>
+        <div class="space-y-6">
+            <!-- Experience Item 1 -->
+            <div class="border-l-2 border-indigo-500 pl-4 space-y-1">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between text-sm">
+                    <h3 class="font-bold text-gray-900 dark:text-gray-100">Staff Backend Engineer — <span class="text-indigo-600 dark:text-indigo-400">CleverTap</span></h3>
+                    <span class="text-xs font-semibold text-gray-500">Jul 2024 — Present · Mumbai</span>
+                </div>
+                <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed pt-1">
+                    Architected nested-object modeling in analytics and segmentation engines processing <strong>240M+ events per minute</strong>. Built AI-powered sentiment analysis, NPS classification, and real-time AI usage metering/invoicing pipelines.
+                </p>
+            </div>
+
+            <!-- Experience Item 2 -->
+            <div class="border-l-2 border-gray-300 dark:border-gray-700 pl-4 space-y-1">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between text-sm">
+                    <h3 class="font-bold text-gray-900 dark:text-gray-100">Senior Software Engineer — <span class="text-indigo-600 dark:text-indigo-400">CleverTap</span></h3>
+                    <span class="text-xs font-semibold text-gray-500">Jan 2023 — Jun 2024 · Mumbai</span>
+                </div>
+                <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed pt-1">
+                    Designed unified enterprise usage and billing systems on My Plan page. Led end-to-end development of CleverTap for Startups (C4S) with NetSuite & ChargeBee integrations. Built campaign event lifecycle tracking for 100+ enterprise clients.
+                </p>
+            </div>
+
+            <!-- Experience Item 3 -->
+            <div class="border-l-2 border-gray-300 dark:border-gray-700 pl-4 space-y-1">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between text-sm">
+                    <h3 class="font-bold text-gray-900 dark:text-gray-100">Software Engineer — <span class="text-indigo-600 dark:text-indigo-400">CleverTap, Dunzo & ClearTax</span></h3>
+                    <span class="text-xs font-semibold text-gray-500">Mar 2020 — Dec 2022</span>
+                </div>
+                <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed pt-1">
+                    Built soft-lock enforcement boosting billing revenue by 30%. Centralized reporting dashboards (90% overhead reduction). Automated customer support workflows at Dunzo (60% auto-resolution). Led 150+ ERP integrations at ClearTax.
+                </p>
+            </div>
+        </div>
+    </section>
 
     <!-- Study Progress Summary -->
     <section class="mb-8 p-5 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm">
@@ -99,7 +168,7 @@
 
     <!-- Recent Notes -->
     <section class="mb-8">
-        <h2 class="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">🕒 Recent Study Guides</h2>
+        <h2 class="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">🕒 Recent System Design Guides</h2>
         <div th:if="${recentNotes.isEmpty()}" class="text-gray-500 text-sm">
             No notes yet. Click <strong>"🔄 Sync Local Files"</strong> above to import your Markdown guides.
         </div>
@@ -118,7 +187,7 @@
 
     <!-- Topics -->
     <section>
-        <h2 class="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">🗂️ Subject Categories</h2>
+        <h2 class="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">🗂️ System Design Categories</h2>
         <div th:if="${topics.isEmpty()}" class="text-gray-500 text-sm">
             No topics loaded yet.
         </div>
