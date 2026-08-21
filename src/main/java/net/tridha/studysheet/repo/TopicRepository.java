@@ -1,0 +1,10 @@
+package net.tridha.studysheet.repo;
+
+import net.tridha.studysheet.domain.Topic;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface TopicRepository extends JpaRepository<Topic, Long> {
+    List<Topic> findAllByOrderByNameAsc();
+}

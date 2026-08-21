@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Dashboard')}"></head>
+<body class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 min-h-screen">
+<nav th:replace="~{fragments/layout :: nav}"></nav>
+
+<main class="max-w-5xl mx-auto px-4 py-8">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <div>
+            <h1 class="text-2xl font-bold">Welcome back 👋</h1>
+            <p class="text-xs text-gray-500 mt-1">Track and master your data systems study guides</p>
+        </div>
+        <form action="/topics/sync-files" method="post">
+            <button type="submit" class="text-xs font-semibold px-3.5 py-2 rounded-md border border-indigo-300 dark:border-indigo-700 bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 transition shadow-sm flex items-center gap-1.5 cursor-pointer">
+                <span>🔄 Sync Local Files</span>
+            </button>
+        </form>
+    </div>
+
+    <!-- Study Progress Summary -->
+    <section class="mb-8 p-5 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+            <div>
+                <h2 class="text-lg font-bold text-gray-900 dark:text-gray-100">🎓 Learning Progress</h2>
+                <p class="text-xs text-gray-500 mt-0.5" th:text="${totalNotes} + ' total study notes logged'">0 study notes</p>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="text-2xl font-extrabold text-emerald-600 dark:text-emerald-400" th:text="${masteryPercentage} + '%'">0%</span>
+                <span class="text-xs font-semibold uppercase text-gray-500 tracking-wider">Mastered</span>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="w-full bg-gray-200 dark:bg-gray-800 rounded-full h-2.5 overflow-hidden flex mb-5">
+            <div class="bg-emerald-500 h-2.5 transition-all duration-300" th:style="'width: ' + ${masteryPercentage} + '%'"></div>
+        </div>
+
+        <!-- Stats breakdown grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+            <a href="/notes?status=MASTERED" class="p-3 rounded-lg bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-900 hover:bg-emerald-100 dark:hover:bg-emerald-900 transition">
+                <div class="text-xl font-bold text-emerald-700 dark:text-emerald-300" th:text="${masteredCount}">0</div>
+                <div class="text-xs font-medium text-emerald-600 dark:text-emerald-400">Mastered</div>
+            </a>
+            <a href="/notes?status=NEEDS_REVIEW" class="p-3 rounded-lg bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-900 hover:bg-rose-100 dark:hover:bg-rose-900 transition">
+                <div class="text-xl font-bold text-rose-700 dark:text-rose-300" th:text="${needsReviewCount}">0</div>
+                <div class="text-xs font-medium text-rose-600 dark:text-rose-400">Needs Review</div>
+            </a>
+            <a href="/notes?status=IN_PROGRESS" class="p-3 rounded-lg bg-blue-50 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-900 hover:bg-blue-100 dark:hover:bg-blue-900 transition">
+                <div class="text-xl font-bold text-blue-700 dark:text-blue-300" th:text="${inProgressCount}">0</div>
+                <div class="text-xs font-medium text-blue-600 dark:text-blue-400">In Progress</div>
+            </a>
+            <a href="/notes?status=TO_STUDY" class="p-3 rounded-lg bg-amber-50 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-900 hover:bg-amber-100 dark:hover:bg-amber-900 transition">
+                <div class="text-xl font-bold text-amber-700 dark:text-amber-300" th:text="${toStudyCount}">0</div>
+                <div class="text-xs font-medium text-amber-600 dark:text-amber-400">To Study</div>
+            </a>
+        </div>
+    </section>
+
+    <!-- Pinned -->
+    <section th:if="${!pinnedNotes.isEmpty()}" class="mb-8">
+        <h2 class="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">📌 Pinned Notes</h2>
+        <div class="grid gap-3 sm:grid-cols-2">
+            <a th:each="n : ${pinnedNotes}" th:href="@{/notes/{id}(id=${n.id})}"
+               class="block p-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 hover:shadow-md transition">
+                <div class="flex items-start justify-between gap-2">
+                    <div class="font-medium text-gray-900 dark:text-gray-100" th:text="${n.title}">Title</div>
+                    <span th:class="'text-xs px-2 py-0.5 rounded-full border font-medium whitespace-nowrap ' + ${n.status.badgeCssClass}"
+                          th:text="${n.status.displayName}">Status</span>
+                </div>
+                <div class="text-xs text-gray-500 mt-2" th:if="${n.topic != null}" th:text="${n.topic.name}">Topic</div>
+            </a>
+        </div>
+    </section>
+
+    <!-- Recent -->
+    <section class="mb-8">
+        <h2 class="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">🕒 Recent Notes</h2>
+        <div th:if="${recentNotes.isEmpty()}" class="text-gray-500 text-sm">
+            No notes yet. <a href="/notes/new" class="text-indigo-600 underline">Create your first note</a>.
+        </div>
+        <div class="grid gap-3 sm:grid-cols-2">
+            <a th:each="n : ${recentNotes}" th:href="@{/notes/{id}(id=${n.id})}"
+               class="block p-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 hover:shadow-md transition">
+                <div class="flex items-start justify-between gap-2">
+                    <div class="font-medium text-gray-900 dark:text-gray-100" th:text="${n.title}">Title</div>
+                    <span th:class="'text-xs px-2 py-0.5 rounded-full border font-medium whitespace-nowrap ' + ${n.status.badgeCssClass}"
+                          th:text="${n.status.displayName}">Status</span>
+                </div>
+                <div class="text-xs text-gray-500 mt-2" th:if="${n.topic != null}" th:text="${n.topic.name}">Topic</div>
+            </a>
+        </div>
+    </section>
+
+    <!-- Topics -->
+    <section>
+        <h2 class="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">🗂️ Topics</h2>
+        <div th:if="${topics.isEmpty()}" class="text-gray-500 text-sm">
+            No topics yet. <a href="/topics" class="text-indigo-600 underline">Add topics</a> to organize your notes.
+        </div>
+        <div class="flex flex-wrap gap-2">
+            <a th:each="t : ${topics}" th:href="@{/notes(topicId=${t.id})}"
+               class="px-3 py-1.5 text-sm rounded-full bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 hover:bg-indigo-100 transition"
+               th:text="${t.name}">Topic</a>
+        </div>
+    </section>
+</main>
+
+<div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+</html>

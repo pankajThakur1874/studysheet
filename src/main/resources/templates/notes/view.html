@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${note.title})}"></head>
+<body class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 min-h-screen">
+<!-- Reading Progress Bar -->
+<div id="reading-progress-bar" class="fixed top-0 left-0 h-1 bg-indigo-600 dark:bg-indigo-400 z-50 transition-all duration-75 shadow-sm" style="width: 0%"></div>
+
+<nav th:replace="~{fragments/layout :: nav}"></nav>
+
+<main id="main-container" class="max-w-6xl mx-auto px-4 py-6 md:py-8 transition-all duration-300">
+    <!-- Header info -->
+    <div class="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-6 pb-6 border-b border-gray-200 dark:border-gray-800">
+        <div>
+            <div class="flex items-center gap-3 flex-wrap mb-2">
+                <h1 class="text-2xl md:text-3xl font-extrabold text-gray-900 dark:text-gray-100 leading-tight" th:text="${note.title}">Title</h1>
+                <span th:class="'text-xs px-2.5 py-1 rounded-full border font-semibold ' + ${note.status.badgeCssClass}"
+                      th:text="${note.status.displayName}">Status</span>
+            </div>
+            <div class="flex flex-wrap items-center gap-2 text-xs text-gray-500">
+                <span th:if="${note.topic != null}"
+                      class="px-2.5 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-medium"
+                      th:text="${note.topic.name}">Topic</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-medium"
+                      th:text="'⏱️ ' + ${note.estimatedReadingTime}">⏱️ 2 min read</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-medium"
+                      th:text="'📝 ' + ${note.wordCount} + ' words'">📝 350 words</span>
+                <a th:each="tag : ${note.tags}" th:href="@{/notes(tagId=${tag.id})}"
+                   class="px-2.5 py-0.5 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 transition"
+                   th:text="'#' + ${tag.name}">#tag</a>
+                <span th:text="'· updated ' + ${note.updatedAtDisplay}">date</span>
+            </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2 shrink-0">
+            <!-- Focus Mode Button -->
+            <button type="button" onclick="toggleFocusMode()" id="focus-btn"
+                    class="text-xs px-3 py-1.5 rounded-md border border-indigo-300 dark:border-indigo-700 bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 font-medium transition shadow-sm">
+                🎯 Focus Mode
+            </button>
+
+            <!-- Quick Status Change Dropdown -->
+            <form th:action="@{/notes/{id}/status(id=${note.id})}" method="post" class="inline-flex items-center">
+                <select name="status" onchange="this.form.submit()"
+                        class="text-xs px-2.5 py-1.5 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 font-medium">
+                    <option th:each="st : ${statuses}" th:value="${st}" th:text="'Mark: ' + ${st.displayName}"
+                            th:selected="${note.status == st}">Status</option>
+                </select>
+            </form>
+
+            <form th:action="@{/notes/{id}/pin(id=${note.id})}" method="post">
+                <button class="text-xs px-3 py-1.5 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 font-medium"
+                        th:text="${note.pinned} ? 'Unpin' : '📌 Pin'">Pin</button>
+            </form>
+            <a th:href="@{/notes/{id}/edit(id=${note.id})}"
+               class="text-xs px-3 py-1.5 rounded-md bg-indigo-600 hover:bg-indigo-700 text-white font-medium shadow-sm">Edit</a>
+            <form th:action="@{/notes/{id}/delete(id=${note.id})}" method="post"
+                  onsubmit="return confirm('Delete this study note?');">
+                <button class="text-xs px-3 py-1.5 rounded-md border border-rose-300 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950 font-medium">Delete</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Grid: Article + TOC Sidebar -->
+    <div id="content-grid" class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <!-- Article Content -->
+        <div id="article-column" class="lg:col-span-3 transition-all duration-300">
+            <article id="note-article" class="prose max-w-none dark:text-gray-100 bg-white dark:bg-gray-900 p-4 md:p-8 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm leading-relaxed" th:utext="${contentHtml}">
+                Rendered markdown content.
+            </article>
+        </div>
+
+        <!-- Sticky TOC Sidebar (Desktop) -->
+        <aside id="toc-sidebar" class="hidden lg:block lg:col-span-1 transition-all duration-300">
+            <div class="sticky top-20 p-4 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm">
+                <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                    <span>📑 Table of Contents</span>
+                </h3>
+                <nav id="toc-nav" class="text-xs space-y-1 text-gray-600 dark:text-gray-400 max-h-[70vh] overflow-y-auto">
+                    <p id="toc-empty" class="text-gray-400 italic">No headings in this note.</p>
+                </nav>
+            </div>
+        </aside>
+    </div>
+</main>
+
+<!-- Floating Mobile TOC Drawer Button (Phone screens) -->
+<button type="button" onclick="toggleMobileToc()" id="mobile-toc-fab"
+        class="lg:hidden fixed bottom-6 right-6 z-40 px-4 py-3 rounded-full bg-indigo-600 text-white font-bold text-xs shadow-xl flex items-center gap-2 hover:bg-indigo-700 active:scale-95 transition">
+    <span>📑 Syllabus TOC</span>
+</button>
+
+<!-- Mobile TOC Drawer Overlay -->
+<div id="mobile-toc-drawer" class="lg:hidden fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-xs flex justify-end">
+    <div class="w-4/5 max-w-xs h-full bg-white dark:bg-gray-900 p-5 overflow-y-auto shadow-2xl flex flex-col justify-between">
+        <div>
+            <div class="flex items-center justify-between pb-3 mb-4 border-b border-gray-200 dark:border-gray-800">
+                <h3 class="font-bold text-sm text-gray-900 dark:text-gray-100 flex items-center gap-1.5">
+                    <span>📑 Table of Contents</span>
+                </h3>
+                <button type="button" onclick="toggleMobileToc()" class="text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 text-lg font-bold">✕</button>
+            </div>
+            <nav id="mobile-toc-nav" class="text-xs space-y-1.5 text-gray-600 dark:text-gray-400">
+                <p class="text-gray-400 italic">No headings in this note.</p>
+            </nav>
+        </div>
+        <button type="button" onclick="toggleMobileToc()" class="w-full mt-6 py-2.5 rounded-lg bg-gray-100 dark:bg-gray-800 text-xs font-semibold text-gray-700 dark:text-gray-300">Close Syllabus</button>
+    </div>
+</div>
+
+<!-- Full-Screen Diagram Lightbox Modal -->
+<div id="diagram-modal" class="fixed inset-0 z-[100] hidden bg-black/85 backdrop-blur-md flex flex-col items-center justify-center p-4 transition-all duration-300">
+    <!-- Modal Toolbar -->
+    <div class="absolute top-4 right-4 flex items-center gap-1.5 z-10 flex-wrap justify-end">
+        <button type="button" onclick="zoomDiagram(1.25)" class="px-2.5 py-1.5 rounded-lg bg-gray-800 text-gray-200 hover:bg-gray-700 text-xs font-semibold shadow-lg">🔍 +</button>
+        <button type="button" onclick="zoomDiagram(0.8)" class="px-2.5 py-1.5 rounded-lg bg-gray-800 text-gray-200 hover:bg-gray-700 text-xs font-semibold shadow-lg">🔍 -</button>
+        <button type="button" onclick="resetDiagramZoom()" class="px-2.5 py-1.5 rounded-lg bg-gray-800 text-gray-200 hover:bg-gray-700 text-xs font-semibold shadow-lg">🔄 Reset</button>
+        <button type="button" onclick="closeDiagramModal()" class="px-3 py-1.5 rounded-lg bg-rose-600 text-white hover:bg-rose-700 text-xs font-bold shadow-lg">✕ Close</button>
+    </div>
+
+    <!-- Modal Content Box -->
+    <div id="modal-diagram-container" class="w-full h-full max-w-7xl max-h-[88vh] flex items-center justify-center overflow-auto p-4 cursor-grab">
+        <!-- SVG diagram dynamically injected here -->
+    </div>
+</div>
+
+<div th:replace="~{fragments/layout :: scripts}"></div>
+
+<script>
+    // 1. Reading Progress Bar & TOC Scrollspy
+    window.addEventListener("scroll", function() {
+        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (height > 0) ? (winScroll / height) * 100 : 0;
+        const progressBar = document.getElementById("reading-progress-bar");
+        if (progressBar) progressBar.style.width = scrolled + "%";
+
+        // Scrollspy for TOC
+        const headings = document.querySelectorAll("#note-article h1, #note-article h2, #note-article h3");
+        let currentHeadingId = "";
+        headings.forEach(heading => {
+            const top = heading.getBoundingClientRect().top;
+            if (top <= 120) {
+                currentHeadingId = heading.id;
+            }
+        });
+
+        if (currentHeadingId) {
+            document.querySelectorAll("#toc-nav a, #mobile-toc-nav a").forEach(link => {
+                if (link.getAttribute("href") === "#" + currentHeadingId) {
+                    link.classList.add("bg-indigo-50", "dark:bg-indigo-950", "text-indigo-600", "dark:text-indigo-400", "font-bold");
+                } else {
+                    link.classList.remove("bg-indigo-50", "dark:bg-indigo-950", "text-indigo-600", "dark:text-indigo-400", "font-bold");
+                }
+            });
+        }
+    });
+
+    // 2. Focus Mode Toggle
+    let focusModeActive = false;
+    function toggleFocusMode() {
+        focusModeActive = !focusModeActive;
+        const sidebar = document.getElementById("toc-sidebar");
+        const articleCol = document.getElementById("article-column");
+        const mainContainer = document.getElementById("main-container");
+        const focusBtn = document.getElementById("focus-btn");
+
+        if (focusModeActive) {
+            if (sidebar) sidebar.classList.add("hidden");
+            articleCol.classList.remove("lg:col-span-3");
+            articleCol.classList.add("lg:col-span-4");
+            mainContainer.classList.remove("max-w-6xl");
+            mainContainer.classList.add("max-w-3xl");
+            focusBtn.textContent = "📖 Exit Focus";
+            focusBtn.classList.add("ring-2", "ring-indigo-500");
+        } else {
+            if (sidebar) sidebar.classList.remove("hidden");
+            articleCol.classList.remove("lg:col-span-4");
+            articleCol.classList.add("lg:col-span-3");
+            mainContainer.classList.remove("max-w-3xl");
+            mainContainer.classList.add("max-w-6xl");
+            focusBtn.textContent = "🎯 Focus Mode";
+            focusBtn.classList.remove("ring-2", "ring-indigo-500");
+        }
+    }
+
+    // 3. Mobile TOC Drawer Toggle
+    function toggleMobileToc() {
+        const drawer = document.getElementById("mobile-toc-drawer");
+        if (drawer) drawer.classList.toggle("hidden");
+    }
+
+    // 4. Fullscreen Lightbox Controller
+    let currentDiagramScale = 1;
+    function openDiagramModal(element) {
+        const modal = document.getElementById("diagram-modal");
+        const container = document.getElementById("modal-diagram-container");
+        if (!modal || !container) return;
+
+        container.innerHTML = element.innerHTML;
+        currentDiagramScale = 1;
+        applyDiagramScale();
+
+        modal.classList.remove("hidden");
+        document.body.style.overflow = "hidden";
+    }
+
+    function closeDiagramModal() {
+        const modal = document.getElementById("diagram-modal");
+        if (modal) modal.classList.add("hidden");
+        document.body.style.overflow = "";
+    }
+
+    function zoomDiagram(factor) {
+        currentDiagramScale *= factor;
+        currentDiagramScale = Math.min(Math.max(0.5, currentDiagramScale), 3.5);
+        applyDiagramScale();
+    }
+
+    function resetDiagramZoom() {
+        currentDiagramScale = 1;
+        applyDiagramScale();
+    }
+
+    function applyDiagramScale() {
+        const container = document.getElementById("modal-diagram-container");
+        const svg = container.querySelector("svg");
+        if (svg) {
+            svg.style.transform = `scale(${currentDiagramScale})`;
+            svg.style.transformOrigin = "center center";
+            svg.style.transition = "transform 0.2s ease";
+            svg.style.maxWidth = "none";
+        }
+    }
+
+    document.addEventListener("keydown", function(e) {
+        if (e.key === "Escape") closeDiagramModal();
+    });
+
+    document.getElementById("diagram-modal")?.addEventListener("click", function(e) {
+        if (e.target === this || e.target.id === "modal-diagram-container") {
+            closeDiagramModal();
+        }
+    });
+
+    // 5. Build Table of Contents, Code Copy Buttons & Mermaid Lightbox Handlers
+    document.addEventListener("DOMContentLoaded", function() {
+        const article = document.getElementById("note-article");
+        const tocNav = document.getElementById("toc-nav");
+        const mobileTocNav = document.getElementById("mobile-toc-nav");
+        const tocEmpty = document.getElementById("toc-empty");
+
+        if (article) {
+            // TOC Generator
+            const headings = article.querySelectorAll("h1, h2, h3");
+            if (headings.length > 0) {
+                if (tocEmpty) tocEmpty.remove();
+                if (mobileTocNav) mobileTocNav.innerHTML = "";
+
+                headings.forEach((heading, idx) => {
+                    if (!heading.id) {
+                        heading.id = "heading-" + idx + "-" + heading.textContent.toLowerCase().replace(/[^\w]+/g, "-");
+                    }
+
+                    // Desktop Link
+                    const link = document.createElement("a");
+                    link.href = "#" + heading.id;
+                    link.textContent = heading.textContent;
+                    link.className = "block py-1.5 px-2.5 rounded hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-indigo-600 dark:hover:text-indigo-400 transition truncate";
+
+                    const tag = heading.tagName.toLowerCase();
+                    if (tag === "h2") {
+                        link.classList.add("pl-4");
+                    } else if (tag === "h3") {
+                        link.classList.add("pl-7", "text-gray-400", "text-[0.7rem]");
+                    } else {
+                        link.classList.add("font-semibold");
+                    }
+
+                    if (tocNav) tocNav.appendChild(link);
+
+                    // Mobile Link
+                    if (mobileTocNav) {
+                        const mLink = link.cloneNode(true);
+                        mLink.onclick = function() { toggleMobileToc(); };
+                        mobileTocNav.appendChild(mLink);
+                    }
+                });
+            }
+
+            // Transform Mermaid code blocks into SVG diagrams
+            const mermaidBlocks = article.querySelectorAll("pre code.language-mermaid");
+            if (mermaidBlocks.length > 0) {
+                mermaidBlocks.forEach(codeBlock => {
+                    const pre = codeBlock.parentElement;
+                    const div = document.createElement("div");
+                    div.className = "mermaid mermaid-container flex justify-center my-6 p-4 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm overflow-x-auto";
+                    div.dataset.mermaidSrc = codeBlock.textContent;
+                    div.textContent = codeBlock.textContent;
+                    div.onclick = function() { openDiagramModal(div); };
+                    pre.replaceWith(div);
+                });
+
+                renderMermaidDiagrams();
+            }
+
+            // Theme toggle listener to re-render Mermaid diagrams dynamically
+            window.onThemeToggle = function() {
+                const containers = document.querySelectorAll(".mermaid-container");
+                if (containers.length > 0) {
+                    containers.forEach(div => {
+                        const src = div.dataset.mermaidSrc;
+                        if (src) {
+                            div.removeAttribute("data-processed");
+                            div.innerHTML = "";
+                            div.textContent = src;
+                        }
+                    });
+                    renderMermaidDiagrams();
+
+                    // If modal lightbox is open, refresh modal content
+                    const modal = document.getElementById("diagram-modal");
+                    const activeDiagram = document.querySelector(".mermaid-container");
+                    if (modal && !modal.classList.contains("hidden") && activeDiagram) {
+                        document.getElementById("modal-diagram-container").innerHTML = activeDiagram.innerHTML;
+                        applyDiagramScale();
+                    }
+                }
+            };
+
+            function renderMermaidDiagrams() {
+                if (window.mermaid) {
+                    const isDark = document.documentElement.classList.contains("dark");
+                    mermaid.initialize({
+                        startOnLoad: false,
+                        theme: isDark ? "dark" : "default",
+                        securityLevel: "loose",
+                        flowchart: { useMaxWidth: true, htmlLabels: true }
+                    });
+                    mermaid.run({
+                        querySelector: '.mermaid'
+                    });
+                }
+            }
+
+            // Add Copy Code Buttons (excluding Mermaid diagrams)
+            article.querySelectorAll("pre").forEach(pre => {
+                if (pre.querySelector("code.language-mermaid")) return;
+                pre.classList.add("relative", "group");
+                const btn = document.createElement("button");
+                btn.className = "code-copy-btn";
+                btn.textContent = "Copy";
+                btn.onclick = function() {
+                    const code = pre.querySelector("code");
+                    const text = code ? code.innerText : pre.innerText;
+                    navigator.clipboard.writeText(text).then(() => {
+                        btn.textContent = "Copied! ✨";
+                        btn.classList.add("bg-emerald-600", "text-white");
+                        setTimeout(() => {
+                            btn.textContent = "Copy";
+                            btn.classList.remove("bg-emerald-600", "text-white");
+                        }, 2000);
+                    });
+                };
+                pre.appendChild(btn);
+            });
+        }
+    });
+</script>
+</body>
+</html>
