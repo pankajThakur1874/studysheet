@@ -90,9 +90,7 @@ public class MarkdownImporterService {
             String tagsCsv = resolveTagsCsv(fileName, pathStr);
 
             // Check existing by title
-            Optional<Note> existingOpt = noteRepository.findAll().stream()
-                    .filter(n -> n.getTitle().equalsIgnoreCase(title.trim()))
-                    .findFirst();
+            Optional<Note> existingOpt = noteRepository.findByTitleIgnoreCase(title.trim());
 
             Note note;
             if (existingOpt.isPresent()) {

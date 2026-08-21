@@ -7,8 +7,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface NoteRepository extends JpaRepository<Note, Long> {
+
+    Optional<Note> findByTitleIgnoreCase(String title);
 
     List<Note> findAllByOrderByTitleAsc();
 

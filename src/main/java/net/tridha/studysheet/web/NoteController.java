@@ -36,25 +36,26 @@ public class NoteController {
                        @RequestParam(required = false) Long tagId,
                        @RequestParam(required = false) StudyStatus status,
                        Model model) {
+        java.util.List<Note> activeNotes;
         if (q != null && !q.isBlank()) {
-            model.addAttribute("notes", noteService.search(q));
+            activeNotes = noteService.search(q);
             model.addAttribute("heading", "Search results for \"" + q + "\"");
         } else if (topicId != null) {
-            model.addAttribute("notes", noteService.byTopic(topicId));
+            activeNotes = noteService.byTopic(topicId);
             Topic topic = topicRepository.findById(topicId).orElse(null);
             model.addAttribute("selectedTopic", topic);
             model.addAttribute("heading", topic != null ? "Topic: " + topic.getName() : "Notes");
         } else if (tagId != null) {
-            model.addAttribute("notes", noteService.byTag(tagId));
+            activeNotes = noteService.byTag(tagId);
             model.addAttribute("heading", "Tagged notes");
         } else if (status != null) {
-            model.addAttribute("notes", noteService.byStatus(status));
+            activeNotes = noteService.byStatus(status);
             model.addAttribute("heading", "Status: " + status.getDisplayName());
         } else {
-            model.addAttribute("notes", noteService.all());
+            activeNotes = noteService.all();
             model.addAttribute("heading", "All notes");
         }
-        java.util.List<Note> activeNotes = (java.util.List<Note>) model.getAttribute("notes");
+
         if (activeNotes != null) {
             java.util.List<Note> sortedNotes = activeNotes.stream()
                     .sorted(NATURAL_NOTE_COMPARATOR)
