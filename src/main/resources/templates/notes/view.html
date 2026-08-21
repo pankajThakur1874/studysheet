@@ -1,61 +1,61 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/layout :: head(${note.title})}"></head>
-<body class="bg-[#faf9f6] dark:bg-[#0B0C0E] text-slate-900 dark:text-[#EDEDE9] min-h-screen">
+<body class="bg-[#faf9f6] dark:bg-[#0B0C0E] text-slate-900 dark:text-[#EDEDE9] min-h-screen font-sans">
 <!-- Reading Progress Bar -->
-<div id="reading-progress-bar" class="fixed top-0 left-0 h-1 bg-indigo-600 dark:bg-indigo-400 z-50 transition-all duration-75 shadow-sm" style="width: 0%"></div>
+<div id="reading-progress-bar" class="fixed top-0 left-0 h-1 bg-amber-500 dark:bg-[#FFB84D] z-50 transition-all duration-75 shadow-xs" style="width: 0%"></div>
 
 <nav th:replace="~{fragments/layout :: nav}"></nav>
 
-<main id="main-container" class="max-w-6xl mx-auto px-4 py-6 md:py-8 transition-all duration-300">
+<main id="main-container" class="max-w-6xl mx-auto px-4 sm:px-6 py-6 md:py-10 transition-all duration-300">
     <!-- Header info -->
-    <div class="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-6 pb-6 border-b border-gray-200 dark:border-gray-800">
-        <div>
-            <div class="flex items-center gap-3 flex-wrap mb-2">
-                <h1 class="text-2xl md:text-3xl font-extrabold text-gray-900 dark:text-gray-100 leading-tight" th:text="${note.title}">Title</h1>
-                <span th:class="'text-xs px-2.5 py-1 rounded-full border font-semibold ' + ${note.status.badgeCssClass}"
+    <div class="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-8 pb-6 border-b border-stone-200 dark:border-[#1E2126]">
+        <div class="space-y-3">
+            <div class="flex items-center gap-3 flex-wrap">
+                <h1 class="text-2xl md:text-4xl font-medium tracking-tight text-slate-900 dark:text-[#EDEDE9] leading-tight" th:text="${note.title}">Title</h1>
+                <span th:class="'text-xs px-2.5 py-1 rounded-sm border font-mono font-semibold ' + ${note.status.badgeCssClass}"
                       th:text="${note.status.displayName}">Status</span>
             </div>
-            <div class="flex flex-wrap items-center gap-2 text-xs text-gray-500">
+            <div class="flex flex-wrap items-center gap-2 font-mono text-xs text-slate-400 dark:text-[#6B7280]">
                 <span th:if="${note.topic != null}"
-                      class="px-2.5 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-medium"
+                      class="px-2.5 py-0.5 rounded-sm bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-[#FFB84D] border border-amber-200 dark:border-amber-900/60 font-medium"
                       th:text="${note.topic.name}">Topic</span>
-                <span class="px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-medium"
+                <span class="px-2.5 py-0.5 rounded-sm bg-stone-100 dark:bg-[#121418] text-slate-600 dark:text-[#A2A9B1]"
                       th:text="'⏱️ ' + ${note.estimatedReadingTime}">⏱️ 2 min read</span>
-                <span class="px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-medium"
+                <span class="px-2.5 py-0.5 rounded-sm bg-stone-100 dark:bg-[#121418] text-slate-600 dark:text-[#A2A9B1]"
                       th:text="'📝 ' + ${note.wordCount} + ' words'">📝 350 words</span>
                 <a th:each="tag : ${note.tags}" th:href="@{/notes(tagId=${tag.id})}"
-                   class="px-2.5 py-0.5 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 transition"
+                   class="px-2.5 py-0.5 rounded-sm bg-stone-100 dark:bg-[#121418] hover:bg-stone-200 dark:hover:bg-[#1A1D23] transition"
                    th:text="'#' + ${tag.name}">#tag</a>
                 <span th:text="'· updated ' + ${note.updatedAtDisplay}">date</span>
             </div>
         </div>
 
-        <div class="flex flex-wrap items-center gap-2 shrink-0">
+        <div class="flex flex-wrap items-center gap-2 shrink-0 font-mono text-xs">
             <!-- Focus Mode Button -->
             <button type="button" onclick="toggleFocusMode()" id="focus-btn"
-                    class="text-xs px-3 py-1.5 rounded-md border border-indigo-300 dark:border-indigo-700 bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 font-medium transition shadow-sm">
+                    class="px-3 py-1.5 rounded-sm border border-stone-300 dark:border-[#2A2E35] bg-stone-100 dark:bg-[#121418] text-slate-800 dark:text-[#EDEDE9] hover:border-amber-500 transition shadow-xs">
                 🎯 Focus Mode
             </button>
 
             <!-- Quick Status Change Dropdown -->
             <form th:action="@{/notes/{id}/status(id=${note.id})}" method="post" class="inline-flex items-center">
                 <select name="status" onchange="this.form.submit()"
-                        class="text-xs px-2.5 py-1.5 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 font-medium">
+                        class="px-2.5 py-1.5 rounded-sm border border-stone-300 dark:border-[#2A2E35] bg-white dark:bg-[#0B0C0E] text-slate-800 dark:text-[#EDEDE9] font-medium outline-none">
                     <option th:each="st : ${statuses}" th:value="${st}" th:text="'Mark: ' + ${st.displayName}"
                             th:selected="${note.status == st}">Status</option>
                 </select>
             </form>
 
             <form th:action="@{/notes/{id}/pin(id=${note.id})}" method="post">
-                <button class="text-xs px-3 py-1.5 rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 font-medium"
+                <button class="px-3 py-1.5 rounded-sm border border-stone-300 dark:border-[#2A2E35] bg-stone-100 dark:bg-[#121418] hover:bg-stone-200 dark:hover:bg-[#1A1D23] font-medium transition"
                         th:text="${note.pinned} ? 'Unpin' : '📌 Pin'">Pin</button>
             </form>
             <a th:href="@{/notes/{id}/edit(id=${note.id})}"
-               class="text-xs px-3 py-1.5 rounded-md bg-indigo-600 hover:bg-indigo-700 text-white font-medium shadow-sm">Edit</a>
+               class="px-3.5 py-1.5 rounded-sm bg-amber-500 hover:bg-amber-400 dark:bg-[#FFB84D] dark:hover:bg-[#ffd598] text-[#0B0C0E] font-bold shadow-xs transition">Edit</a>
             <form th:action="@{/notes/{id}/delete(id=${note.id})}" method="post"
                   onsubmit="return confirm('Delete this study note?');">
-                <button class="text-xs px-3 py-1.5 rounded-md border border-rose-300 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950 font-medium">Delete</button>
+                <button class="px-3 py-1.5 rounded-sm border border-rose-300 dark:border-rose-900/60 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 font-medium transition">Delete</button>
             </form>
         </div>
     </div>
@@ -64,46 +64,46 @@
     <div id="content-grid" class="grid grid-cols-1 lg:grid-cols-4 gap-8">
         <!-- Article Content -->
         <div id="article-column" class="lg:col-span-3 transition-all duration-300">
-            <article id="note-article" class="prose max-w-none dark:text-gray-100 bg-white dark:bg-gray-900 p-4 md:p-8 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm leading-relaxed" th:utext="${contentHtml}">
+            <article id="note-article" class="prose max-w-none dark:text-[#EDEDE9] bg-white dark:bg-[#0B0C0E] p-6 md:p-10 rounded-md border border-stone-200 dark:border-[#1E2126] shadow-xs leading-relaxed" th:utext="${contentHtml}">
                 Rendered markdown content.
             </article>
         </div>
 
         <!-- Sticky TOC Sidebar (Desktop) -->
         <aside id="toc-sidebar" class="hidden lg:block lg:col-span-1 transition-all duration-300">
-            <div class="sticky top-20 p-4 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm">
-                <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+            <div class="sticky top-20 p-5 rounded-md border border-stone-200 dark:border-[#1E2126] bg-white dark:bg-[#0B0C0E] shadow-xs">
+                <h3 class="font-mono text-xs font-bold text-slate-400 dark:text-[#6B7280] uppercase tracking-widest mb-4 flex items-center gap-1.5">
                     <span>📑 Table of Contents</span>
                 </h3>
-                <nav id="toc-nav" class="text-xs space-y-1 text-gray-600 dark:text-gray-400 max-h-[70vh] overflow-y-auto">
-                    <p id="toc-empty" class="text-gray-400 italic">No headings in this note.</p>
+                <nav id="toc-nav" class="font-mono text-xs space-y-1.5 text-slate-600 dark:text-[#A2A9B1] max-h-[70vh] overflow-y-auto">
+                    <p id="toc-empty" class="text-slate-400 dark:text-[#6B7280] italic">No headings in this note.</p>
                 </nav>
             </div>
         </aside>
     </div>
 </main>
 
-<!-- Floating Mobile TOC Drawer Button (Phone screens) -->
+<!-- Floating Mobile TOC Drawer Button -->
 <button type="button" onclick="toggleMobileToc()" id="mobile-toc-fab"
-        class="lg:hidden fixed bottom-6 right-6 z-40 px-4 py-3 rounded-full bg-indigo-600 text-white font-bold text-xs shadow-xl flex items-center gap-2 hover:bg-indigo-700 active:scale-95 transition">
+        class="lg:hidden fixed bottom-6 right-6 z-40 px-4 py-3 rounded-md bg-amber-500 dark:bg-[#FFB84D] text-[#0B0C0E] font-mono font-bold text-xs shadow-xl flex items-center gap-2 hover:bg-amber-400 active:scale-95 transition">
     <span>📑 Syllabus TOC</span>
 </button>
 
 <!-- Mobile TOC Drawer Overlay -->
-<div id="mobile-toc-drawer" class="lg:hidden fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-xs flex justify-end">
-    <div class="w-4/5 max-w-xs h-full bg-white dark:bg-gray-900 p-5 overflow-y-auto shadow-2xl flex flex-col justify-between">
+<div id="mobile-toc-drawer" class="lg:hidden fixed inset-0 z-50 hidden bg-black/75 backdrop-blur-xs flex justify-end">
+    <div class="w-4/5 max-w-xs h-full bg-white dark:bg-[#0B0C0E] p-6 overflow-y-auto shadow-2xl flex flex-col justify-between border-l border-stone-200 dark:border-[#1E2126]">
         <div>
-            <div class="flex items-center justify-between pb-3 mb-4 border-b border-gray-200 dark:border-gray-800">
-                <h3 class="font-bold text-sm text-gray-900 dark:text-gray-100 flex items-center gap-1.5">
+            <div class="flex items-center justify-between pb-3 mb-4 border-b border-stone-200 dark:border-[#1E2126]">
+                <h3 class="font-mono font-bold text-xs uppercase tracking-widest text-slate-900 dark:text-[#EDEDE9] flex items-center gap-1.5">
                     <span>📑 Table of Contents</span>
                 </h3>
-                <button type="button" onclick="toggleMobileToc()" class="text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 text-lg font-bold">✕</button>
+                <button type="button" onclick="toggleMobileToc()" class="text-slate-500 hover:text-slate-900 dark:hover:text-white text-lg font-bold">✕</button>
             </div>
-            <nav id="mobile-toc-nav" class="text-xs space-y-1.5 text-gray-600 dark:text-gray-400">
-                <p class="text-gray-400 italic">No headings in this note.</p>
+            <nav id="mobile-toc-nav" class="font-mono text-xs space-y-2 text-slate-600 dark:text-[#A2A9B1]">
+                <p class="text-slate-400 italic">No headings in this note.</p>
             </nav>
         </div>
-        <button type="button" onclick="toggleMobileToc()" class="w-full mt-6 py-2.5 rounded-lg bg-gray-100 dark:bg-gray-800 text-xs font-semibold text-gray-700 dark:text-gray-300">Close Syllabus</button>
+        <button type="button" onclick="toggleMobileToc()" class="w-full mt-6 py-2.5 rounded-sm bg-stone-100 dark:bg-[#121418] text-xs font-mono font-semibold text-slate-700 dark:text-[#EDEDE9]">Close Syllabus</button>
     </div>
 </div>
 
@@ -172,7 +172,7 @@
             mainContainer.classList.remove("max-w-6xl");
             mainContainer.classList.add("max-w-3xl");
             focusBtn.textContent = "📖 Exit Focus";
-            focusBtn.classList.add("ring-2", "ring-amber-500");
+            focusBtn.classList.add("ring-1", "ring-amber-500");
         } else {
             if (sidebar) sidebar.classList.remove("hidden");
             articleCol.classList.remove("lg:col-span-4");
@@ -180,7 +180,7 @@
             mainContainer.classList.remove("max-w-3xl");
             mainContainer.classList.add("max-w-6xl");
             focusBtn.textContent = "🎯 Focus Mode";
-            focusBtn.classList.remove("ring-2", "ring-amber-500");
+            focusBtn.classList.remove("ring-1", "ring-amber-500");
         }
     }
 
@@ -281,7 +281,7 @@
                     const link = document.createElement("a");
                     link.href = "#" + heading.id;
                     link.textContent = heading.textContent;
-                    link.className = "block py-1.5 px-2.5 rounded hover:bg-stone-100 dark:hover:bg-[#121418] hover:text-amber-600 dark:hover:text-[#FFB84D] transition truncate";
+                    link.className = "block py-1.5 px-2.5 rounded-sm hover:bg-stone-100 dark:hover:bg-[#121418] hover:text-amber-600 dark:hover:text-[#FFB84D] transition truncate";
 
                     const tag = heading.tagName.toLowerCase();
                     if (tag === "h2") {
@@ -309,7 +309,7 @@
                 mermaidBlocks.forEach(codeBlock => {
                     const pre = codeBlock.parentElement;
                     const div = document.createElement("div");
-                    div.className = "mermaid mermaid-container flex justify-center my-6 p-4 rounded-xl border border-stone-200 dark:border-[#1E2126] bg-white dark:bg-[#0B0C0E] shadow-sm overflow-x-auto cursor-pointer hover:border-amber-500 dark:hover:border-[#FFB84D] transition";
+                    div.className = "mermaid mermaid-container flex justify-center my-6 p-4 rounded-sm border border-stone-200 dark:border-[#1E2126] bg-white dark:bg-[#0B0C0E] shadow-xs overflow-x-auto cursor-pointer hover:border-amber-500 dark:hover:border-[#FFB84D] transition";
                     div.dataset.mermaidSrc = codeBlock.textContent;
                     div.textContent = codeBlock.textContent;
                     div.onclick = function() { openDiagramModal(div); };
@@ -376,7 +376,7 @@
                 }
 
                 const btn = document.createElement("button");
-                btn.className = "code-copy-btn";
+                btn.className = "code-copy-btn font-mono text-xs";
                 btn.textContent = "Copy";
                 btn.onclick = function() {
                     const text = code ? code.innerText : pre.innerText;
