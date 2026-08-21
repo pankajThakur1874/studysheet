@@ -54,6 +54,17 @@ public class NoteController {
             model.addAttribute("notes", noteService.all());
             model.addAttribute("heading", "All notes");
         }
+        java.util.List<Note> activeNotes = (java.util.List<Note>) model.getAttribute("notes");
+        if (activeNotes != null) {
+            java.util.Map<Topic, java.util.List<Note>> groupedNotes = activeNotes.stream()
+                    .collect(java.util.stream.Collectors.groupingBy(
+                            n -> n.getTopic() != null ? n.getTopic() : new Topic("General Notes", "Uncategorized study guides"),
+                            java.util.LinkedHashMap::new,
+                            java.util.stream.Collectors.toList()
+                    ));
+            model.addAttribute("groupedNotes", groupedNotes);
+        }
+
         model.addAttribute("q", q);
         model.addAttribute("selectedStatus", status);
         model.addAttribute("statuses", StudyStatus.values());
