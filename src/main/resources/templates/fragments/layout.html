@@ -555,6 +555,60 @@
                     </div>
                 </div>
 
+                <!-- Availability SLA Downtime Matrix ("Nines of Availability") -->
+                <div class="space-y-3 p-4 rounded border border-stone-200 dark:border-[#1E2126] bg-stone-50/50 dark:bg-[#121418]/50">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-bold text-xs uppercase tracking-wider text-[#1D4ED8] flex items-center gap-1.5">
+                            <span>⏱️ Availability SLA Downtime Matrix</span>
+                            <span class="chrome-label text-[9.5px]">("Nines of Availability")</span>
+                        </h3>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono text-xs">
+                        <!-- 99.9% (3 Nines) -->
+                        <div class="p-3 rounded-lg border border-stone-200 dark:border-[#1E2126] bg-white dark:bg-[#0B0C0E] space-y-1">
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-slate-900 dark:text-[#EDEDE9]">99.9%</span>
+                                <span class="px-1.5 py-0.5 rounded text-[9.5px] bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 font-semibold border border-amber-200 dark:border-amber-900/60">3 Nines</span>
+                            </div>
+                            <div class="text-[11px] text-slate-700 dark:text-[#EDEDE9] pt-1">
+                                Max <span class="font-bold text-[#1D4ED8]">8.76 hours</span> / year
+                            </div>
+                            <div class="text-[10px] text-slate-400 dark:text-[#6B7280]">
+                                (8.6 mins / day)
+                            </div>
+                        </div>
+
+                        <!-- 99.99% (4 Nines) -->
+                        <div class="p-3 rounded-lg border border-stone-200 dark:border-[#1E2126] bg-white dark:bg-[#0B0C0E] space-y-1">
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-slate-900 dark:text-[#EDEDE9]">99.99%</span>
+                                <span class="px-1.5 py-0.5 rounded text-[9.5px] bg-blue-50 dark:bg-blue-950/40 text-[#1D4ED8] dark:text-blue-400 font-semibold border border-blue-200 dark:border-blue-900/60">4 Nines</span>
+                            </div>
+                            <div class="text-[11px] text-slate-700 dark:text-[#EDEDE9] pt-1">
+                                Max <span class="font-bold text-[#1D4ED8]">52.6 mins</span> / year
+                            </div>
+                            <div class="text-[10px] text-slate-400 dark:text-[#6B7280]">
+                                (4.32 secs / day)
+                            </div>
+                        </div>
+
+                        <!-- 99.999% (5 Nines) -->
+                        <div class="p-3 rounded-lg border border-stone-200 dark:border-[#1E2126] bg-white dark:bg-[#0B0C0E] space-y-1">
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-slate-900 dark:text-[#EDEDE9]">99.999%</span>
+                                <span class="px-1.5 py-0.5 rounded text-[9.5px] bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 font-semibold border border-emerald-200 dark:border-emerald-900/60">5 Nines</span>
+                            </div>
+                            <div class="text-[11px] text-slate-700 dark:text-[#EDEDE9] pt-1">
+                                Max <span class="font-bold text-[#1D4ED8]">5.26 mins</span> / year
+                            </div>
+                            <div class="text-[10px] text-slate-400 dark:text-[#6B7280]">
+                                (864 ms / day)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Latency Cheat Sheet -->
                 <div class="space-y-2">
                     <h3 class="font-bold text-xs uppercase tracking-wider text-slate-400 dark:text-[#6B7280]">⏱️ Latency Cheat Sheet (Jeff Dean Numbers)</h3>
