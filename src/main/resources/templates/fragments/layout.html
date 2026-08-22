@@ -432,7 +432,10 @@
         </div>
         <a href="/notes" class="block w-full py-2.5 text-center font-bold uppercase tracking-wider bg-amber-500 dark:bg-[#FFB84D] text-[#0B0C0E] rounded-md shadow-xs">📚 System Architecture Hub ↗</a>
     </div>
+</nav>
 
+<!-- Global Command Palette Modal & System Sizing Calculator Modal (Outside Nav Stacking Context) -->
+<footer th:fragment="scripts">
     <!-- Global Command Palette Modal (Cmd + K) -->
     <div id="cmd-k-modal" style="display: none;" class="fixed inset-0 z-[9999] bg-black/80 backdrop-blur-md items-start justify-center pt-8 sm:pt-16 px-4 transition-all">
         <div class="w-full max-w-xl bg-white dark:bg-[#0B0C0E] border border-stone-300 dark:border-[#1E2126] rounded-xl shadow-2xl overflow-hidden font-sans">
@@ -449,11 +452,11 @@
                 <div>
                     <div class="text-[10px] uppercase tracking-widest text-slate-400 dark:text-[#6B7280] mb-2">Popular Study Topics</div>
                     <div class="grid grid-cols-2 gap-2">
-                        <a href="/notes" class="p-2.5 rounded-lg border border-stone-200 dark:border-[#1E2126] hover:border-amber-500 dark:hover:border-[#FFB84D] hover:bg-stone-50 dark:hover:bg-[#121418] transition flex items-center gap-2">
+                        <a href="/notes" class="p-2.5 rounded-lg border border-stone-200 dark:border-[#1E2126] hover:border-blue-500 hover:bg-stone-50 dark:hover:bg-[#121418] transition flex items-center gap-2">
                             <span>📚</span>
                             <span class="text-slate-800 dark:text-[#EDEDE9]">All 58 Architecture Guides</span>
                         </a>
-                        <a href="/topics" class="p-2.5 rounded-lg border border-stone-200 dark:border-[#1E2126] hover:border-amber-500 dark:hover:border-[#FFB84D] hover:bg-stone-50 dark:hover:bg-[#121418] transition flex items-center gap-2">
+                        <a href="/topics" class="p-2.5 rounded-lg border border-stone-200 dark:border-[#1E2126] hover:border-blue-500 hover:bg-stone-50 dark:hover:bg-[#121418] transition flex items-center gap-2">
                             <span>📁</span>
                             <span class="text-slate-800 dark:text-[#EDEDE9]">System Design Topics</span>
                         </a>
@@ -466,7 +469,7 @@
                         <button type="button" onclick="closeCmdKModal(); openSizingModal();" class="w-full text-left p-2 rounded hover:bg-stone-100 dark:hover:bg-[#121418] transition">🧮 Open System Sizing & QPS Calculator</button>
                         <a href="/#work" onclick="closeCmdKModal()" class="block p-2 rounded hover:bg-stone-100 dark:hover:bg-[#121418] transition">↗ View Selected Engineering Work</a>
                         <a href="/#experience" onclick="closeCmdKModal()" class="block p-2 rounded hover:bg-stone-100 dark:hover:bg-[#121418] transition">↗ View Staff Engineer Experience</a>
-                        <a href="mailto:pankajpream524@gmail.com" class="block p-2 rounded hover:bg-stone-100 dark:hover:bg-[#121418] text-amber-600 dark:text-[#FFB84D] transition">📬 Contact Pankaj Thakur</a>
+                        <a href="mailto:pankajpream524@gmail.com" class="block p-2 rounded hover:bg-stone-100 dark:hover:bg-[#121418] text-[#1D4ED8] transition">📬 Contact Pankaj Thakur</a>
                     </div>
                 </div>
             </div>
@@ -488,13 +491,13 @@
                     <span class="text-base">🧮</span>
                     <h2 class="font-bold text-sm text-slate-900 dark:text-[#EDEDE9]">Back-of-the-Envelope System Estimator</h2>
                 </div>
-                <button type="button" onclick="closeSizingModal()" class="px-2.5 py-1 rounded border border-stone-300 dark:border-[#2A2E35] text-slate-600 dark:text-[#A2A9B1] hover:text-amber-500 hover:border-amber-500 font-bold transition">ESC</button>
+                <button type="button" onclick="closeSizingModal()" class="px-2.5 py-1 rounded border border-stone-300 dark:border-[#2A2E35] text-slate-600 dark:text-[#A2A9B1] hover:text-blue-500 hover:border-blue-500 font-bold transition">ESC</button>
             </div>
 
             <div class="p-6 space-y-6 max-h-[75vh] overflow-y-auto">
                 <!-- QPS Calculator Section -->
                 <div class="space-y-3 p-4 rounded border border-stone-200 dark:border-[#1E2126] bg-stone-50/50 dark:bg-[#121418]/50">
-                    <h3 class="font-bold text-xs uppercase tracking-wider text-amber-600 dark:text-[#FFB84D]">⚡ QPS Calculator</h3>
+                    <h3 class="font-bold text-xs uppercase tracking-wider text-[#1D4ED8]">⚡ QPS Calculator</h3>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
                             <label class="block text-[11px] text-slate-500 dark:text-[#6B7280] mb-1">Daily Active Users (DAU):</label>
@@ -515,14 +518,14 @@
                         </div>
                         <div class="p-2.5 rounded bg-white dark:bg-[#0B0C0E] border border-stone-200 dark:border-[#1E2126]">
                             <div class="text-[10px] text-slate-400 dark:text-[#6B7280] uppercase">Peak QPS (2x)</div>
-                            <div id="res-peak-qps" class="text-sm font-bold text-amber-600 dark:text-[#FFB84D]">2,315</div>
+                            <div id="res-peak-qps" class="text-sm font-bold text-[#1D4ED8]">2,315</div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Storage Estimator Section -->
                 <div class="space-y-3 p-4 rounded border border-stone-200 dark:border-[#1E2126] bg-stone-50/50 dark:bg-[#121418]/50">
-                    <h3 class="font-bold text-xs uppercase tracking-wider text-amber-600 dark:text-[#FFB84D]">💾 Storage Estimator</h3>
+                    <h3 class="font-bold text-xs uppercase tracking-wider text-[#1D4ED8]">💾 Storage Estimator</h3>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
                             <label class="block text-[11px] text-slate-500 dark:text-[#6B7280] mb-1">Payload Size per Request (KB):</label>
@@ -547,7 +550,7 @@
                         </div>
                         <div class="p-2 rounded bg-white dark:bg-[#0B0C0E] border border-stone-200 dark:border-[#1E2126]">
                             <div class="text-[9px] text-slate-400 dark:text-[#6B7280] uppercase">5-Year Storage</div>
-                            <div id="res-5yr-storage" class="text-xs font-bold text-amber-600 dark:text-[#FFB84D]">91.25 TB</div>
+                            <div id="res-5yr-storage" class="text-xs font-bold text-[#1D4ED8]">91.25 TB</div>
                         </div>
                     </div>
                 </div>
@@ -556,12 +559,12 @@
                 <div class="space-y-2">
                     <h3 class="font-bold text-xs uppercase tracking-wider text-slate-400 dark:text-[#6B7280]">⏱️ Latency Cheat Sheet (Jeff Dean Numbers)</h3>
                     <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-[11px]">
-                        <div class="p-2 rounded bg-stone-100 dark:bg-[#121418]">L1 Cache: <span class="font-bold text-amber-600 dark:text-[#FFB84D]">0.5 ns</span></div>
-                        <div class="p-2 rounded bg-stone-100 dark:bg-[#121418]">RAM Read: <span class="font-bold text-amber-600 dark:text-[#FFB84D]">100 ns</span></div>
-                        <div class="p-2 rounded bg-stone-100 dark:bg-[#121418]">SSD Read: <span class="font-bold text-amber-600 dark:text-[#FFB84D]">150 µs</span></div>
-                        <div class="p-2 rounded bg-stone-100 dark:bg-[#121418]">Datacenter RTT: <span class="font-bold text-amber-600 dark:text-[#FFB84D]">0.5 ms</span></div>
-                        <div class="p-2 rounded bg-stone-100 dark:bg-[#121418]">HDD Seek: <span class="font-bold text-amber-600 dark:text-[#FFB84D]">10 ms</span></div>
-                        <div class="p-2 rounded bg-stone-100 dark:bg-[#121418]">US-EU RTT: <span class="font-bold text-amber-600 dark:text-[#FFB84D]">150 ms</span></div>
+                        <div class="p-2 rounded bg-stone-100 dark:bg-[#121418]">L1 Cache: <span class="font-bold text-[#1D4ED8]">0.5 ns</span></div>
+                        <div class="p-2 rounded bg-stone-100 dark:bg-[#121418]">RAM Read: <span class="font-bold text-[#1D4ED8]">100 ns</span></div>
+                        <div class="p-2 rounded bg-stone-100 dark:bg-[#121418]">SSD Read: <span class="font-bold text-[#1D4ED8]">150 µs</span></div>
+                        <div class="p-2 rounded bg-stone-100 dark:bg-[#121418]">Datacenter RTT: <span class="font-bold text-[#1D4ED8]">0.5 ms</span></div>
+                        <div class="p-2 rounded bg-stone-100 dark:bg-[#121418]">HDD Seek: <span class="font-bold text-[#1D4ED8]">10 ms</span></div>
+                        <div class="p-2 rounded bg-stone-100 dark:bg-[#121418]">US-EU RTT: <span class="font-bold text-[#1D4ED8]">150 ms</span></div>
                     </div>
                 </div>
             </div>
@@ -660,9 +663,6 @@
             if (res5yr) res5yr.textContent = yr5Tb + ' TB';
         }
     </script>
-</nav>
-
-<footer th:fragment="scripts">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
