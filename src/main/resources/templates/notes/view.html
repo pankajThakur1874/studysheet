@@ -80,7 +80,7 @@
     </div>
 
     <!-- Main 3-Column Layout: Course Sidebar + Article + TOC Sidebar -->
-    <div id="content-grid" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <div id="content-grid" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         <!-- Left Course Tree Sidebar (Desktop 3 Cols) -->
         <aside id="course-sidebar" class="hidden lg:block lg:col-span-3 transition-all duration-300 font-mono text-xs">
             <div class="sticky top-20 p-4 rounded-md border border-stone-200 dark:border-[#1E2126] bg-white dark:bg-[#0B0C0E] shadow-xs space-y-4 max-h-[85vh] overflow-y-auto scrollbar-thin">
@@ -274,16 +274,18 @@
         const tocBtn = document.getElementById("btn-toggle-toc");
         const focusBtn = document.getElementById("focus-btn");
 
-        // Toggle Left Course Sidebar
+        // Toggle Left Course Sidebar (Desktop responsive classes)
         if (courseSidebar) {
             if (courseSidebarVisible) {
-                courseSidebar.classList.remove("hidden");
+                courseSidebar.classList.remove("lg:hidden");
+                courseSidebar.classList.add("lg:block");
                 if (courseBtn) {
                     courseBtn.classList.add("bg-amber-100", "dark:bg-amber-950/60", "border-amber-500", "text-amber-700", "dark:text-[#FFB84D]");
                     courseBtn.classList.remove("opacity-60");
                 }
             } else {
-                courseSidebar.classList.add("hidden");
+                courseSidebar.classList.remove("lg:block");
+                courseSidebar.classList.add("lg:hidden");
                 if (courseBtn) {
                     courseBtn.classList.remove("bg-amber-100", "dark:bg-amber-950/60", "border-amber-500", "text-amber-700", "dark:text-[#FFB84D]");
                     courseBtn.classList.add("opacity-60");
@@ -291,16 +293,18 @@
             }
         }
 
-        // Toggle Right TOC Sidebar
+        // Toggle Right TOC Sidebar (Desktop responsive classes)
         if (tocSidebar) {
             if (tocSidebarVisible) {
-                tocSidebar.classList.remove("hidden");
+                tocSidebar.classList.remove("lg:hidden");
+                tocSidebar.classList.add("lg:block");
                 if (tocBtn) {
                     tocBtn.classList.add("bg-amber-100", "dark:bg-amber-950/60", "border-amber-500", "text-amber-700", "dark:text-[#FFB84D]");
                     tocBtn.classList.remove("opacity-60");
                 }
             } else {
-                tocSidebar.classList.add("hidden");
+                tocSidebar.classList.remove("lg:block");
+                tocSidebar.classList.add("lg:hidden");
                 if (tocBtn) {
                     tocBtn.classList.remove("bg-amber-100", "dark:bg-amber-950/60", "border-amber-500", "text-amber-700", "dark:text-[#FFB84D]");
                     tocBtn.classList.add("opacity-60");
@@ -310,7 +314,8 @@
 
         // Recalculate Column Spans
         if (articleCol) {
-            articleCol.className = "transition-all duration-300 flex flex-col justify-between ";
+            articleCol.classList.remove("lg:col-span-6", "lg:col-span-9", "lg:col-span-12", "max-w-4xl", "mx-auto");
+            
             if (courseSidebarVisible && tocSidebarVisible) {
                 articleCol.classList.add("lg:col-span-6");
                 if (focusBtn) {
@@ -330,7 +335,7 @@
                     focusBtn.classList.add("ring-1", "ring-amber-500");
                 }
             } else {
-                articleCol.classList.add("lg:col-span-12", "max-w-4xl", "mx-auto", "w-full");
+                articleCol.classList.add("lg:col-span-12", "max-w-4xl", "mx-auto");
                 if (focusBtn) {
                     focusBtn.textContent = "📖 Exit Focus";
                     focusBtn.classList.add("ring-1", "ring-amber-500");
