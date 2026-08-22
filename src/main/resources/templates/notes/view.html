@@ -50,6 +50,11 @@
                     class="px-3 py-1.5 rounded-sm border border-stone-300 dark:border-[#2A2E35] bg-stone-100 dark:bg-[#121418] text-slate-800 dark:text-[#EDEDE9] hover:border-amber-500 transition shadow-xs cursor-pointer">
                 🎯 Focus Mode
             </button>
+            <!-- Font Style Switcher -->
+            <button type="button" onclick="toggleArticleFont()" id="font-toggle-btn" title="Toggle Article Font Style (Serif vs Sans-Serif)"
+                    class="px-2.5 py-1.5 rounded-sm border border-amber-500 bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-[#FFB84D] font-bold transition shadow-xs cursor-pointer">
+                ✒️ Serif Font
+            </button>
 
             <!-- Quick Status Change Dropdown -->
             <form th:action="@{/notes/{id}/status(id=${note.id})}" method="post" class="inline-flex items-center">
@@ -129,7 +134,7 @@
 
         <!-- Center Article Content (Desktop 6 Cols) -->
         <div id="article-column" class="lg:col-span-6 transition-all duration-300 flex flex-col justify-between">
-            <article id="note-article" class="prose max-w-none dark:text-[#EDEDE9] bg-white dark:bg-[#0B0C0E] p-6 md:p-10 rounded-md border border-stone-200 dark:border-[#1E2126] shadow-xs leading-relaxed" th:utext="${contentHtml}">
+            <article id="note-article" class="prose prose-serif font-serif max-w-none text-slate-900 dark:text-[#EDEDE9] bg-white dark:bg-[#0B0C0E] p-6 md:p-10 rounded-md border border-stone-200 dark:border-[#1E2126] shadow-xs leading-relaxed text-[17px] sm:text-[18px]" th:utext="${contentHtml}">
                 Rendered markdown content.
             </article>
 
@@ -261,6 +266,31 @@
             } else {
                 list.classList.add('hidden');
                 if (arrow) arrow.style.transform = 'rotate(-90deg)';
+            }
+        }
+    }
+
+    // 1b. Font Family Switcher (Serif vs Sans)
+    function toggleArticleFont() {
+        const article = document.getElementById("note-article");
+        const fontBtn = document.getElementById("font-toggle-btn");
+        if (article) {
+            if (article.classList.contains("font-serif")) {
+                article.classList.remove("font-serif", "prose-serif");
+                article.classList.add("font-sans");
+                if (fontBtn) {
+                    fontBtn.textContent = "🔤 Sans Font";
+                    fontBtn.classList.remove("bg-amber-100", "dark:bg-amber-950/60", "border-amber-500", "text-amber-800", "dark:text-[#FFB84D]");
+                    fontBtn.classList.add("bg-stone-100", "dark:bg-[#121418]", "border-stone-300", "dark:border-[#2A2E35]", "text-slate-800", "dark:text-[#EDEDE9]");
+                }
+            } else {
+                article.classList.remove("font-sans");
+                article.classList.add("font-serif", "prose-serif");
+                if (fontBtn) {
+                    fontBtn.textContent = "✒️ Serif Font";
+                    fontBtn.classList.add("bg-amber-100", "dark:bg-amber-950/60", "border-amber-500", "text-amber-800", "dark:text-[#FFB84D]");
+                    fontBtn.classList.remove("bg-stone-100", "dark:bg-[#121418]", "border-stone-300", "dark:border-[#2A2E35]", "text-slate-800", "dark:text-[#EDEDE9]");
+                }
             }
         }
     }
