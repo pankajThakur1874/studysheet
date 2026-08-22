@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import net.tridha.studysheet.domain.Note;
 import net.tridha.studysheet.domain.StudyStatus;
 import net.tridha.studysheet.domain.Topic;
+import net.tridha.studysheet.repo.NoteRepository;
 import net.tridha.studysheet.repo.TopicRepository;
 import net.tridha.studysheet.service.MarkdownService;
 import net.tridha.studysheet.service.NoteService;
@@ -12,19 +13,25 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/notes")
 public class NoteController {
 
     private final NoteService noteService;
+    private final NoteRepository noteRepository;
     private final TopicRepository topicRepository;
     private final TagService tagService;
     private final MarkdownService markdownService;
 
-    public NoteController(NoteService noteService, TopicRepository topicRepository,
-                          TagService tagService, MarkdownService markdownService) {
+    public NoteController(NoteService noteService, NoteRepository noteRepository,
+                          TopicRepository topicRepository, TagService tagService,
+                          MarkdownService markdownService) {
         this.noteService = noteService;
+        this.noteRepository = noteRepository;
         this.topicRepository = topicRepository;
         this.tagService = tagService;
         this.markdownService = markdownService;
@@ -109,10 +116,49 @@ public class NoteController {
     @GetMapping("/{id}")
     public String view(@PathVariable Long id, Model model) {
         Note note = noteService.get(id);
+
+        List<Note> peerNotes;
+        if (note.getTopic() != null) {
+            peerNotes = noteRepository.findByTopicIdOrderByTitleAsc(note.getTopic().getId());
+        } else {
+            peerNotes = noteRepository.findAll();
+        }
+        peerNotes.sort(NATURAL_NOTE_COMPARATOR);
+
+        int index = peerNotes.indexOf(note);
+        Note previousNote = (index > 0) ? peerNotes.get(index - 1) : null;
+        Note nextNote = (index >= 0 && index < peerNotes.size() - 1) ? peerNotes.get(index + 1) : null;
+
         model.addAttribute("note", note);
+        model.addAttribute("previousNote", previousNote);
+        model.addAttribute("nextNote", nextNote);
         model.addAttribute("contentHtml", markdownService.toHtml(note.getContentMd()));
         model.addAttribute("statuses", StudyStatus.values());
         return "notes/view";
+    }
+
+    @PostMapping("/{id}/master-and-next")
+    public String markMasteredAndNext(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        Note currentNote = noteService.get(id);
+        noteService.updateStatus(id, StudyStatus.MASTERED);
+
+        List<Note> peerNotes;
+        if (currentNote.getTopic() != null) {
+            peerNotes = noteRepository.findByTopicIdOrderByTitleAsc(currentNote.getTopic().getId());
+        } else {
+            peerNotes = noteRepository.findAll();
+        }
+        peerNotes.sort(NATURAL_NOTE_COMPARATOR);
+
+        int index = peerNotes.indexOf(currentNote);
+        if (index >= 0 && index < peerNotes.size() - 1) {
+            Note nextNote = peerNotes.get(index + 1);
+            redirectAttributes.addFlashAttribute("message", "Marked '" + currentNote.getTitle() + "' as Mastered! 🎉");
+            return "redirect:/notes/" + nextNote.getId();
+        }
+
+        redirectAttributes.addFlashAttribute("message", "🎉 Topic Completed! All guides in '" + (currentNote.getTopic() != null ? currentNote.getTopic().getName() : "Chapter") + "' are now mastered.");
+        return "redirect:/notes";
     }
 
     @GetMapping("/new")

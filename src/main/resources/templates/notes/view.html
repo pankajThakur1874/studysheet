@@ -8,6 +8,11 @@
 <nav th:replace="~{fragments/layout :: nav}"></nav>
 
 <main id="main-container" class="max-w-6xl mx-auto px-4 sm:px-6 py-6 md:py-10 transition-all duration-300">
+    <!-- Flash Message Notification -->
+    <div th:if="${message != null}" class="mb-6 p-4 rounded-md bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/60 text-xs font-mono text-amber-800 dark:text-[#FFB84D] flex items-center justify-between shadow-xs">
+        <span>✨ <span th:text="${message}">Message</span></span>
+    </div>
+
     <!-- Header info -->
     <div class="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-8 pb-6 border-b border-stone-200 dark:border-[#1E2126]">
         <div class="space-y-3">
@@ -63,10 +68,38 @@
     <!-- Main Grid: Article + TOC Sidebar -->
     <div id="content-grid" class="grid grid-cols-1 lg:grid-cols-4 gap-8">
         <!-- Article Content -->
-        <div id="article-column" class="lg:col-span-3 transition-all duration-300">
+        <div id="article-column" class="lg:col-span-3 transition-all duration-300 flex flex-col justify-between">
             <article id="note-article" class="prose max-w-none dark:text-[#EDEDE9] bg-white dark:bg-[#0B0C0E] p-6 md:p-10 rounded-md border border-stone-200 dark:border-[#1E2126] shadow-xs leading-relaxed" th:utext="${contentHtml}">
                 Rendered markdown content.
             </article>
+
+            <!-- Bottom Sequential Navigation & Mark Mastered CTA -->
+            <div class="mt-8 pt-6 border-t border-stone-200 dark:border-[#1E2126] flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs">
+                <!-- Previous Note -->
+                <div class="w-full sm:w-auto">
+                    <a th:if="${previousNote != null}" th:href="@{/notes/{id}(id=${previousNote.id})}"
+                       class="w-full sm:w-auto inline-flex items-center gap-2 px-4 py-2.5 rounded-md border border-stone-300 dark:border-[#2A2E35] bg-white dark:bg-[#121418] text-slate-800 dark:text-[#EDEDE9] hover:border-amber-500 dark:hover:border-[#FFB84D] transition shadow-xs">
+                        <span class="text-amber-600 dark:text-[#FFB84D]">← Previous:</span>
+                        <span class="font-bold truncate max-w-[180px]" th:text="${previousNote.title}">Previous Title</span>
+                    </a>
+                </div>
+
+                <!-- Next Note & Mark Mastered Button -->
+                <div class="w-full sm:w-auto flex items-center justify-end gap-2">
+                    <form th:if="${nextNote != null}" th:action="@{/notes/{id}/master-and-next(id=${note.id})}" method="post" class="w-full sm:w-auto">
+                        <button type="submit"
+                                class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-md bg-amber-500 hover:bg-amber-400 dark:bg-[#FFB84D] dark:hover:bg-[#ffd598] text-[#0B0C0E] font-bold shadow-md transition cursor-pointer text-xs">
+                            <span>Mark Mastered & Continue →</span>
+                            <span class="font-normal opacity-85 truncate max-w-[200px]" th:text="'(' + ${nextNote.title} + ')'">(Next Title)</span>
+                        </button>
+                    </form>
+
+                    <a th:if="${nextNote == null}" href="/notes"
+                       class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-md bg-emerald-600 hover:bg-emerald-500 text-white font-bold shadow-md transition text-xs">
+                        <span>🎉 Topic Completed! Return to All Notes</span>
+                    </a>
+                </div>
+            </div>
         </div>
 
         <!-- Sticky TOC Sidebar (Desktop) -->
