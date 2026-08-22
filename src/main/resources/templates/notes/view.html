@@ -96,20 +96,28 @@
                 </div>
 
                 <!-- Course Tree Accordion Folders -->
-                <div class="space-y-3">
+                <div class="space-y-2">
                     <div th:each="entry : ${groupedNotes}" class="space-y-1">
-                        <div class="font-bold text-[11px] text-slate-800 dark:text-[#EDEDE9] flex items-center justify-between py-1">
-                            <span class="truncate pr-1" th:text="'📁 ' + ${entry.key.name}">Folder</span>
-                            <span class="text-[10px] font-normal text-slate-400 dark:text-[#6B7280]" th:text="${entry.value.size()}">0</span>
+                        <!-- Folder Header (Clickable Accordion) -->
+                        <div onclick="toggleFolder(this)"
+                             class="font-bold text-xs text-slate-900 dark:text-[#EDEDE9] flex items-center justify-between py-1.5 px-2 rounded-md hover:bg-stone-100 dark:hover:bg-[#121418] cursor-pointer transition select-none">
+                            <div class="flex items-center gap-1.5 min-w-0">
+                                <span class="folder-arrow text-[10px] text-slate-500 dark:text-[#8E959D] transition-transform duration-200"
+                                      th:style="${entry.value.?[id == #vars.note.id].size() > 0} ? 'transform: rotate(0deg)' : 'transform: rotate(-90deg)'">▼</span>
+                                <span class="truncate font-bold text-slate-900 dark:text-[#EDEDE9]" th:text="'📁 ' + ${entry.key.name}">Folder</span>
+                            </div>
+                            <span class="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-stone-100 dark:bg-[#1E2126] text-slate-700 dark:text-[#EDEDE9]" th:text="${entry.value.size()}">0</span>
                         </div>
-                        <ul class="pl-2 space-y-1 border-l border-stone-200 dark:border-[#1E2126]">
+
+                        <!-- Folder Note Item List -->
+                        <ul th:class="'pl-2.5 space-y-1 border-l-2 border-stone-200 dark:border-[#1E2126] transition-all ' + (${entry.value.?[id == #vars.note.id].size() > 0} ? '' : 'hidden')">
                             <li th:each="n : ${entry.value}">
                                 <a th:href="@{/notes/{id}(id=${n.id})}"
-                                   th:class="'block py-1 px-2 rounded-sm truncate transition text-[11px] flex items-center justify-between ' + (${n.id == note.id} ? 'bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-[#FFB84D] font-bold border-l-2 border-amber-500' : 'text-slate-600 dark:text-[#A2A9B1] hover:text-slate-900 dark:hover:text-[#EDEDE9] hover:bg-stone-100 dark:hover:bg-[#121418]')">
-                                    <span class="truncate" th:text="${n.title}">Title</span>
-                                    <div class="flex items-center gap-1 shrink-0">
-                                        <span th:if="${n.status.name() == 'MASTERED'}" class="text-emerald-500 text-[10px]">✓</span>
-                                        <span th:if="${n.bookmarked}" class="text-amber-500 text-[10px]">🔖</span>
+                                   th:class="'block py-1.5 px-2.5 rounded-md truncate transition text-xs font-semibold flex items-center justify-between ' + (${n.id == note.id} ? 'bg-amber-100 dark:bg-amber-950/60 text-amber-900 dark:text-[#FFB84D] font-bold border-l-3 border-amber-500 shadow-xs' : 'text-slate-800 dark:text-[#EDEDE9] hover:text-amber-600 dark:hover:text-[#FFB84D] hover:bg-stone-100 dark:hover:bg-[#121418]')">
+                                    <span class="truncate font-bold text-slate-900 dark:text-[#EDEDE9]" th:text="${n.title}">Title</span>
+                                    <div class="flex items-center gap-1 shrink-0 ml-1">
+                                        <span th:if="${n.status.name() == 'MASTERED'}" class="text-emerald-500 font-bold text-[11px]">✓</span>
+                                        <span th:if="${n.bookmarked}" class="text-amber-500 text-[11px]">🔖</span>
                                     </div>
                                 </a>
                             </li>
@@ -240,6 +248,22 @@
             });
         }
     });
+
+    // 1. Foldable Directory Accordion Toggle
+    function toggleFolder(headerEl) {
+        const list = headerEl.nextElementSibling;
+        const arrow = headerEl.querySelector('.folder-arrow');
+        if (list) {
+            const isHidden = list.classList.contains('hidden');
+            if (isHidden) {
+                list.classList.remove('hidden');
+                if (arrow) arrow.style.transform = 'rotate(0deg)';
+            } else {
+                list.classList.add('hidden');
+                if (arrow) arrow.style.transform = 'rotate(-90deg)';
+            }
+        }
+    }
 
     // 2. Sidebar & Layout Toggle Controller
     let courseSidebarVisible = true;
