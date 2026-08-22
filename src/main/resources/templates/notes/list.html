@@ -38,11 +38,27 @@
         <span>✨ <span th:text="${message}">Message</span></span>
     </div>
 
+    <!-- Top Mastery Progress Tracker Banner -->
+    <div class="p-4 rounded-md border border-stone-200 dark:border-[#1E2126] bg-white dark:bg-[#0B0C0E] shadow-xs font-mono text-xs space-y-2">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <span class="text-amber-500 font-bold text-sm">📊 Global Course Mastery:</span>
+                <span class="font-bold text-slate-800 dark:text-[#EDEDE9]" th:text="${masteredCount} + ' / ' + ${totalCount} + ' Guides Mastered (' + ${masteryPercentage} + '%)'">0 / 0</span>
+            </div>
+            <span class="text-[11px] text-slate-400 dark:text-[#6B7280] hidden sm:inline">Keep scaling your system design knowledge!</span>
+        </div>
+        <div class="w-full h-2 bg-stone-100 dark:bg-[#121418] rounded-full overflow-hidden border border-stone-200 dark:border-[#1E2126]">
+            <div class="h-full bg-amber-500 dark:bg-[#FFB84D] transition-all" th:style="'width: ' + ${masteryPercentage} + '%'"></div>
+        </div>
+    </div>
+
     <!-- Status Filters -->
     <div class="flex items-center gap-2 text-xs font-mono overflow-x-auto pb-1 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-none">
         <span class="text-slate-400 dark:text-[#6B7280] font-medium uppercase tracking-wider shrink-0">Filter:</span>
         <a href="/notes"
-           th:class="'px-3 py-1 rounded-sm border transition shrink-0 ' + ${selectedStatus == null ? 'bg-slate-900 text-white dark:bg-[#FFB84D] dark:text-[#0B0C0E] border-transparent font-bold' : 'bg-stone-100 dark:bg-[#121418] text-slate-600 dark:text-[#A2A9B1] border-stone-200 dark:border-[#1E2126] hover:border-amber-500'}">All</a>
+           th:class="'px-3 py-1 rounded-sm border transition shrink-0 ' + ${selectedStatus == null and selectedBookmarked == null ? 'bg-slate-900 text-white dark:bg-[#FFB84D] dark:text-[#0B0C0E] border-transparent font-bold' : 'bg-stone-100 dark:bg-[#121418] text-slate-600 dark:text-[#A2A9B1] border-stone-200 dark:border-[#1E2126] hover:border-amber-500'}">All</a>
+        <a href="/notes?bookmarked=true"
+           th:class="'px-3 py-1 rounded-sm border transition shrink-0 ' + ${selectedBookmarked == true ? 'bg-amber-500 text-[#0B0C0E] dark:bg-[#FFB84D] border-transparent font-bold' : 'bg-stone-100 dark:bg-[#121418] text-slate-600 dark:text-[#A2A9B1] border-stone-200 dark:border-[#1E2126] hover:border-amber-500'}">Bookmarked 🔖</a>
         <a th:each="st : ${statuses}" th:href="@{/notes(status=${st})}"
            th:class="'px-3 py-1 rounded-sm border transition shrink-0 ' + ${selectedStatus == st ? 'ring-1 ring-[#FFB84D] font-bold ' + st.badgeCssClass : st.badgeCssClass}"
            th:text="${st.displayName}">Status</a>
@@ -80,8 +96,10 @@
                         <div class="flex items-center gap-2.5 min-w-0">
                             <span class="flex items-center justify-center w-5 h-5 rounded-full bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-[#FFB84D] font-mono text-xs font-bold shrink-0"
                                   th:text="${stat.count}">1</span>
-                            <span class="text-xs font-semibold text-slate-900 dark:text-[#EDEDE9] truncate hover:text-amber-600 dark:hover:text-[#FFB84D] transition"
-                                  th:text="${n.title}">Note Title</span>
+                            <span class="text-xs font-semibold text-slate-900 dark:text-[#EDEDE9] truncate hover:text-amber-600 dark:hover:text-[#FFB84D] transition flex items-center gap-1">
+                                <span th:text="${n.title}">Note Title</span>
+                                <span th:if="${n.bookmarked}">🔖</span>
+                            </span>
                         </div>
                         <span th:class="'text-[0.65rem] px-2 py-0.5 rounded-sm border font-mono font-semibold shrink-0 ' + ${n.status.badgeCssClass}"
                               th:text="${n.status.displayName}">Status</span>

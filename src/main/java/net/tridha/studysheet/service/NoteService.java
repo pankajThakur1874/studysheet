@@ -33,6 +33,10 @@ public class NoteService {
         return noteRepository.findByPinnedTrueOrderByUpdatedAtDesc();
     }
 
+    public List<Note> bookmarked() {
+        return noteRepository.findByBookmarkedTrueOrderByUpdatedAtDesc();
+    }
+
     public List<Note> byTopic(Long topicId) {
         return noteRepository.findByTopicIdOrderByTitleAsc(topicId);
     }
@@ -86,6 +90,13 @@ public class NoteService {
     public void togglePin(Long id) {
         Note note = get(id);
         note.setPinned(!note.isPinned());
+        noteMirrorService.mirror(noteRepository.save(note));
+    }
+
+    @Transactional
+    public void toggleBookmark(Long id) {
+        Note note = get(id);
+        note.setBookmarked(!note.isBookmarked());
         noteMirrorService.mirror(noteRepository.save(note));
     }
 

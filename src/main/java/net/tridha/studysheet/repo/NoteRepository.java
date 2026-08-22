@@ -21,6 +21,8 @@ public interface NoteRepository extends JpaRepository<Note, Long> {
 
     List<Note> findByPinnedTrueOrderByUpdatedAtDesc();
 
+    List<Note> findByBookmarkedTrueOrderByUpdatedAtDesc();
+
     List<Note> findByTopicIdOrderByTitleAsc(Long topicId);
 
     List<Note> findByTopicIdOrderByUpdatedAtDesc(Long topicId);

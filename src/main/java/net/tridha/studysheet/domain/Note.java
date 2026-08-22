@@ -42,6 +42,9 @@ public class Note {
     @Column(nullable = false)
     private boolean pinned = false;
 
+    @Column(nullable = false)
+    private boolean bookmarked = false;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, columnDefinition = "VARCHAR(30) DEFAULT 'TO_STUDY'")
     private StudyStatus status = StudyStatus.TO_STUDY;
@@ -110,6 +113,14 @@ public class Note {
 
     public void setPinned(boolean pinned) {
         this.pinned = pinned;
+    }
+
+    public boolean isBookmarked() {
+        return bookmarked;
+    }
+
+    public void setBookmarked(boolean bookmarked) {
+        this.bookmarked = bookmarked;
     }
 
     public StudyStatus getStatus() {

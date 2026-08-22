@@ -148,6 +148,10 @@
                 <button type="button" onclick="openCmdKModal()" title="Open Command Palette (⌘K)"
                         class="absolute right-1.5 px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-stone-200 dark:bg-[#1E2126] text-stone-600 dark:text-[#A2A9B1] hover:text-amber-600 dark:hover:text-[#FFB84D] transition cursor-pointer">⌘K</button>
             </form>
+            <button type="button" onclick="openSizingModal()" title="System Sizing & QPS Estimator"
+                    class="px-2.5 py-1.5 rounded-md border border-stone-300 dark:border-[#2A2E35] bg-stone-100 dark:bg-[#121418] text-slate-800 dark:text-[#EDEDE9] hover:border-amber-500 dark:hover:border-[#FFB84D] transition flex items-center gap-1 cursor-pointer">
+                <span>🧮 Calc</span>
+            </button>
             <a href="/notes" class="px-3.5 py-1.5 rounded-md bg-amber-500 hover:bg-amber-400 dark:bg-[#FFB84D] dark:hover:bg-[#ffd598] text-[#0B0C0E] font-bold transition shadow-xs">
                 📚 Architecture Hub ↗
             </a>
@@ -157,6 +161,7 @@
 
         <!-- Mobile Controls (Hamburger + Quick Theme Toggle) -->
         <div class="flex lg:hidden items-center gap-2">
+            <button type="button" onclick="openSizingModal()" class="font-mono text-[11px] uppercase tracking-wider font-bold text-slate-700 dark:text-[#EDEDE9] bg-stone-200 dark:bg-[#1E2126] px-2 py-1 rounded-md">🧮 Calc</button>
             <button type="button" onclick="openCmdKModal()" class="font-mono text-[11px] uppercase tracking-wider font-bold text-slate-700 dark:text-[#EDEDE9] bg-stone-200 dark:bg-[#1E2126] px-2 py-1 rounded-md">⌘K</button>
             <a href="/notes" class="font-mono text-[11px] uppercase tracking-wider font-bold text-[#0B0C0E] bg-amber-500 dark:bg-[#FFB84D] px-2.5 py-1 rounded-md">📚 Hub</a>
             <button type="button" onclick="toggleTheme()" title="Toggle theme"
@@ -213,6 +218,7 @@
                 <div>
                     <div class="text-[10px] uppercase tracking-widest text-slate-400 dark:text-[#6B7280] mb-2">Quick Commands</div>
                     <div class="space-y-1.5 text-slate-700 dark:text-[#A2A9B1]">
+                        <button type="button" onclick="closeCmdKModal(); openSizingModal();" class="w-full text-left p-2 rounded hover:bg-stone-100 dark:hover:bg-[#121418] transition">🧮 Open System Sizing & QPS Calculator</button>
                         <a href="/#work" onclick="closeCmdKModal()" class="block p-2 rounded hover:bg-stone-100 dark:hover:bg-[#121418] transition">↗ View Selected Engineering Work</a>
                         <a href="/#experience" onclick="closeCmdKModal()" class="block p-2 rounded hover:bg-stone-100 dark:hover:bg-[#121418] transition">↗ View Staff Engineer Experience</a>
                         <a href="mailto:pankajpream524@gmail.com" class="block p-2 rounded hover:bg-stone-100 dark:hover:bg-[#121418] text-amber-600 dark:text-[#FFB84D] transition">📬 Contact Pankaj Thakur</a>
@@ -224,6 +230,95 @@
             <div class="px-4 py-2.5 bg-stone-100 dark:bg-[#121418] border-t border-stone-200 dark:border-[#1E2126] text-[11px] font-mono text-slate-400 dark:text-[#6B7280] flex justify-between items-center">
                 <span>Press <kbd class="px-1 py-0.5 rounded bg-white dark:bg-[#1E2126] border border-stone-300 dark:border-[#2A2E35]">Enter</kbd> to search</span>
                 <span>StudySheet ⌘K Spotlight</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back-of-the-Envelope System Sizing Calculator Modal -->
+    <div id="sizing-modal" class="fixed inset-0 z-[100] hidden bg-black/80 backdrop-blur-sm flex items-start justify-center pt-6 sm:pt-10 px-4 transition-all overflow-y-auto">
+        <div class="w-full max-w-2xl bg-white dark:bg-[#0B0C0E] border border-stone-300 dark:border-[#1E2126] rounded-lg shadow-2xl overflow-hidden font-mono text-xs my-6">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between border-b border-stone-200 dark:border-[#1E2126] px-5 py-4 bg-stone-50 dark:bg-[#121418]">
+                <div class="flex items-center gap-2">
+                    <span class="text-base">🧮</span>
+                    <h2 class="font-bold text-sm text-slate-900 dark:text-[#EDEDE9]">Back-of-the-Envelope System Estimator</h2>
+                </div>
+                <button type="button" onclick="closeSizingModal()" class="px-2 py-1 rounded border border-stone-300 dark:border-[#2A2E35] text-stone-500 dark:text-[#6B7280] hover:text-amber-500">ESC</button>
+            </div>
+
+            <div class="p-6 space-y-6 max-h-[75vh] overflow-y-auto">
+                <!-- QPS Calculator Section -->
+                <div class="space-y-3 p-4 rounded border border-stone-200 dark:border-[#1E2126] bg-stone-50/50 dark:bg-[#121418]/50">
+                    <h3 class="font-bold text-xs uppercase tracking-wider text-amber-600 dark:text-[#FFB84D]">⚡ QPS Calculator</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[11px] text-slate-500 dark:text-[#6B7280] mb-1">Daily Active Users (DAU):</label>
+                            <input type="number" id="calc-dau" value="10000000" oninput="calculateQPS()"
+                                   class="w-full px-3 py-1.5 rounded border border-stone-300 dark:border-[#2A2E35] bg-white dark:bg-[#0B0C0E] text-slate-900 dark:text-[#EDEDE9] outline-none"/>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] text-slate-500 dark:text-[#6B7280] mb-1">Requests / User / Day:</label>
+                            <input type="number" id="calc-reqs" value="10" oninput="calculateQPS()"
+                                   class="w-full px-3 py-1.5 rounded border border-stone-300 dark:border-[#2A2E35] bg-white dark:bg-[#0B0C0E] text-slate-900 dark:text-[#EDEDE9] outline-none"/>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3 pt-2 text-center">
+                        <div class="p-2.5 rounded bg-white dark:bg-[#0B0C0E] border border-stone-200 dark:border-[#1E2126]">
+                            <div class="text-[10px] text-slate-400 dark:text-[#6B7280] uppercase">Average QPS</div>
+                            <div id="res-avg-qps" class="text-sm font-bold text-slate-900 dark:text-[#EDEDE9]">1,157</div>
+                        </div>
+                        <div class="p-2.5 rounded bg-white dark:bg-[#0B0C0E] border border-stone-200 dark:border-[#1E2126]">
+                            <div class="text-[10px] text-slate-400 dark:text-[#6B7280] uppercase">Peak QPS (2x)</div>
+                            <div id="res-peak-qps" class="text-sm font-bold text-amber-600 dark:text-[#FFB84D]">2,315</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Storage Estimator Section -->
+                <div class="space-y-3 p-4 rounded border border-stone-200 dark:border-[#1E2126] bg-stone-50/50 dark:bg-[#121418]/50">
+                    <h3 class="font-bold text-xs uppercase tracking-wider text-amber-600 dark:text-[#FFB84D]">💾 Storage Estimator</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[11px] text-slate-500 dark:text-[#6B7280] mb-1">Payload Size per Request (KB):</label>
+                            <input type="number" id="calc-size" value="500" oninput="calculateQPS()"
+                                   class="w-full px-3 py-1.5 rounded border border-stone-300 dark:border-[#2A2E35] bg-white dark:bg-[#0B0C0E] text-slate-900 dark:text-[#EDEDE9] outline-none"/>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] text-slate-500 dark:text-[#6B7280] mb-1">Daily Write Ratio (%):</label>
+                            <input type="number" id="calc-ratio" value="10" oninput="calculateQPS()"
+                                   class="w-full px-3 py-1.5 rounded border border-stone-300 dark:border-[#2A2E35] bg-white dark:bg-[#0B0C0E] text-slate-900 dark:text-[#EDEDE9] outline-none"/>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-2 pt-2 text-center">
+                        <div class="p-2 rounded bg-white dark:bg-[#0B0C0E] border border-stone-200 dark:border-[#1E2126]">
+                            <div class="text-[9px] text-slate-400 dark:text-[#6B7280] uppercase">Daily Storage</div>
+                            <div id="res-daily-storage" class="text-xs font-bold text-slate-900 dark:text-[#EDEDE9]">50 GB</div>
+                        </div>
+                        <div class="p-2 rounded bg-white dark:bg-[#0B0C0E] border border-stone-200 dark:border-[#1E2126]">
+                            <div class="text-[9px] text-slate-400 dark:text-[#6B7280] uppercase">1-Year Storage</div>
+                            <div id="res-1yr-storage" class="text-xs font-bold text-slate-900 dark:text-[#EDEDE9]">18.25 TB</div>
+                        </div>
+                        <div class="p-2 rounded bg-white dark:bg-[#0B0C0E] border border-stone-200 dark:border-[#1E2126]">
+                            <div class="text-[9px] text-slate-400 dark:text-[#6B7280] uppercase">5-Year Storage</div>
+                            <div id="res-5yr-storage" class="text-xs font-bold text-amber-600 dark:text-[#FFB84D]">91.25 TB</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Latency Cheat Sheet -->
+                <div class="space-y-2">
+                    <h3 class="font-bold text-xs uppercase tracking-wider text-slate-400 dark:text-[#6B7280]">⏱️ Latency Cheat Sheet (Jeff Dean Numbers)</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-[11px]">
+                        <div class="p-2 rounded bg-stone-100 dark:bg-[#121418]">L1 Cache: <span class="font-bold text-amber-600 dark:text-[#FFB84D]">0.5 ns</span></div>
+                        <div class="p-2 rounded bg-stone-100 dark:bg-[#121418]">RAM Read: <span class="font-bold text-amber-600 dark:text-[#FFB84D]">100 ns</span></div>
+                        <div class="p-2 rounded bg-stone-100 dark:bg-[#121418]">SSD Read: <span class="font-bold text-amber-600 dark:text-[#FFB84D]">150 µs</span></div>
+                        <div class="p-2 rounded bg-stone-100 dark:bg-[#121418]">Datacenter RTT: <span class="font-bold text-amber-600 dark:text-[#FFB84D]">0.5 ms</span></div>
+                        <div class="p-2 rounded bg-stone-100 dark:bg-[#121418]">HDD Seek: <span class="font-bold text-amber-600 dark:text-[#FFB84D]">10 ms</span></div>
+                        <div class="p-2 rounded bg-stone-100 dark:bg-[#121418]">US-EU RTT: <span class="font-bold text-amber-600 dark:text-[#FFB84D]">150 ms</span></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -268,12 +363,57 @@
                 }
             } else if (e.key === 'Escape') {
                 closeCmdKModal();
+                closeSizingModal();
             }
         });
 
         document.getElementById('cmd-k-modal')?.addEventListener('click', function(e) {
             if (e.target === this) closeCmdKModal();
         });
+
+        document.getElementById('sizing-modal')?.addEventListener('click', function(e) {
+            if (e.target === this) closeSizingModal();
+        });
+
+        function openSizingModal() {
+            const modal = document.getElementById('sizing-modal');
+            if (modal) modal.classList.remove('hidden');
+            calculateQPS();
+        }
+
+        function closeSizingModal() {
+            const modal = document.getElementById('sizing-modal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function calculateQPS() {
+            const dau = parseFloat(document.getElementById('calc-dau')?.value || 0);
+            const reqs = parseFloat(document.getElementById('calc-reqs')?.value || 0);
+            const sizeKb = parseFloat(document.getElementById('calc-size')?.value || 0);
+            const ratioPct = parseFloat(document.getElementById('calc-ratio')?.value || 0);
+
+            const totalReqs = dau * reqs;
+            const avgQps = Math.round(totalReqs / 86400);
+            const peakQps = avgQps * 2;
+
+            const writeReqs = totalReqs * (ratioPct / 100);
+            const dailyBytes = writeReqs * sizeKb * 1024;
+            const dailyGb = (dailyBytes / (1024 * 1024 * 1024)).toFixed(2);
+            const yr1Tb = ((dailyBytes * 365) / (1024 * 1024 * 1024 * 1024)).toFixed(2);
+            const yr5Tb = (yr1Tb * 5).toFixed(2);
+
+            const resAvg = document.getElementById('res-avg-qps');
+            const resPeak = document.getElementById('res-peak-qps');
+            const resDaily = document.getElementById('res-daily-storage');
+            const res1yr = document.getElementById('res-1yr-storage');
+            const res5yr = document.getElementById('res-5yr-storage');
+
+            if (resAvg) resAvg.textContent = avgQps.toLocaleString();
+            if (resPeak) resPeak.textContent = peakQps.toLocaleString();
+            if (resDaily) resDaily.textContent = dailyGb + ' GB';
+            if (res1yr) res1yr.textContent = yr1Tb + ' TB';
+            if (res5yr) res5yr.textContent = yr5Tb + ' TB';
+        }
     </script>
 </nav>
 

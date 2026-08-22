@@ -42,6 +42,7 @@ public class NoteController {
                        @RequestParam(required = false) Long topicId,
                        @RequestParam(required = false) Long tagId,
                        @RequestParam(required = false) StudyStatus status,
+                       @RequestParam(required = false) Boolean bookmarked,
                        Model model) {
         java.util.List<Note> activeNotes;
         if (q != null && !q.isBlank()) {
@@ -58,6 +59,10 @@ public class NoteController {
         } else if (status != null) {
             activeNotes = noteService.byStatus(status);
             model.addAttribute("heading", "Status: " + status.getDisplayName());
+        } else if (Boolean.TRUE.equals(bookmarked)) {
+            activeNotes = noteService.bookmarked();
+            model.addAttribute("heading", "Bookmarked Notes 🔖");
+            model.addAttribute("selectedBookmarked", true);
         } else {
             activeNotes = noteService.all();
             model.addAttribute("heading", "All notes");
@@ -78,10 +83,16 @@ public class NoteController {
             model.addAttribute("groupedNotes", groupedNotes);
         }
 
+        long totalCount = noteService.countAll();
+        long masteredCount = noteService.countByStatus(StudyStatus.MASTERED);
+        int percentage = totalCount > 0 ? (int) Math.round(((double) masteredCount / totalCount) * 100) : 0;
+        model.addAttribute("totalCount", totalCount);
+        model.addAttribute("masteredCount", masteredCount);
+        model.addAttribute("masteryPercentage", percentage);
+
         model.addAttribute("q", q);
         model.addAttribute("selectedStatus", status);
         model.addAttribute("statuses", StudyStatus.values());
-        model.addAttribute("topics", topicRepository.findAllByOrderByNameAsc());
         return "notes/list";
     }
 
@@ -139,9 +150,27 @@ public class NoteController {
         Note previousNote = (index > 0) ? peerNotes.get(index - 1) : null;
         Note nextNote = (index >= 0 && index < peerNotes.size() - 1) ? peerNotes.get(index + 1) : null;
 
+        // Group ALL notes for the Left Course Navigation Sidebar
+        List<Note> allNotes = noteService.all();
+        allNotes.sort(NATURAL_NOTE_COMPARATOR);
+        java.util.Map<Topic, List<Note>> groupedNotes = allNotes.stream()
+                .collect(java.util.stream.Collectors.groupingBy(
+                        n -> n.getTopic() != null ? n.getTopic() : new Topic("General Notes", "Uncategorized study guides"),
+                        java.util.LinkedHashMap::new,
+                        java.util.stream.Collectors.toList()
+                ));
+
+        long totalCount = noteService.countAll();
+        long masteredCount = noteService.countByStatus(StudyStatus.MASTERED);
+        int percentage = totalCount > 0 ? (int) Math.round(((double) masteredCount / totalCount) * 100) : 0;
+
         model.addAttribute("note", note);
         model.addAttribute("previousNote", previousNote);
         model.addAttribute("nextNote", nextNote);
+        model.addAttribute("groupedNotes", groupedNotes);
+        model.addAttribute("totalCount", totalCount);
+        model.addAttribute("masteredCount", masteredCount);
+        model.addAttribute("masteryPercentage", percentage);
         model.addAttribute("contentHtml", markdownService.toHtml(note.getContentMd()));
         model.addAttribute("statuses", StudyStatus.values());
         return "notes/view";
@@ -169,6 +198,14 @@ public class NoteController {
 
         redirectAttributes.addFlashAttribute("message", "🎉 Topic Completed! All guides in '" + (currentNote.getTopic() != null ? currentNote.getTopic().getName() : "Chapter") + "' are now mastered.");
         return "redirect:/notes";
+    }
+
+    @PostMapping("/{id}/bookmark")
+    public String toggleBookmark(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        Note note = noteService.get(id);
+        noteService.toggleBookmark(id);
+        redirectAttributes.addFlashAttribute("message", note.isBookmarked() ? "Removed bookmark." : "Saved note to Bookmarks! 🔖");
+        return "redirect:/notes/" + id;
     }
 
     @GetMapping("/new")
