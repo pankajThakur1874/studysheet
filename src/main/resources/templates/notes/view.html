@@ -81,9 +81,9 @@
 
     <!-- Main 3-Column Layout: Course Sidebar + Article + TOC Sidebar -->
     <div id="content-grid" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        <!-- Left Course Tree Sidebar (Desktop 3 Cols) -->
-        <aside id="course-sidebar" class="hidden lg:block lg:col-span-3 transition-all duration-300 font-mono text-xs">
-            <div class="sticky top-20 p-4 rounded-md border border-stone-200 dark:border-[#1E2126] bg-white dark:bg-[#0B0C0E] shadow-xs space-y-4 max-h-[85vh] overflow-y-auto scrollbar-thin">
+        <!-- Left Course Tree Sidebar (Desktop 3 Cols - Sticky Viewport) -->
+        <aside id="course-sidebar" class="hidden lg:block lg:col-span-3 sticky top-20 self-start transition-all duration-300 font-mono text-xs">
+            <div class="p-4 rounded-md border border-stone-200 dark:border-[#1E2126] bg-white dark:bg-[#0B0C0E] shadow-xs space-y-4 max-h-[calc(100vh-6rem)] overflow-y-auto scrollbar-thin">
                 <!-- Course Header & Progress Bar -->
                 <div class="space-y-2 pb-3 border-b border-stone-200 dark:border-[#1E2126]">
                     <div class="flex items-center justify-between">
@@ -162,13 +162,13 @@
             </div>
         </div>
 
-        <!-- Right Sticky TOC Sidebar (Desktop 3 Cols) -->
-        <aside id="toc-sidebar" class="hidden lg:block lg:col-span-3 transition-all duration-300">
-            <div class="sticky top-20 p-5 rounded-md border border-stone-200 dark:border-[#1E2126] bg-white dark:bg-[#0B0C0E] shadow-xs">
+        <!-- Right Sticky TOC Sidebar (Desktop 3 Cols - Sticky Viewport) -->
+        <aside id="toc-sidebar" class="hidden lg:block lg:col-span-3 sticky top-20 self-start transition-all duration-300">
+            <div class="p-5 rounded-md border border-stone-200 dark:border-[#1E2126] bg-white dark:bg-[#0B0C0E] shadow-xs max-h-[calc(100vh-6rem)] overflow-y-auto scrollbar-thin">
                 <h3 class="font-mono text-xs font-bold text-slate-400 dark:text-[#6B7280] uppercase tracking-widest mb-4 flex items-center gap-1.5">
                     <span>📑 Table of Contents</span>
                 </h3>
-                <nav id="toc-nav" class="font-mono text-xs space-y-1.5 text-slate-600 dark:text-[#A2A9B1] max-h-[70vh] overflow-y-auto">
+                <nav id="toc-nav" class="font-mono text-xs space-y-1.5 text-slate-600 dark:text-[#A2A9B1]">
                     <p id="toc-empty" class="text-slate-400 dark:text-[#6B7280] italic">No headings in this note.</p>
                 </nav>
             </div>
