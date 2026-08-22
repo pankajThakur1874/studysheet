@@ -113,6 +113,16 @@ public class NoteController {
         return null;
     }
 
+    private int findNoteIndex(List<Note> notes, Long targetId) {
+        if (notes == null || targetId == null) return -1;
+        for (int i = 0; i < notes.size(); i++) {
+            if (targetId.equals(notes.get(i).getId())) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     @GetMapping("/{id}")
     public String view(@PathVariable Long id, Model model) {
         Note note = noteService.get(id);
@@ -125,7 +135,7 @@ public class NoteController {
         }
         peerNotes.sort(NATURAL_NOTE_COMPARATOR);
 
-        int index = peerNotes.indexOf(note);
+        int index = findNoteIndex(peerNotes, id);
         Note previousNote = (index > 0) ? peerNotes.get(index - 1) : null;
         Note nextNote = (index >= 0 && index < peerNotes.size() - 1) ? peerNotes.get(index + 1) : null;
 
@@ -150,7 +160,7 @@ public class NoteController {
         }
         peerNotes.sort(NATURAL_NOTE_COMPARATOR);
 
-        int index = peerNotes.indexOf(currentNote);
+        int index = findNoteIndex(peerNotes, id);
         if (index >= 0 && index < peerNotes.size() - 1) {
             Note nextNote = peerNotes.get(index + 1);
             redirectAttributes.addFlashAttribute("message", "Marked '" + currentNote.getTitle() + "' as Mastered! 🎉");

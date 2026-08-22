@@ -159,4 +159,17 @@ public class Note {
         int minutes = (int) Math.ceil((double) words / 200);
         return minutes <= 1 ? "1 min read" : minutes + " min read";
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Note note = (Note) o;
+        return id != null && id.equals(note.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }
