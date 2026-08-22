@@ -87,13 +87,13 @@
     <!-- Main 3-Column Layout: Course Sidebar + Article + TOC Sidebar -->
     <div id="content-grid" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         <!-- Left Course Tree Sidebar (Desktop 3 Cols - Sticky Viewport) -->
-        <aside id="course-sidebar" class="hidden lg:block lg:col-span-3 sticky top-20 self-start transition-all duration-300 font-mono text-xs">
+        <aside id="course-sidebar" class="hidden lg:block lg:col-span-3 sticky top-20 self-start transition-all duration-300 font-serif text-xs">
             <div class="p-4 rounded-md border border-stone-200 dark:border-[#1E2126] bg-white dark:bg-[#0B0C0E] shadow-xs space-y-4 max-h-[calc(100vh-6rem)] overflow-y-auto scrollbar-thin">
                 <!-- Course Header & Progress Bar -->
                 <div class="space-y-2 pb-3 border-b border-stone-200 dark:border-[#1E2126]">
                     <div class="flex items-center justify-between">
-                        <span class="text-[10px] uppercase tracking-widest text-slate-400 dark:text-[#6B7280]">Course Progress</span>
-                        <span class="font-bold text-amber-600 dark:text-[#FFB84D]" th:text="${masteredCount} + '/' + ${totalCount} + ' Mastered'">0/0</span>
+                        <span class="text-[10px] font-mono uppercase tracking-widest text-slate-400 dark:text-[#6B7280]">Course Progress</span>
+                        <span class="font-mono font-bold text-amber-600 dark:text-[#FFB84D]" th:text="${masteredCount} + '/' + ${totalCount} + ' Mastered'">0/0</span>
                     </div>
                     <div class="w-full h-1.5 bg-stone-200 dark:bg-[#121418] rounded-full overflow-hidden">
                         <div class="h-full bg-amber-500 dark:bg-[#FFB84D] transition-all" th:style="'width: ' + ${masteryPercentage} + '%'"></div>
@@ -101,11 +101,11 @@
                 </div>
 
                 <!-- Course Tree Accordion Folders -->
-                <div class="space-y-2">
+                <div class="space-y-2 font-serif">
                     <div th:each="entry : ${groupedNotes}" class="space-y-1">
                         <!-- Folder Header (Clickable Accordion) -->
                         <div onclick="toggleFolder(this)"
-                             class="font-bold text-xs text-slate-900 dark:text-[#EDEDE9] flex items-center justify-between py-1.5 px-2 rounded-md hover:bg-stone-100 dark:hover:bg-[#121418] cursor-pointer transition select-none">
+                             class="font-serif font-bold text-xs text-slate-900 dark:text-[#EDEDE9] flex items-center justify-between py-1.5 px-2 rounded-md hover:bg-stone-100 dark:hover:bg-[#121418] cursor-pointer transition select-none">
                             <div class="flex items-center gap-1.5 min-w-0">
                                 <span class="folder-arrow text-[10px] text-slate-500 dark:text-[#8E959D] transition-transform duration-200"
                                       th:style="${entry.value.?[id == #vars.note.id].size() > 0} ? 'transform: rotate(0deg)' : 'transform: rotate(-90deg)'">▼</span>
@@ -118,7 +118,7 @@
                         <ul th:class="'pl-2.5 space-y-1 border-l-2 border-stone-200 dark:border-[#1E2126] transition-all ' + (${entry.value.?[id == #vars.note.id].size() > 0} ? '' : 'hidden')">
                             <li th:each="n : ${entry.value}">
                                 <a th:href="@{/notes/{id}(id=${n.id})}"
-                                   th:class="'block py-1.5 px-2.5 rounded-md truncate transition text-xs font-semibold flex items-center justify-between ' + (${n.id == note.id} ? 'bg-amber-100 dark:bg-amber-950/60 text-amber-900 dark:text-[#FFB84D] font-bold border-l-3 border-amber-500 shadow-xs' : 'text-slate-800 dark:text-[#EDEDE9] hover:text-amber-600 dark:hover:text-[#FFB84D] hover:bg-stone-100 dark:hover:bg-[#121418]')">
+                                   th:class="'block py-1.5 px-2.5 rounded-md truncate transition text-xs font-serif font-semibold flex items-center justify-between ' + (${n.id == note.id} ? 'bg-amber-100 dark:bg-amber-950/60 text-amber-900 dark:text-[#FFB84D] font-bold border-l-3 border-amber-500 shadow-xs' : 'text-slate-800 dark:text-[#EDEDE9] hover:text-amber-600 dark:hover:text-[#FFB84D] hover:bg-stone-100 dark:hover:bg-[#121418]')">
                                     <span class="truncate font-bold text-slate-900 dark:text-[#EDEDE9]" th:text="${n.title}">Title</span>
                                     <div class="flex items-center gap-1 shrink-0 ml-1">
                                         <span th:if="${n.status.name() == 'MASTERED'}" class="text-emerald-500 font-bold text-[11px]">✓</span>
@@ -168,12 +168,12 @@
         </div>
 
         <!-- Right Sticky TOC Sidebar (Desktop 3 Cols - Sticky Viewport) -->
-        <aside id="toc-sidebar" class="hidden lg:block lg:col-span-3 sticky top-20 self-start transition-all duration-300">
+        <aside id="toc-sidebar" class="hidden lg:block lg:col-span-3 sticky top-20 self-start transition-all duration-300 font-serif text-xs">
             <div class="p-5 rounded-md border border-stone-200 dark:border-[#1E2126] bg-white dark:bg-[#0B0C0E] shadow-xs max-h-[calc(100vh-6rem)] overflow-y-auto scrollbar-thin">
-                <h3 class="font-mono text-xs font-bold text-slate-400 dark:text-[#6B7280] uppercase tracking-widest mb-4 flex items-center gap-1.5">
+                <h3 class="font-serif text-xs font-bold text-slate-800 dark:text-[#EDEDE9] uppercase tracking-widest mb-4 flex items-center gap-1.5">
                     <span>📑 Table of Contents</span>
                 </h3>
-                <nav id="toc-nav" class="font-mono text-xs space-y-1.5 text-slate-600 dark:text-[#A2A9B1]">
+                <nav id="toc-nav" class="font-serif text-xs space-y-1.5 text-slate-800 dark:text-[#EDEDE9]">
                     <p id="toc-empty" class="text-slate-400 dark:text-[#6B7280] italic">No headings in this note.</p>
                 </nav>
             </div>
@@ -273,11 +273,15 @@
     // 1b. Font Family Switcher (Serif vs Sans)
     function toggleArticleFont() {
         const article = document.getElementById("note-article");
+        const courseSidebar = document.getElementById("course-sidebar");
+        const tocSidebar = document.getElementById("toc-sidebar");
         const fontBtn = document.getElementById("font-toggle-btn");
         if (article) {
             if (article.classList.contains("font-serif")) {
                 article.classList.remove("font-serif", "prose-serif");
                 article.classList.add("font-sans");
+                if (courseSidebar) { courseSidebar.classList.remove("font-serif"); courseSidebar.classList.add("font-sans"); }
+                if (tocSidebar) { tocSidebar.classList.remove("font-serif"); tocSidebar.classList.add("font-sans"); }
                 if (fontBtn) {
                     fontBtn.textContent = "🔤 Sans Font";
                     fontBtn.classList.remove("bg-amber-100", "dark:bg-amber-950/60", "border-amber-500", "text-amber-800", "dark:text-[#FFB84D]");
@@ -286,6 +290,8 @@
             } else {
                 article.classList.remove("font-sans");
                 article.classList.add("font-serif", "prose-serif");
+                if (courseSidebar) { courseSidebar.classList.remove("font-sans"); courseSidebar.classList.add("font-serif"); }
+                if (tocSidebar) { tocSidebar.classList.remove("font-sans"); tocSidebar.classList.add("font-serif"); }
                 if (fontBtn) {
                     fontBtn.textContent = "✒️ Serif Font";
                     fontBtn.classList.add("bg-amber-100", "dark:bg-amber-950/60", "border-amber-500", "text-amber-800", "dark:text-[#FFB84D]");
