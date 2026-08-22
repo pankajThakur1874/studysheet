@@ -37,9 +37,17 @@
         </div>
 
         <div class="flex flex-wrap items-center gap-2 shrink-0 font-mono text-xs">
-            <!-- Focus Mode Button -->
-            <button type="button" onclick="toggleFocusMode()" id="focus-btn"
-                    class="px-3 py-1.5 rounded-sm border border-stone-300 dark:border-[#2A2E35] bg-stone-100 dark:bg-[#121418] text-slate-800 dark:text-[#EDEDE9] hover:border-amber-500 transition shadow-xs">
+            <!-- Sidebar Toggles -->
+            <button type="button" onclick="toggleCourseSidebar()" id="btn-toggle-course" title="Toggle Left Course Navigation Sidebar"
+                    class="px-2.5 py-1.5 rounded-sm border border-stone-300 dark:border-[#2A2E35] bg-amber-100 dark:bg-amber-950/60 border-amber-500 text-amber-700 dark:text-[#FFB84D] font-medium transition cursor-pointer">
+                📁 Sidebar
+            </button>
+            <button type="button" onclick="toggleTocSidebar()" id="btn-toggle-toc" title="Toggle Right Table of Contents Sidebar"
+                    class="px-2.5 py-1.5 rounded-sm border border-stone-300 dark:border-[#2A2E35] bg-amber-100 dark:bg-amber-950/60 border-amber-500 text-amber-700 dark:text-[#FFB84D] font-medium transition cursor-pointer">
+                📑 TOC
+            </button>
+            <button type="button" onclick="toggleFocusMode()" id="focus-btn" title="Toggle Full Focus Mode (Hides Both Sidebars)"
+                    class="px-3 py-1.5 rounded-sm border border-stone-300 dark:border-[#2A2E35] bg-stone-100 dark:bg-[#121418] text-slate-800 dark:text-[#EDEDE9] hover:border-amber-500 transition shadow-xs cursor-pointer">
                 🎯 Focus Mode
             </button>
 
@@ -233,31 +241,101 @@
         }
     });
 
-    // 2. Focus Mode Toggle
-    let focusModeActive = false;
+    // 2. Sidebar & Layout Toggle Controller
+    let courseSidebarVisible = true;
+    let tocSidebarVisible = true;
+
+    function toggleCourseSidebar() {
+        courseSidebarVisible = !courseSidebarVisible;
+        updateLayoutColumns();
+    }
+
+    function toggleTocSidebar() {
+        tocSidebarVisible = !tocSidebarVisible;
+        updateLayoutColumns();
+    }
+
     function toggleFocusMode() {
-        focusModeActive = !focusModeActive;
-        const sidebar = document.getElementById("toc-sidebar");
+        if (courseSidebarVisible || tocSidebarVisible) {
+            courseSidebarVisible = false;
+            tocSidebarVisible = false;
+        } else {
+            courseSidebarVisible = true;
+            tocSidebarVisible = true;
+        }
+        updateLayoutColumns();
+    }
+
+    function updateLayoutColumns() {
+        const courseSidebar = document.getElementById("course-sidebar");
+        const tocSidebar = document.getElementById("toc-sidebar");
         const articleCol = document.getElementById("article-column");
-        const mainContainer = document.getElementById("main-container");
+        const courseBtn = document.getElementById("btn-toggle-course");
+        const tocBtn = document.getElementById("btn-toggle-toc");
         const focusBtn = document.getElementById("focus-btn");
 
-        if (focusModeActive) {
-            if (sidebar) sidebar.classList.add("hidden");
-            articleCol.classList.remove("lg:col-span-3");
-            articleCol.classList.add("lg:col-span-4");
-            mainContainer.classList.remove("max-w-6xl");
-            mainContainer.classList.add("max-w-3xl");
-            focusBtn.textContent = "📖 Exit Focus";
-            focusBtn.classList.add("ring-1", "ring-amber-500");
-        } else {
-            if (sidebar) sidebar.classList.remove("hidden");
-            articleCol.classList.remove("lg:col-span-4");
-            articleCol.classList.add("lg:col-span-3");
-            mainContainer.classList.remove("max-w-3xl");
-            mainContainer.classList.add("max-w-6xl");
-            focusBtn.textContent = "🎯 Focus Mode";
-            focusBtn.classList.remove("ring-1", "ring-amber-500");
+        // Toggle Left Course Sidebar
+        if (courseSidebar) {
+            if (courseSidebarVisible) {
+                courseSidebar.classList.remove("hidden");
+                if (courseBtn) {
+                    courseBtn.classList.add("bg-amber-100", "dark:bg-amber-950/60", "border-amber-500", "text-amber-700", "dark:text-[#FFB84D]");
+                    courseBtn.classList.remove("opacity-60");
+                }
+            } else {
+                courseSidebar.classList.add("hidden");
+                if (courseBtn) {
+                    courseBtn.classList.remove("bg-amber-100", "dark:bg-amber-950/60", "border-amber-500", "text-amber-700", "dark:text-[#FFB84D]");
+                    courseBtn.classList.add("opacity-60");
+                }
+            }
+        }
+
+        // Toggle Right TOC Sidebar
+        if (tocSidebar) {
+            if (tocSidebarVisible) {
+                tocSidebar.classList.remove("hidden");
+                if (tocBtn) {
+                    tocBtn.classList.add("bg-amber-100", "dark:bg-amber-950/60", "border-amber-500", "text-amber-700", "dark:text-[#FFB84D]");
+                    tocBtn.classList.remove("opacity-60");
+                }
+            } else {
+                tocSidebar.classList.add("hidden");
+                if (tocBtn) {
+                    tocBtn.classList.remove("bg-amber-100", "dark:bg-amber-950/60", "border-amber-500", "text-amber-700", "dark:text-[#FFB84D]");
+                    tocBtn.classList.add("opacity-60");
+                }
+            }
+        }
+
+        // Recalculate Column Spans
+        if (articleCol) {
+            articleCol.className = "transition-all duration-300 flex flex-col justify-between ";
+            if (courseSidebarVisible && tocSidebarVisible) {
+                articleCol.classList.add("lg:col-span-6");
+                if (focusBtn) {
+                    focusBtn.textContent = "🎯 Focus Mode";
+                    focusBtn.classList.remove("ring-1", "ring-amber-500");
+                }
+            } else if (courseSidebarVisible && !tocSidebarVisible) {
+                articleCol.classList.add("lg:col-span-9");
+                if (focusBtn) {
+                    focusBtn.textContent = "📖 Exit Focus";
+                    focusBtn.classList.add("ring-1", "ring-amber-500");
+                }
+            } else if (!courseSidebarVisible && tocSidebarVisible) {
+                articleCol.classList.add("lg:col-span-9");
+                if (focusBtn) {
+                    focusBtn.textContent = "📖 Exit Focus";
+                    focusBtn.classList.add("ring-1", "ring-amber-500");
+                }
+            } else {
+                articleCol.classList.add("lg:col-span-12", "max-w-4xl", "mx-auto", "w-full");
+                if (focusBtn) {
+                    focusBtn.textContent = "📖 Exit Focus";
+                    focusBtn.classList.add("ring-1", "ring-amber-500");
+                }
+            }
         }
     }
 
