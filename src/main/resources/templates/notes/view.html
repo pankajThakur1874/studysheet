@@ -7,7 +7,7 @@
 
 <nav th:replace="~{fragments/layout :: nav}"></nav>
 
-<main id="main-container" class="max-w-6xl mx-auto px-4 sm:px-6 py-6 md:py-10 transition-all duration-300">
+<main id="main-container" class="w-full max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 transition-all duration-300">
     <!-- Flash Message Notification -->
     <div th:if="${message != null}" class="mb-6 p-4 rounded-md bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/60 text-xs font-mono text-amber-800 dark:text-[#FFB84D] flex items-center justify-between shadow-xs">
         <span>✨ <span th:text="${message}">Message</span></span>
