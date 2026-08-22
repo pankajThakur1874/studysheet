@@ -13,10 +13,10 @@
             document.documentElement.classList.add('dark');
         }
     </script>
-    <!-- Google Fonts: Lora (Serif), Merriweather (Serif), Space Grotesk & JetBrains Mono -->
+    <!-- Google Fonts: Space Grotesk (500,600), IBM Plex Sans (400,500), JetBrains Mono (400,500) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
-    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600&display=swap" rel="stylesheet" />
 
     <!-- Prism.js for code syntax highlighting -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet"/>
@@ -25,39 +25,275 @@
         html { scroll-behavior: smooth; }
         body { font-family: 'Space Grotesk', sans-serif; -webkit-font-smoothing: antialiased; }
         .font-mono { font-family: 'JetBrains Mono', monospace; }
-        .font-serif { font-family: 'Lora', 'Merriweather', Georgia, Cambria, 'Times New Roman', serif; }
-        ::selection { background: #FFB84D; color: #0B0C0E; }
+        .font-sans, .font-body { font-family: 'IBM Plex Sans', sans-serif; }
+        .font-heading { font-family: 'Space Grotesk', sans-serif; font-weight: 600; letter-spacing: -0.02em; }
+
+        ::selection { background: rgba(29, 78, 216, 0.2); color: #1D4ED8; }
         .dark body { background: #0B0C0E; color: #EDEDE9; }
 
-        /* Long-Form Reading Serif Typography for Study Notes */
-        .prose-serif, .prose p, .prose li, .prose blockquote {
-            font-family: 'Lora', 'Merriweather', Georgia, Cambria, 'Times New Roman', serif;
-            font-size: 1.1rem;
-            line-height: 1.85;
-            color: inherit;
+        /* Small Chrome Labels: JetBrains Mono 10.5px, letter-spacing 0.14em, uppercase, #8A9099 */
+        .chrome-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10.5px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: #8A9099;
         }
 
-        .prose pre { position: relative; background:#1e1e2e; color:#cdd6f4; padding:1.25rem 1rem 1rem 1rem; border-radius:.75rem; overflow-x:auto; -webkit-overflow-scrolling: touch; font-family: 'JetBrains Mono', monospace; }
-        .prose code:not(pre code) { background:rgba(255,184,77,.12); color:#e69519; padding:.2rem .4rem; border-radius:.375rem; font-size:.875em; font-family: 'JetBrains Mono', monospace; }
-        .dark .prose code:not(pre code) { background:rgba(255,184,77,.18); color:#FFB84D; }
-        .prose h1{font-size:1.85rem;font-weight:700;margin:1.5rem 0 .75rem; color: inherit; font-family: 'Space Grotesk', sans-serif;}
-        .prose h2{font-size:1.45rem;font-weight:600;margin:1.35rem 0 .6rem; color: inherit; border-bottom: 1px solid rgba(156,163,175,0.2); padding-bottom: 0.3rem; font-family: 'Space Grotesk', sans-serif;}
-        .prose h3{font-size:1.2rem;font-weight:600;margin:1.1rem 0 .5rem; color: inherit; font-family: 'Space Grotesk', sans-serif;}
-        .prose p{margin:.85rem 0;line-height:1.85;}
-        .prose ul{list-style:disc;margin:.75rem 0 .75rem 1.5rem}
-        .prose ol{list-style:decimal;margin:.75rem 0 .75rem 1.5rem}
-        .prose a{color:#4f46e5;text-decoration:underline; font-weight: 500;}
-        .dark .prose a{color:#818cf8;}
-        .prose blockquote{border-left:4px solid #6366f1; background: rgba(99,102,241,0.05); border-radius: 0 .5rem .5rem 0; padding:.75rem 1rem; color:inherit; margin:.9rem 0}
-        .prose table{border-collapse:collapse;margin:1rem 0; width: 100%; display: block; overflow-x: auto; -webkit-overflow-scrolling: touch;}
-        .prose th,.prose td{border:1px solid #e5e7eb;padding:.5rem .85rem}
-        .dark .prose th,.dark .prose td{border-color:#374151;}
-        .prose th { background: rgba(156,163,175,0.1); font-weight: 600; }
-        
-        /* Interactive Self-Quiz Details & Callouts */
-        .prose details { background: rgba(99,102,241,0.06); border: 1px solid rgba(99,102,241,0.2); border-radius: 0.75rem; padding: 0.75rem 1rem; margin: 1rem 0; transition: all 0.2s ease; }
-        .prose details[open] { background: rgba(99,102,241,0.09); }
-        .prose summary { font-weight: 600; cursor: pointer; color: #4f46e5; user-select: none; }
+        /* Headings: Space Grotesk 600, letter-spacing: -0.02em */
+        .prose h1, .page-h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: clamp(34px, 3.5vw, 46px);
+            line-height: 1.05;
+            letter-spacing: -0.02em;
+            text-wrap: balance;
+            color: #101828;
+            margin-top: 1.5rem;
+            margin-bottom: 1.25rem;
+        }
+        .dark .prose h1, .dark .page-h1 { color: #EDEDE9; }
+
+        .prose h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 25px;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            margin-top: 52px;
+            margin-bottom: 0;
+            color: #101828;
+            border-bottom: 0;
+            padding-bottom: 0;
+        }
+        .dark .prose h2 { color: #EDEDE9; }
+
+        /* Section rhythm: 1px #F1EDE6 rule with 18px above / 26px below */
+        .prose h2 + hr, .section-rule {
+            border: 0;
+            border-top: 1px solid #F1EDE6;
+            margin-top: 18px;
+            margin-bottom: 26px;
+        }
+        .dark .prose h2 + hr, .dark .section-rule {
+            border-top-color: #1E2126;
+        }
+
+        .prose h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 1.15rem;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #101828;
+        }
+        .dark .prose h3 { color: #EDEDE9; }
+
+        /* Article Body: IBM Plex Sans 400, 18px, line-height 1.65, letter-spacing -0.005em, #26303B */
+        .prose {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 18px;
+            line-height: 1.65;
+            letter-spacing: -0.005em;
+            color: #26303B;
+            text-wrap: pretty;
+            max-width: 72ch;
+        }
+        .dark .prose { color: #EDEDE9; }
+
+        .prose p {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 18px;
+            line-height: 1.65;
+            letter-spacing: -0.005em;
+            color: #26303B;
+            text-wrap: pretty;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+        .dark .prose p { color: #EDEDE9; }
+
+        .prose ul, .prose ol {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+            padding-left: 22px;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+        .prose ul { list-style-type: disc; }
+        .prose ol { list-style-type: decimal; }
+
+        .prose li {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 18px;
+            line-height: 1.65;
+            letter-spacing: -0.005em;
+            color: #26303B;
+        }
+        .dark .prose li { color: #EDEDE9; }
+
+        .prose a {
+            color: #1D4ED8;
+            text-decoration: underline;
+            font-weight: 500;
+        }
+        .dark .prose a { color: #60A5FA; }
+
+        .prose blockquote {
+            border-left: 4px solid #1D4ED8;
+            background: rgba(29, 78, 216, 0.05);
+            border-radius: 0 0.5rem 0.5rem 0;
+            padding: 0.75rem 1rem;
+            color: inherit;
+            margin: 1.25rem 0;
+        }
+
+        .prose table {
+            border-collapse: collapse;
+            margin: 1.25rem 0;
+            width: 100%;
+            display: block;
+            overflow-x: auto;
+        }
+        .prose th, .prose td {
+            border: 1px solid #E5E7EB;
+            padding: 0.5rem 0.85rem;
+            font-size: 16px;
+        }
+        .dark .prose th, .dark .prose td { border-color: #2E3742; }
+
+        /* Code Blocks: background #141922, rounded 10px, padding 16px 18px 20px */
+        .prose pre {
+            position: relative;
+            background: #141922;
+            border-radius: 10px;
+            padding: 16px 18px 20px;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            line-height: 1.7;
+            color: #E6EDF3;
+            font-variant-ligatures: normal;
+            font-feature-settings: "liga" 1, "calt" 1;
+            margin-top: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .prose code:not(pre code) {
+            background: rgba(29, 78, 216, 0.08);
+            color: #1D4ED8;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.375rem;
+            font-size: 14px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .dark .prose code:not(pre code) {
+            background: rgba(29, 78, 216, 0.2);
+            color: #93C5FD;
+        }
+
+        .prose pre code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            line-height: 1.7;
+            color: #E6EDF3;
+            font-variant-ligatures: normal;
+            font-feature-settings: "liga" 1, "calt" 1;
+            background: transparent;
+            padding: 0;
+        }
+
+        /* Copy Button: Mono 11px, #C9D1D9 on #232B36 with 1px solid #2E3742 */
+        .code-copy-btn {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: #C9D1D9;
+            background-color: #232B36;
+            border: 1px solid #2E3742;
+            border-radius: 4px;
+            padding: 4px 8px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .code-copy-btn:hover {
+            background-color: #2E3742;
+            color: #FFFFFF;
+        }
+
+        /* Sidebars Recede Styling: Space Grotesk at 13px */
+        .nav-item-link {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            color: #4B5563;
+            padding: 8px 10px;
+            border-radius: 6px;
+            transition: all 0.15s ease;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .dark .nav-item-link { color: #9CA3AF; }
+        .nav-item-link:hover {
+            background-color: #F6F3ED;
+            color: #101828;
+        }
+        .dark .nav-item-link:hover {
+            background-color: #1E2126;
+            color: #EDEDE9;
+        }
+        .nav-item-link.active {
+            font-weight: 600;
+            color: #101828;
+            background-color: rgba(29, 78, 216, 0.12);
+            box-shadow: inset 2px 0 0 #1D4ED8;
+        }
+        .dark .nav-item-link.active {
+            color: #FFFFFF;
+            background-color: rgba(29, 78, 216, 0.22);
+            box-shadow: inset 2px 0 0 #1D4ED8;
+        }
+
+        .toc-item-top {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            color: #26303B;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            display: block;
+            padding: 4px 6px;
+            border-radius: 4px;
+        }
+        .dark .toc-item-top { color: #EDEDE9; }
+
+        .toc-item-nested {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 13px;
+            font-weight: 400;
+            color: #6B7280;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            display: block;
+            padding: 3px 6px 3px 22px;
+        }
+        .dark .toc-item-nested { color: #9CA3AF; }
+
+        .toc-item-active {
+            color: #1D4ED8 !important;
+            font-weight: 600 !important;
+        }
 
         /* Smooth Aesthetic Animations */
         @keyframes fadeInUp {

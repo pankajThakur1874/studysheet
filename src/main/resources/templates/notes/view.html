@@ -17,13 +17,13 @@
     <div class="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-8 pb-6 border-b border-stone-200 dark:border-[#1E2126]">
         <div class="space-y-3">
             <div class="flex items-center gap-3 flex-wrap">
-                <h1 class="text-2xl md:text-4xl font-medium tracking-tight text-slate-900 dark:text-[#EDEDE9] leading-tight" th:text="${note.title}">Title</h1>
+                <h1 class="page-h1" th:text="${note.title}">Title</h1>
                 <span th:class="'text-xs px-2.5 py-1 rounded-sm border font-mono font-semibold ' + ${note.status.badgeCssClass}"
                       th:text="${note.status.displayName}">Status</span>
             </div>
             <div class="flex flex-wrap items-center gap-2 font-mono text-xs text-slate-400 dark:text-[#6B7280]">
                 <span th:if="${note.topic != null}"
-                      class="px-2.5 py-0.5 rounded-sm bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-[#FFB84D] border border-amber-200 dark:border-amber-900/60 font-medium"
+                      class="px-2.5 py-0.5 rounded-sm bg-blue-50 dark:bg-blue-950/40 text-[#1D4ED8] dark:text-blue-400 border border-blue-200 dark:border-blue-900/60 font-medium"
                       th:text="${note.topic.name}">Topic</span>
                 <span class="px-2.5 py-0.5 rounded-sm bg-stone-100 dark:bg-[#121418] text-slate-600 dark:text-[#A2A9B1]"
                       th:text="'⏱️ ' + ${note.estimatedReadingTime}">⏱️ 2 min read</span>
@@ -39,21 +39,16 @@
         <div class="flex flex-wrap items-center gap-2 shrink-0 font-mono text-xs">
             <!-- Sidebar Toggles -->
             <button type="button" onclick="toggleCourseSidebar()" id="btn-toggle-course" title="Toggle Left Course Navigation Sidebar"
-                    class="px-2.5 py-1.5 rounded-sm border border-stone-300 dark:border-[#2A2E35] bg-amber-100 dark:bg-amber-950/60 border-amber-500 text-amber-700 dark:text-[#FFB84D] font-medium transition cursor-pointer">
+                    class="px-2.5 py-1.5 rounded-sm border border-stone-300 dark:border-[#2A2E35] bg-blue-50 dark:bg-blue-950/60 border-blue-500 text-[#1D4ED8] dark:text-blue-400 font-medium transition cursor-pointer">
                 📁 Sidebar
             </button>
             <button type="button" onclick="toggleTocSidebar()" id="btn-toggle-toc" title="Toggle Right Table of Contents Sidebar"
-                    class="px-2.5 py-1.5 rounded-sm border border-stone-300 dark:border-[#2A2E35] bg-amber-100 dark:bg-amber-950/60 border-amber-500 text-amber-700 dark:text-[#FFB84D] font-medium transition cursor-pointer">
+                    class="px-2.5 py-1.5 rounded-sm border border-stone-300 dark:border-[#2A2E35] bg-blue-50 dark:bg-blue-950/60 border-blue-500 text-[#1D4ED8] dark:text-blue-400 font-medium transition cursor-pointer">
                 📑 TOC
             </button>
             <button type="button" onclick="toggleFocusMode()" id="focus-btn" title="Toggle Full Focus Mode (Hides Both Sidebars)"
-                    class="px-3 py-1.5 rounded-sm border border-stone-300 dark:border-[#2A2E35] bg-stone-100 dark:bg-[#121418] text-slate-800 dark:text-[#EDEDE9] hover:border-amber-500 transition shadow-xs cursor-pointer">
+                    class="px-3 py-1.5 rounded-sm border border-stone-300 dark:border-[#2A2E35] bg-stone-100 dark:bg-[#121418] text-slate-800 dark:text-[#EDEDE9] hover:border-blue-500 transition shadow-xs cursor-pointer">
                 🎯 Focus Mode
-            </button>
-            <!-- Font Style Switcher -->
-            <button type="button" onclick="toggleArticleFont()" id="font-toggle-btn" title="Toggle Article Font Style (Serif vs Sans-Serif)"
-                    class="px-2.5 py-1.5 rounded-sm border border-amber-500 bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-[#FFB84D] font-bold transition shadow-xs cursor-pointer">
-                ✒️ Serif Font
             </button>
 
             <!-- Quick Status Change Dropdown -->
@@ -67,7 +62,7 @@
 
             <!-- Bookmark Button -->
             <form th:action="@{/notes/{id}/bookmark(id=${note.id})}" method="post">
-                <button type="submit" class="px-3 py-1.5 rounded-sm border border-stone-300 dark:border-[#2A2E35] bg-stone-100 dark:bg-[#121418] hover:border-amber-500 font-medium transition"
+                <button type="submit" class="px-3 py-1.5 rounded-sm border border-stone-300 dark:border-[#2A2E35] bg-stone-100 dark:bg-[#121418] hover:border-blue-500 font-medium transition"
                         th:text="${note.bookmarked} ? '🔖 Saved' : '🔖 Bookmark'">Bookmark</button>
             </form>
 
@@ -76,7 +71,7 @@
                         th:text="${note.pinned} ? 'Unpin' : '📌 Pin'">Pin</button>
             </form>
             <a th:href="@{/notes/{id}/edit(id=${note.id})}"
-               class="px-3.5 py-1.5 rounded-sm bg-amber-500 hover:bg-amber-400 dark:bg-[#FFB84D] dark:hover:bg-[#ffd598] text-[#0B0C0E] font-bold shadow-xs transition">Edit</a>
+               class="px-3.5 py-1.5 rounded-sm bg-[#1D4ED8] hover:bg-blue-700 text-white font-bold shadow-xs transition">Edit</a>
             <form th:action="@{/notes/{id}/delete(id=${note.id})}" method="post"
                   onsubmit="return confirm('Delete this study note?');">
                 <button class="px-3 py-1.5 rounded-sm border border-rose-300 dark:border-rose-900/60 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 font-medium transition">Delete</button>
@@ -87,41 +82,41 @@
     <!-- Main 3-Column Layout: Course Sidebar + Article + TOC Sidebar -->
     <div id="content-grid" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         <!-- Left Course Tree Sidebar (Desktop 3 Cols - Sticky Viewport) -->
-        <aside id="course-sidebar" class="hidden lg:block lg:col-span-3 sticky top-20 self-start transition-all duration-300 font-serif text-xs">
+        <aside id="course-sidebar" class="hidden lg:block lg:col-span-3 sticky top-20 self-start transition-all duration-300 font-ui text-xs">
             <div class="p-4 rounded-md border border-stone-200 dark:border-[#1E2126] bg-white dark:bg-[#0B0C0E] shadow-xs space-y-4 max-h-[calc(100vh-6rem)] overflow-y-auto scrollbar-thin">
                 <!-- Course Header & Progress Bar -->
                 <div class="space-y-2 pb-3 border-b border-stone-200 dark:border-[#1E2126]">
                     <div class="flex items-center justify-between">
-                        <span class="text-[10px] font-mono uppercase tracking-widest text-slate-400 dark:text-[#6B7280]">Course Progress</span>
-                        <span class="font-mono font-bold text-amber-600 dark:text-[#FFB84D]" th:text="${masteredCount} + '/' + ${totalCount} + ' Mastered'">0/0</span>
+                        <span class="chrome-label">COURSE PROGRESS</span>
+                        <span class="font-mono font-bold text-xs text-[#1D4ED8]" th:text="${masteredCount} + '/' + ${totalCount} + ' Mastered'">0/0</span>
                     </div>
-                    <div class="w-full h-1.5 bg-stone-200 dark:bg-[#121418] rounded-full overflow-hidden">
-                        <div class="h-full bg-amber-500 dark:bg-[#FFB84D] transition-all" th:style="'width: ' + ${masteryPercentage} + '%'"></div>
+                    <div class="w-full h-1.5 bg-stone-100 dark:bg-[#121418] rounded-full overflow-hidden">
+                        <div class="h-full bg-[#1D4ED8] transition-all" th:style="'width: ' + ${masteryPercentage} + '%'"></div>
                     </div>
                 </div>
 
                 <!-- Course Tree Accordion Folders -->
-                <div class="space-y-2 font-serif">
+                <div class="space-y-2">
                     <div th:each="entry : ${groupedNotes}" class="space-y-1">
                         <!-- Folder Header (Clickable Accordion) -->
                         <div onclick="toggleFolder(this)"
-                             class="font-serif font-bold text-xs text-slate-900 dark:text-[#EDEDE9] flex items-center justify-between py-1.5 px-2 rounded-md hover:bg-stone-100 dark:hover:bg-[#121418] cursor-pointer transition select-none">
+                             class="font-heading text-[13px] font-semibold text-[#101828] dark:text-[#EDEDE9] flex items-center justify-between py-1.5 px-2 rounded-md hover:bg-[#F6F3ED] dark:hover:bg-[#121418] cursor-pointer transition select-none">
                             <div class="flex items-center gap-1.5 min-w-0">
-                                <span class="folder-arrow text-[10px] text-slate-500 dark:text-[#8E959D] transition-transform duration-200"
+                                <span class="folder-arrow text-[10px] text-[#8A9099] transition-transform duration-200"
                                       th:style="${entry.value.?[id == #vars.note.id].size() > 0} ? 'transform: rotate(0deg)' : 'transform: rotate(-90deg)'">▼</span>
-                                <span class="truncate font-bold text-slate-900 dark:text-[#EDEDE9]" th:text="'📁 ' + ${entry.key.name}">Folder</span>
+                                <span class="truncate font-semibold text-[#101828] dark:text-[#EDEDE9]" th:text="${entry.key.name}">Folder</span>
                             </div>
-                            <span class="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-stone-100 dark:bg-[#1E2126] text-slate-700 dark:text-[#EDEDE9]" th:text="${entry.value.size()}">0</span>
+                            <span class="chrome-label font-mono text-[10px]" th:text="${entry.value.size()}">0</span>
                         </div>
 
                         <!-- Folder Note Item List -->
-                        <ul th:class="'pl-2.5 space-y-1 border-l-2 border-stone-200 dark:border-[#1E2126] transition-all ' + (${entry.value.?[id == #vars.note.id].size() > 0} ? '' : 'hidden')">
+                        <ul th:class="'pl-2 space-y-1 transition-all ' + (${entry.value.?[id == #vars.note.id].size() > 0} ? '' : 'hidden')">
                             <li th:each="n : ${entry.value}">
                                 <a th:href="@{/notes/{id}(id=${n.id})}"
-                                   th:class="'block py-1.5 px-2.5 rounded-md truncate transition text-xs font-serif font-semibold flex items-center justify-between ' + (${n.id == note.id} ? 'bg-amber-100 dark:bg-amber-950/60 text-amber-900 dark:text-[#FFB84D] font-bold border-l-3 border-amber-500 shadow-xs' : 'text-slate-800 dark:text-[#EDEDE9] hover:text-amber-600 dark:hover:text-[#FFB84D] hover:bg-stone-100 dark:hover:bg-[#121418]')">
-                                    <span class="truncate font-bold text-slate-900 dark:text-[#EDEDE9]" th:text="${n.title}">Title</span>
+                                   th:class="'nav-item-link ' + (${n.id == note.id} ? 'active' : '')">
+                                    <span class="truncate font-medium" th:text="${n.title}">Title</span>
                                     <div class="flex items-center gap-1 shrink-0 ml-1">
-                                        <span th:if="${n.status.name() == 'MASTERED'}" class="text-emerald-500 font-bold text-[11px]">✓</span>
+                                        <span th:if="${n.status.name() == 'MASTERED'}" class="text-[#1D4ED8] font-bold text-[11px]">✓</span>
                                         <span th:if="${n.bookmarked}" class="text-amber-500 text-[11px]">🔖</span>
                                     </div>
                                 </a>
@@ -134,7 +129,7 @@
 
         <!-- Center Article Content (Desktop 6 Cols) -->
         <div id="article-column" class="lg:col-span-6 transition-all duration-300 flex flex-col justify-between">
-            <article id="note-article" class="prose prose-serif font-serif max-w-none text-slate-900 dark:text-[#EDEDE9] bg-white dark:bg-[#0B0C0E] p-6 md:p-10 rounded-md border border-stone-200 dark:border-[#1E2126] shadow-xs leading-relaxed text-[17px] sm:text-[18px]" th:utext="${contentHtml}">
+            <article id="note-article" class="prose max-w-[72ch] text-[#26303B] dark:text-[#EDEDE9] bg-white dark:bg-[#0B0C0E] p-6 md:p-10 rounded-xl border border-stone-200 dark:border-[#1E2126] shadow-xs" th:utext="${contentHtml}">
                 Rendered markdown content.
             </article>
 
@@ -143,8 +138,8 @@
                 <!-- Previous Note -->
                 <div class="w-full sm:w-auto">
                     <a th:if="${previousNote != null}" th:href="@{/notes/{id}(id=${previousNote.id})}"
-                       class="w-full sm:w-auto inline-flex items-center gap-2 px-4 py-2.5 rounded-md border border-stone-300 dark:border-[#2A2E35] bg-white dark:bg-[#121418] text-slate-800 dark:text-[#EDEDE9] hover:border-amber-500 dark:hover:border-[#FFB84D] transition shadow-xs">
-                        <span class="text-amber-600 dark:text-[#FFB84D]">← Previous:</span>
+                       class="w-full sm:w-auto inline-flex items-center gap-2 px-4 py-2.5 rounded-md border border-stone-300 dark:border-[#2A2E35] bg-white dark:bg-[#121418] text-slate-800 dark:text-[#EDEDE9] hover:border-blue-500 transition shadow-xs">
+                        <span class="text-[#1D4ED8]">← Previous:</span>
                         <span class="font-bold truncate max-w-[150px]" th:text="${previousNote.title}">Previous Title</span>
                     </a>
                 </div>
@@ -153,7 +148,7 @@
                 <div class="w-full sm:w-auto flex items-center justify-end gap-2">
                     <form th:if="${nextNote != null}" th:action="@{/notes/{id}/master-and-next(id=${note.id})}" method="post" class="w-full sm:w-auto">
                         <button type="submit"
-                                class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-3 rounded-md bg-amber-500 hover:bg-amber-400 dark:bg-[#FFB84D] dark:hover:bg-[#ffd598] text-[#0B0C0E] font-bold shadow-md transition cursor-pointer text-xs">
+                                class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-3 rounded-md bg-[#1D4ED8] hover:bg-blue-700 text-white font-bold shadow-md transition cursor-pointer text-xs">
                             <span>Mark Mastered & Continue →</span>
                             <span class="font-normal opacity-85 truncate max-w-[160px]" th:text="'(' + ${nextNote.title} + ')'">(Next Title)</span>
                         </button>
@@ -168,13 +163,13 @@
         </div>
 
         <!-- Right Sticky TOC Sidebar (Desktop 3 Cols - Sticky Viewport) -->
-        <aside id="toc-sidebar" class="hidden lg:block lg:col-span-3 sticky top-20 self-start transition-all duration-300 font-serif text-xs">
+        <aside id="toc-sidebar" class="hidden lg:block lg:col-span-3 sticky top-20 self-start transition-all duration-300 font-ui text-xs">
             <div class="p-5 rounded-md border border-stone-200 dark:border-[#1E2126] bg-white dark:bg-[#0B0C0E] shadow-xs max-h-[calc(100vh-6rem)] overflow-y-auto scrollbar-thin">
-                <h3 class="font-serif text-xs font-bold text-slate-800 dark:text-[#EDEDE9] uppercase tracking-widest mb-4 flex items-center gap-1.5">
-                    <span>📑 Table of Contents</span>
+                <h3 class="chrome-label mb-4 flex items-center gap-1.5">
+                    <span>TABLE OF CONTENTS</span>
                 </h3>
-                <nav id="toc-nav" class="font-serif text-xs space-y-1.5 text-slate-800 dark:text-[#EDEDE9]">
-                    <p id="toc-empty" class="text-slate-400 dark:text-[#6B7280] italic">No headings in this note.</p>
+                <nav id="toc-nav" class="space-y-1 text-xs">
+                    <p id="toc-empty" class="text-[#8A9099] italic font-mono text-xs">No headings in this note.</p>
                 </nav>
             </div>
         </aside>
@@ -246,9 +241,9 @@
         if (currentHeadingId) {
             document.querySelectorAll("#toc-nav a, #mobile-toc-nav a").forEach(link => {
                 if (link.getAttribute("href") === "#" + currentHeadingId) {
-                    link.classList.add("bg-amber-50", "dark:bg-amber-950/40", "text-amber-600", "dark:text-[#FFB84D]", "font-bold");
+                    link.classList.add("toc-item-active");
                 } else {
-                    link.classList.remove("bg-amber-50", "dark:bg-amber-950/40", "text-amber-600", "dark:text-[#FFB84D]", "font-bold");
+                    link.classList.remove("toc-item-active");
                 }
             });
         }
@@ -266,37 +261,6 @@
             } else {
                 list.classList.add('hidden');
                 if (arrow) arrow.style.transform = 'rotate(-90deg)';
-            }
-        }
-    }
-
-    // 1b. Font Family Switcher (Serif vs Sans)
-    function toggleArticleFont() {
-        const article = document.getElementById("note-article");
-        const courseSidebar = document.getElementById("course-sidebar");
-        const tocSidebar = document.getElementById("toc-sidebar");
-        const fontBtn = document.getElementById("font-toggle-btn");
-        if (article) {
-            if (article.classList.contains("font-serif")) {
-                article.classList.remove("font-serif", "prose-serif");
-                article.classList.add("font-sans");
-                if (courseSidebar) { courseSidebar.classList.remove("font-serif"); courseSidebar.classList.add("font-sans"); }
-                if (tocSidebar) { tocSidebar.classList.remove("font-serif"); tocSidebar.classList.add("font-sans"); }
-                if (fontBtn) {
-                    fontBtn.textContent = "🔤 Sans Font";
-                    fontBtn.classList.remove("bg-amber-100", "dark:bg-amber-950/60", "border-amber-500", "text-amber-800", "dark:text-[#FFB84D]");
-                    fontBtn.classList.add("bg-stone-100", "dark:bg-[#121418]", "border-stone-300", "dark:border-[#2A2E35]", "text-slate-800", "dark:text-[#EDEDE9]");
-                }
-            } else {
-                article.classList.remove("font-sans");
-                article.classList.add("font-serif", "prose-serif");
-                if (courseSidebar) { courseSidebar.classList.remove("font-sans"); courseSidebar.classList.add("font-serif"); }
-                if (tocSidebar) { tocSidebar.classList.remove("font-sans"); tocSidebar.classList.add("font-serif"); }
-                if (fontBtn) {
-                    fontBtn.textContent = "✒️ Serif Font";
-                    fontBtn.classList.add("bg-amber-100", "dark:bg-amber-950/60", "border-amber-500", "text-amber-800", "dark:text-[#FFB84D]");
-                    fontBtn.classList.remove("bg-stone-100", "dark:bg-[#121418]", "border-stone-300", "dark:border-[#2A2E35]", "text-slate-800", "dark:text-[#EDEDE9]");
-                }
             }
         }
     }
@@ -501,15 +465,12 @@
                     const link = document.createElement("a");
                     link.href = "#" + heading.id;
                     link.textContent = heading.textContent;
-                    link.className = "block py-1.5 px-2.5 rounded-sm hover:bg-stone-100 dark:hover:bg-[#121418] hover:text-amber-600 dark:hover:text-[#FFB84D] transition truncate";
 
                     const tag = heading.tagName.toLowerCase();
-                    if (tag === "h2") {
-                        link.classList.add("pl-4");
-                    } else if (tag === "h3") {
-                        link.classList.add("pl-7", "text-stone-400", "dark:text-[#6B7280]", "text-[0.7rem]");
+                    if (tag === "h1" || tag === "h2") {
+                        link.className = "toc-item-top";
                     } else {
-                        link.classList.add("font-semibold");
+                        link.className = "toc-item-nested";
                     }
 
                     if (tocNav) tocNav.appendChild(link);
@@ -529,7 +490,7 @@
                 mermaidBlocks.forEach(codeBlock => {
                     const pre = codeBlock.parentElement;
                     const div = document.createElement("div");
-                    div.className = "mermaid mermaid-container flex justify-center my-6 p-4 rounded-sm border border-stone-200 dark:border-[#1E2126] bg-white dark:bg-[#0B0C0E] shadow-xs overflow-x-auto cursor-pointer hover:border-amber-500 dark:hover:border-[#FFB84D] transition";
+                    div.className = "mermaid mermaid-container flex justify-center my-6 p-4 rounded-sm border border-stone-200 dark:border-[#1E2126] bg-white dark:bg-[#0B0C0E] shadow-xs overflow-x-auto cursor-pointer hover:border-blue-500 transition";
                     div.dataset.mermaidSrc = codeBlock.textContent;
                     div.textContent = codeBlock.textContent;
                     div.onclick = function() { openDiagramModal(div); };
@@ -578,35 +539,37 @@
                 }
             }
 
-            // Add Copy Code Buttons & Language Badges (excluding Mermaid diagrams)
+            // Add Copy Code Buttons & Chrome Language Badges (excluding Mermaid diagrams)
             article.querySelectorAll("pre").forEach(pre => {
                 if (pre.querySelector("code.language-mermaid")) return;
-                pre.classList.add("relative", "group");
 
-                // Add language badge if present
                 const code = pre.querySelector("code");
+                let lang = "TEXT";
                 if (code) {
                     const match = code.className.match(/language-(\w+)/);
                     if (match) {
-                        const badge = document.createElement("span");
-                        badge.className = "absolute top-2 left-3 text-[10px] font-mono font-bold uppercase tracking-wider text-amber-500 dark:text-[#FFB84D] opacity-75 pointer-events-none";
-                        badge.textContent = match[1];
-                        pre.appendChild(badge);
+                        lang = match[1].toUpperCase();
                     }
                 }
 
+                // Chrome Tag Badge (JetBrains Mono 10.5px, letter-spacing 0.14em, uppercase, #8A9099)
+                const badge = document.createElement("span");
+                badge.className = "code-tag-badge";
+                badge.textContent = lang;
+                pre.insertBefore(badge, pre.firstChild);
+
+                // Copy Button (Mono 11px, #C9D1D9 on #232B36 with 1px solid #2E3742)
                 const btn = document.createElement("button");
-                btn.className = "code-copy-btn font-mono text-xs";
+                btn.type = "button";
+                btn.className = "code-copy-btn";
                 btn.textContent = "Copy";
                 btn.onclick = function() {
                     const text = code ? code.innerText : pre.innerText;
                     navigator.clipboard.writeText(text).then(() => {
-                        btn.textContent = "Copied! ✨";
-                        btn.classList.add("bg-amber-500", "text-[#0B0C0E]");
+                        btn.textContent = "Copied!";
                         setTimeout(() => {
                             btn.textContent = "Copy";
-                            btn.classList.remove("bg-amber-500", "text-[#0B0C0E]");
-                        }, 2000);
+                        }, 1800);
                     });
                 };
                 pre.appendChild(btn);
