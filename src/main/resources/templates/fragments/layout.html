@@ -189,7 +189,7 @@
     </div>
 
     <!-- Global Command Palette Modal (Cmd + K) -->
-    <div id="cmd-k-modal" class="fixed inset-0 z-[9999] hidden bg-black/80 backdrop-blur-md flex items-start justify-center pt-8 sm:pt-16 px-4 transition-all">
+    <div id="cmd-k-modal" style="display: none;" class="fixed inset-0 z-[9999] bg-black/80 backdrop-blur-md items-start justify-center pt-8 sm:pt-16 px-4 transition-all">
         <div class="w-full max-w-xl bg-white dark:bg-[#0B0C0E] border border-stone-300 dark:border-[#1E2126] rounded-xl shadow-2xl overflow-hidden font-sans">
             <!-- Search Bar Header -->
             <form action="/notes" method="get" class="flex items-center border-b border-stone-200 dark:border-[#1E2126] px-4 py-3 bg-stone-50 dark:bg-[#121418]">
@@ -235,7 +235,7 @@
     </div>
 
     <!-- Back-of-the-Envelope System Sizing Calculator Modal -->
-    <div id="sizing-modal" class="fixed inset-0 z-[9999] hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 transition-all overflow-y-auto">
+    <div id="sizing-modal" style="display: none;" class="fixed inset-0 z-[9999] bg-black/80 backdrop-blur-md items-center justify-center p-4 sm:p-6 transition-all overflow-y-auto">
         <div class="w-full max-w-2xl bg-white dark:bg-[#0B0C0E] border border-stone-300 dark:border-[#1E2126] rounded-xl shadow-2xl overflow-hidden font-mono text-xs my-auto">
             <!-- Modal Header -->
             <div class="flex items-center justify-between border-b border-stone-200 dark:border-[#1E2126] px-5 py-4 bg-stone-50 dark:bg-[#121418]">
@@ -342,21 +342,21 @@
             const modal = document.getElementById('cmd-k-modal');
             const input = document.getElementById('cmd-k-input');
             if (modal) {
-                modal.classList.remove('hidden');
+                modal.style.display = 'flex';
                 setTimeout(() => input && input.focus(), 50);
             }
         }
 
         function closeCmdKModal() {
             const modal = document.getElementById('cmd-k-modal');
-            if (modal) modal.classList.add('hidden');
+            if (modal) modal.style.display = 'none';
         }
 
         document.addEventListener('keydown', function(e) {
             if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
                 e.preventDefault();
                 const modal = document.getElementById('cmd-k-modal');
-                if (modal && !modal.classList.contains('hidden')) {
+                if (modal && modal.style.display !== 'none') {
                     closeCmdKModal();
                 } else {
                     openCmdKModal();
@@ -377,13 +377,13 @@
 
         function openSizingModal() {
             const modal = document.getElementById('sizing-modal');
-            if (modal) modal.classList.remove('hidden');
+            if (modal) modal.style.display = 'flex';
             calculateQPS();
         }
 
         function closeSizingModal() {
             const modal = document.getElementById('sizing-modal');
-            if (modal) modal.classList.add('hidden');
+            if (modal) modal.style.display = 'none';
         }
 
         function calculateQPS() {
