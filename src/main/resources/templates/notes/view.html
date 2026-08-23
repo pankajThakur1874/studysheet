@@ -332,7 +332,8 @@
 
         // Recalculate Column Spans
         if (articleCol) {
-            articleCol.classList.remove("lg:col-span-6", "lg:col-span-9", "lg:col-span-12", "max-w-4xl", "max-w-5xl", "mx-auto", "w-full");
+            articleCol.classList.remove("lg:col-span-6", "lg:col-span-9", "lg:col-span-12", "max-w-4xl", "max-w-5xl", "mx-auto");
+            articleCol.classList.add("w-full");
             
             if (courseSidebarVisible && tocSidebarVisible) {
                 articleCol.classList.add("lg:col-span-6");
@@ -353,7 +354,7 @@
                     focusBtn.classList.add("ring-1", "ring-blue-500");
                 }
             } else {
-                articleCol.classList.add("lg:col-span-12", "max-w-5xl", "mx-auto", "w-full");
+                articleCol.classList.add("lg:col-span-12");
                 if (focusBtn) {
                     focusBtn.textContent = "📖 Exit Focus";
                     focusBtn.classList.add("ring-1", "ring-blue-500");
