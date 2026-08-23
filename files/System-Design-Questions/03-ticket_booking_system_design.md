@@ -1252,3 +1252,14 @@ HOT SHOW
 If the interviewer asks you to explain the core of the system:
 
 > **"The key design principle is to separate the high-volume read path from the correctness-critical booking path. I can tolerate stale data while users browse seats, but when a user actually confirms a booking, the authoritative database must atomically enforce that the seat transitions from the expected state to BOOKED. Redis and Kafka improve performance and decoupling, but they don't replace that source of truth."**
+
+---
+
+# 📚 Book Cross-Reference
+
+**Source:** Alex Xu, *System Design Interview* Vol 2, Ch 7 — *Hotel Reservation System* (companion note `Book-System-Design-Vol-2/07-hotel-reservation-system.md`). This chapter is already comprehensive; the hotel chapter reinforces the same core with two transferable ideas:
+
+- **Reserve a *room type*, not a specific room** — inventory is a `room_type_inventory` table with **one row per (room_type, date)** and a count, not a row per physical room. The booking analog to your seat model, but coarser-grained where individual identity doesn't matter.
+- **Prevent overselling with the DB as the invariant enforcer:** an **idempotency key** on the reservation (safe retries) **plus** either **optimistic locking** (version check on update) or a **DB `CHECK` constraint** (`reserved <= total`). The book even supports deliberate **overbooking** (e.g. allow up to `110% * total_inventory`) via that same constraint.
+
+**Takeaway:** whether it's seats or room-types, the pattern is identical — *browse from cache, but commit through an atomic, idempotent, constraint-enforced write to the source of truth.*

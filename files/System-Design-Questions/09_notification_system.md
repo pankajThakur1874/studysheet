@@ -492,3 +492,27 @@ First say:
 > "Let me clarify the requirements and scale. Then I'll identify the critical business invariant, because that will drive my consistency and database choices."
 
 That sentence alone makes the discussion much more senior.
+
+---
+
+# 📚 Book Cross-Reference & Added Depth
+
+**Source:** Alex Xu, *System Design Interview* Vol 1, Ch 10 — *Design a Notification System* (companion note `Book-System-Design-Vol-1/10-design-a-notification-system.md`).
+
+Book specifics to add:
+
+- **Channel-specific providers** — you don't deliver notifications yourself, you hand off to third parties: **iOS push → APNs**, **Android → FCM**, **SMS → Twilio/Nexmo**, **Email → SendGrid/Mailchimp**. Each has its own payload format and auth.
+- **Per-channel queues + workers.** A message queue **decouples** the notification service from the (rate-limited, sometimes-down) providers; separate queues per channel so a slow SMS provider doesn't block push. Scale: ~**10M push / 1M SMS / 5M email per day** in the book's estimate.
+- **Reliability = notification log + retries.** Persist every send attempt to a **notification log DB**; on provider failure, **retry** (with backoff). Providers give **at-least-once**, so you **dedup by event/notification ID** — there is **no exactly-once**.
+- **User settings & opt-out** are checked before sending; **rate limiting** prevents spamming a user.
+
+```mermaid
+flowchart LR
+    E[Event] --> NS[Notification service]
+    NS --> Q1[[Push queue]] --> W1[Workers] --> APNs/FCM
+    NS --> Q2[[SMS queue]] --> W2[Workers] --> Twilio
+    NS --> Q3[[Email queue]] --> W3[Workers] --> SendGrid
+    W1 & W2 & W3 -.log + retry.-> LOG[(Notification log DB)]
+```
+
+**Interview line:** *"Fan out through per-channel queues to third-party providers (APNs/FCM/Twilio/SendGrid), log every attempt for retries, and dedup by event ID since delivery is only at-least-once."*

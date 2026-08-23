@@ -492,3 +492,26 @@ First say:
 > "Let me clarify the requirements and scale. Then I'll identify the critical business invariant, because that will drive my consistency and database choices."
 
 That sentence alone makes the discussion much more senior.
+
+---
+
+# 📚 Book Cross-Reference & Added Depth
+
+**Source:** Alex Xu, *System Design Interview* Vol 1, Ch 11 — *Design a News Feed System* (companion note `Book-System-Design-Vol-1/11-design-a-news-feed-system.md`).
+
+The book's core mechanics to weave in:
+
+- **Two feed-generation strategies + hybrid.** Fan-out-on-**write** precomputes each user's feed for fast reads but melts down for celebrities (millions of writes per post). Fan-out-on-**read** is cheap to write but slow to read. **Hybrid** = push for normal users, **pull-and-merge for celebrities** — the standard answer.
+- **Feed cache holds IDs only** (`<post_id, user_id>`), not post bodies — content is hydrated separately, keeping the cache small.
+- **Web tier is stateless**; auth + rate limiting sit in front; a **fanout service** + message queue does the write-time fan-out work.
+
+```mermaid
+flowchart LR
+    Post[New post] --> FO[Fanout service]
+    FO -->|normal user| FC[(Per-follower feed cache: post IDs)]
+    FO -->|celebrity| Skip[Skip fanout - pull at read]
+    Read[Feed request] --> FC
+    Read --> Cele[Merge celebrity posts]
+```
+
+**Interview line:** *"Hybrid fan-out — push for ordinary users, pull for celebrities — with a feed cache that stores only post IDs and hydrates content on read."*

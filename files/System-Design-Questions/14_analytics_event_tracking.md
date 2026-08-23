@@ -476,3 +476,29 @@ First say:
 > "Let me clarify the requirements and scale. Then I'll identify the critical business invariant, because that will drive my consistency and database choices."
 
 That sentence alone makes the discussion much more senior.
+
+---
+
+# 📚 Book Cross-Reference & Added Depth
+
+**Source:** Alex Xu, *System Design Interview* Vol 2, Ch 6 — *Ad Click Event Aggregation* (companion note `Book-System-Design-Vol-2/06-ad-click-event-aggregation.md`).
+
+Book specifics for the aggregation pipeline:
+
+- **Kafka + Flink stream pipeline.** Raw events → **Kafka** (durable buffer) → **Flink** (stream aggregation) → aggregated results DB. Scale in the book: ~**1B clicks/day**, **~50K peak QPS**.
+- **Kappa architecture** (stream-only): one code path for real-time *and* reprocessing — to fix a bug or recompute, you **replay the Kafka log** rather than maintaining a separate batch pipeline (contrast Lambda's dual batch+stream paths).
+- **Event time + watermarks** handle **late/out-of-order events** (a click's server-receive time ≠ its event time); a **watermark** decides when a window is "closed enough" to emit.
+- **Windowing:** **tumbling** (fixed, non-overlapping — for per-minute counts) vs **sliding** (overlapping — for moving averages).
+- **Exactly-once** aggregation via **distributed transactions committing the Kafka consumer offset together with the aggregation result**, plus idempotency — so a replay/crash doesn't double-count.
+- **Reconciliation:** a nightly batch job recomputes from raw events and corrects any drift in the stream results (accuracy backstop).
+
+```mermaid
+flowchart LR
+    Clicks[Click events] --> K[[Kafka: durable log]]
+    K --> F[Flink: window + aggregate<br/>event-time + watermark]
+    F -->|exactly-once: offset+result in one txn| DB[(Aggregated results)]
+    K -.replay for reprocessing (Kappa).-> F
+    Raw[(Raw events)] --> Recon[Nightly reconciliation] --> DB
+```
+
+**Interview line:** *"Kafka for durable ingest, Flink for windowed aggregation with event-time + watermarks for late events, Kappa so reprocessing is just a replay, exactly-once by committing the offset and result in one transaction, and a nightly reconciliation job as the accuracy backstop."*

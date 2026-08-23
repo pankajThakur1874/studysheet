@@ -468,3 +468,24 @@ First say:
 > "Let me clarify the requirements and scale. Then I'll identify the critical business invariant, because that will drive my consistency and database choices."
 
 That sentence alone makes the discussion much more senior.
+
+---
+
+# 📚 Book Cross-Reference & Added Depth
+
+**Source:** Alex Xu, *System Design Interview* Vol 1, Ch 13 — *Design a Search Autocomplete System* (companion note `Book-System-Design-Vol-1/13-design-search-autocomplete.md`).
+
+Book specifics to fold in:
+
+- **Trie is the core data structure**, but a naive trie is too slow to walk for top-k on every keystroke. Optimizations: **cache the top-k suggestions at each node**, and **cap the maximum prefix length** — together these make a lookup effectively **O(1)** instead of traversing the subtree.
+- **Reads and writes are separated.** The trie is **rebuilt offline** (e.g. weekly) from **aggregated query logs** by a data-gathering pipeline, not updated live per query — autocomplete tolerates slightly stale suggestions.
+- **Sharding the trie by first letter is uneven** ('a' vs 'x'); a **shard-map manager** assigns prefixes to shards to balance load.
+- **Latency target ~100 ms**, so suggestions are also **cached in the browser** and served from CDN/edge where possible.
+
+```mermaid
+flowchart LR
+    Logs[(Query logs)] --> Agg[Weekly aggregation] --> Build[Build trie + top-k per node] --> TDB[(Trie store, sharded)]
+    Key[Keystroke] --> TDB --> TopK[Return cached top-k in O(1)]
+```
+
+**Interview line:** *"A trie with top-k cached at each node and a bounded prefix length for O(1) reads, rebuilt offline weekly from aggregated query logs, sharded via a shard-map to handle uneven letter distribution."*

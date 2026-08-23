@@ -1544,3 +1544,14 @@ More control and avoids aggressive permanent caching when destination semantics 
 # 45. 30-Second Interview Answer
 
 > "I'd design the URL shortener as a highly read-heavy system. The authoritative mapping between short code and long URL would live in a durable store such as PostgreSQL initially, with a unique index on short_code. I'd generate globally unique IDs and encode them using Base62. The redirect path would first check Redis and ideally a CDN for very hot links, falling back to the database on a cache miss. Analytics would be completely asynchronous through Kafka so it doesn't increase redirect latency. I'd use idempotency for URL creation, database uniqueness for custom aliases, and shard by short_code if the mapping becomes too large. For viral URLs, CDN and local caching would protect the origin from hot-key traffic. Redis and the CDN are optimization layers; the database remains the source of truth."
+
+---
+
+# 📚 Book Cross-Reference
+
+**Source:** Alex Xu, *System Design Interview* Vol 1, Ch 8 — *Design a URL Shortener* (companion note `Book-System-Design-Vol-1/08-design-a-url-shortener.md`). This chapter already goes deeper than the book; two book details worth having in your back pocket:
+
+- **Short-code length math:** with 62 characters `[0-9a-zA-Z]`, find the smallest `n` where `62^n ≥ total URLs`. For ~365 billion URLs (100M/day × 10 yr), **`62^7 ≈ 3.5 trillion`**, so **length 7** suffices. Handy to state a concrete number.
+- **The second code-generation approach — hash + collision resolution:** hash the long URL (CRC32/MD5/SHA-1), take the first 7 chars, and **re-hash on collision** (append a fixed string and retry). A **bloom filter** avoids a DB lookup on every write to check existence. Trade-off vs your Base62/ID approach: hashing gives a **fixed length** but needs collision checks and isn't derived from a numeric ID; Base62-on-ID needs a unique-ID generator but **never collides** (at the cost of enumerable codes).
+
+**Takeaway:** your design's Base62-on-unique-ID is the stronger default; mention hash+bloom-filter as the alternative and why you rejected it (collision checks on the write path).

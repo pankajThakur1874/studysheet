@@ -484,3 +484,31 @@ First say:
 > "Let me clarify the requirements and scale. Then I'll identify the critical business invariant, because that will drive my consistency and database choices."
 
 That sentence alone makes the discussion much more senior.
+
+---
+
+# 📚 Book Cross-Reference & Added Depth
+
+**Source:** Alex Xu, *System Design Interview* Vol 1, Ch 12 — *Design a Chat System* (companion note `Book-System-Design-Vol-1/12-design-a-chat-system.md`).
+
+Book specifics worth stating:
+
+- **WebSocket** for real-time, bidirectional delivery (server can push to the client). HTTP/long-polling is fine for send, but receive needs a persistent connection.
+- **The chat (WebSocket) service is the only *stateful* service** — every other service (auth, presence, API) stays stateless. This shapes scaling and connection routing (a service-discovery layer maps a user to their chat server).
+- **Message storage:** a **key-value store (HBase/Cassandra)** for chat history — huge write volume, simple access by key, easy horizontal scale. 1:1 messages key by `message_id`; group messages key by `channel_id`.
+- **Multi-device sync** via a per-device **`cur_max_message_id`** cursor — each device tracks the last message it has, so it fetches only newer ones.
+- **Online presence** via **heartbeats** — client periodically pings; miss N heartbeats → mark offline (avoids flapping on brief disconnects). Presence changes fan out to friends via a pub/sub-style channel.
+
+```mermaid
+sequenceDiagram
+    participant A as User A
+    participant WS as Chat service (stateful, WebSocket)
+    participant KV as KV store (HBase/Cassandra)
+    participant B as User B
+    A->>WS: send message (WebSocket)
+    WS->>KV: persist (key: channel_id / message_id)
+    WS-->>B: push if online (WebSocket)
+    Note over B: offline? B pulls on reconnect using cur_max_message_id
+```
+
+**Interview line:** *"WebSocket for real-time; the chat service is the one stateful tier; history in a wide-column KV store; multi-device sync via a per-device max-message-id cursor; presence via heartbeats with a grace window."*

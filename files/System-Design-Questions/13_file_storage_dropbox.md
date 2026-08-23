@@ -485,3 +485,30 @@ First say:
 > "Let me clarify the requirements and scale. Then I'll identify the critical business invariant, because that will drive my consistency and database choices."
 
 That sentence alone makes the discussion much more senior.
+
+---
+
+# 📚 Book Cross-Reference & Added Depth
+
+**Source:** Alex Xu, *System Design Interview* Vol 1, Ch 15 — *Design Google Drive*, and Vol 2, Ch 9 — *S3-like Object Storage* (companion notes `Book-System-Design-Vol-1/15-design-google-drive.md`, `Book-System-Design-Vol-2/09-object-storage-s3.md`).
+
+**From Google Drive (the sync side):**
+- **Block servers split files into blocks** (~4 MB each). Only **changed blocks** are uploaded — **delta sync** — and blocks are **compressed and encrypted** before storage. This makes edits to large files cheap.
+- **Metadata lives in a relational DB** for **strong consistency/ACID** (file tree, versions, sharing); block data lives in object storage (S3).
+- **Notification service** tells other clients a file changed — the book uses **long polling** (client holds a connection; server responds when there's a change).
+- **Storage savings:** de-duplicate identical blocks by **hash**, cap version history, and move cold data to **archival storage (S3 Glacier)**.
+
+**From S3 (the object-store side):**
+- **Separate the (immutable) data store from the (mutable) metadata store** — the classic "inode" split.
+- **Durability: replication vs erasure coding.** 3× replication → ~6 nines durability but **200% storage overhead**; **(8+4) erasure coding** → ~11 nines at only **~50% overhead**. Erasure coding trades CPU/rebuild cost for far less space.
+- **Versioning** (TIMEUUID + delete markers) and **multipart upload** (uploadID + per-part ETag) for large objects; a **garbage-collection/compaction** job reclaims space.
+
+```mermaid
+flowchart LR
+    C[Client edits file] --> Blk[Split into blocks, hash each]
+    Blk -->|only changed blocks| BS[Block servers: compress+encrypt] --> OS[(Object storage)]
+    Blk --> Meta[(Metadata DB: relational, strong consistency)]
+    Meta --> Notify[Notification service - long polling] --> C2[Other devices sync]
+```
+
+**Interview line:** *"Block-level delta sync with de-dup by hash, a strongly-consistent relational metadata store separate from the object data store, long-polling change notifications, and erasure coding instead of 3× replication to cut storage overhead ~4×."*

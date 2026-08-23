@@ -1139,3 +1139,15 @@ Origin Shielding
 ## One Sentence to Remember
 
 > **Application servers manage the video; object storage stores the video; CDN delivers the video.**
+
+---
+
+# 📚 Book Cross-Reference
+
+**Source:** Alex Xu, *System Design Interview* Vol 1, Ch 14 — *Design YouTube* (companion note `Book-System-Design-Vol-1/14-design-youtube.md`). This chapter is already thorough; the book adds detail on two areas:
+
+- **Transcoding as a DAG pipeline.** A raw upload is transcoded into many formats/resolutions/bitrates by a pipeline modeled as a **Directed Acyclic Graph** of tasks (inspect → split → encode → thumbnail → merge …), run by a **preprocessor + DAG scheduler + resource manager (task/worker queues) + workers**. This is the "how" behind "app servers manage the video."
+- **Resumable, chunked upload.** Video is uploaded (and transcoded) in **GOP-aligned chunks**, so an interrupted upload **resumes** from the last chunk instead of restarting; clients get **pre-signed URLs** to upload directly to object storage.
+- **CDN economics.** Only the **popular "head"** of the catalog is served from CDN; the **long tail** is served from origin/cheaper storage — the book notes CDN egress can cost on the order of **~$150k/day** at scale, which is *why* you don't blindly CDN everything.
+
+**Takeaway:** the transcoding DAG, resumable GOP-chunk uploads, and selective (head-only) CDN caching are the details that turn "store + CDN" into a real YouTube answer.

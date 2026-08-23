@@ -494,3 +494,25 @@ First say:
 > "Let me clarify the requirements and scale. Then I'll identify the critical business invariant, because that will drive my consistency and database choices."
 
 That sentence alone makes the discussion much more senior.
+
+---
+
+# 📚 Book Cross-Reference & Added Depth
+
+**Source:** Alex Xu, *System Design Interview* Vol 1, Ch 11 — *Design a News Feed System* (see the companion note `Book-System-Design-Vol-1/11-design-a-news-feed-system.md`).
+
+Points from the book worth folding into your answer:
+
+- **Hybrid fan-out is the headline decision.** Fan-out-on-**write** (push): precompute each follower's feed cache when someone posts — fast reads, but a celebrity with millions of followers causes a **hot-key write storm**. Fan-out-on-**read** (pull): build the feed at read time — cheap writes, expensive reads. The book's answer is **hybrid**: push for ordinary users, **pull for celebrities** and merge their posts in at read time.
+- **The feed cache stores only IDs**, not full posts — `<post_id, user_id>` pairs — to keep it tiny; the post content is hydrated from a separate cache on read.
+- **Five-layer cache** (feed, content, social graph, action, counters) is how it hits latency targets.
+
+```mermaid
+flowchart TD
+    P[User posts] --> Q{Celebrity?}
+    Q -->|No| Push[Push post_id into each follower's feed cache]
+    Q -->|Yes| Skip[Do NOT fan out]
+    R[Follower reads feed] --> Merge[Read own feed cache + pull celebrity posts, merge by time]
+```
+
+**Interview line:** *"I'd fan out on write for normal users and fall back to fan-out on read for celebrities — the hybrid avoids the hot-key write storm while keeping most reads a cheap cache lookup, and the feed cache holds only post IDs."*

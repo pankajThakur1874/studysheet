@@ -134,24 +134,28 @@ public class NoteController {
         return -1;
     }
 
+    private List<Note> getOrderedCourseNotes(Note currentNote) {
+        List<Note> notes;
+        if (currentNote != null && currentNote.getTopic() != null) {
+            notes = new java.util.ArrayList<>(noteRepository.findByTopicIdOrderByTitleAsc(currentNote.getTopic().getId()));
+        } else {
+            notes = new java.util.ArrayList<>(noteRepository.findAll());
+        }
+        notes.sort(NATURAL_NOTE_COMPARATOR);
+        return notes;
+    }
+
     @GetMapping("/{id}")
     public String view(@PathVariable Long id, Model model) {
         Note note = noteService.get(id);
 
-        List<Note> peerNotes;
-        if (note.getTopic() != null) {
-            peerNotes = noteRepository.findByTopicIdOrderByTitleAsc(note.getTopic().getId());
-        } else {
-            peerNotes = noteRepository.findAll();
-        }
-        peerNotes.sort(NATURAL_NOTE_COMPARATOR);
-
+        List<Note> peerNotes = getOrderedCourseNotes(note);
         int index = findNoteIndex(peerNotes, id);
         Note previousNote = (index > 0) ? peerNotes.get(index - 1) : null;
         Note nextNote = (index >= 0 && index < peerNotes.size() - 1) ? peerNotes.get(index + 1) : null;
 
         // Group ALL notes for the Left Course Navigation Sidebar
-        List<Note> allNotes = noteService.all();
+        List<Note> allNotes = new java.util.ArrayList<>(noteService.all());
         allNotes.sort(NATURAL_NOTE_COMPARATOR);
         java.util.Map<Topic, List<Note>> groupedNotes = allNotes.stream()
                 .collect(java.util.stream.Collectors.groupingBy(
@@ -181,14 +185,7 @@ public class NoteController {
         Note currentNote = noteService.get(id);
         noteService.updateStatus(id, StudyStatus.MASTERED);
 
-        List<Note> peerNotes;
-        if (currentNote.getTopic() != null) {
-            peerNotes = noteRepository.findByTopicIdOrderByTitleAsc(currentNote.getTopic().getId());
-        } else {
-            peerNotes = noteRepository.findAll();
-        }
-        peerNotes.sort(NATURAL_NOTE_COMPARATOR);
-
+        List<Note> peerNotes = getOrderedCourseNotes(currentNote);
         int index = findNoteIndex(peerNotes, id);
         if (index >= 0 && index < peerNotes.size() - 1) {
             Note nextNote = peerNotes.get(index + 1);

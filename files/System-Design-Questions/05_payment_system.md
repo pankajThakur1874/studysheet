@@ -527,3 +527,19 @@ First say:
 > "Let me clarify the requirements and scale. Then I'll identify the critical business invariant, because that will drive my consistency and database choices."
 
 That sentence alone makes the discussion much more senior.
+
+---
+
+# 📚 Book Cross-Reference & Added Depth
+
+**Source:** Alex Xu, *System Design Interview* Vol 2, Ch 11 — *Payment System* (companion note `Book-System-Design-Vol-2/11-payment-system.md`).
+
+This chapter already covers idempotency, the ledger, the outbox, and reconciliation well. The book adds a few framing points worth naming:
+
+- **Throughput is low, correctness is everything.** The book estimates only **~10 TPS** — so the design optimizes for *never losing or double-counting money*, not for QPS. Say this out loud: it reframes every trade-off toward consistency.
+- **Use a PSP + hosted payment page.** You don't touch raw card numbers — you redirect to a **Payment Service Provider** (Stripe/Braintree) hosted page or use a tokenized field, so card data never hits your servers. This **avoids PCI-DSS scope**, a real interview point.
+- **Pay-in vs pay-out** are distinct flows: pay-in (customer → platform) and pay-out (platform → sellers, often via a third party like Tipalti). Model them separately.
+- **Double-entry bookkeeping**: every transaction writes **two balanced ledger entries that sum to zero** — the invariant that makes the ledger auditable and reconciliation possible.
+- **Exactly-once = at-least-once (retries) + at-most-once (idempotency key).** Nightly **reconciliation** compares your ledger against the PSP's settlement file to catch mismatches.
+
+**Interview line:** *"Payments are low-TPS but correctness-critical: a PSP hosted page keeps card data (and PCI scope) off my servers, a double-entry ledger enforces money conservation, idempotency keys plus retries give exactly-once, and nightly reconciliation against the PSP's settlement file is the backstop."*

@@ -473,3 +473,26 @@ First say:
 > "Let me clarify the requirements and scale. Then I'll identify the critical business invariant, because that will drive my consistency and database choices."
 
 That sentence alone makes the discussion much more senior.
+
+---
+
+# 📚 Book Cross-Reference & Added Depth
+
+**Source:** Alex Xu, *System Design Interview* Vol 2, Ch 1–3 — *Proximity Service*, *Nearby Friends*, *Google Maps* (companion notes `Book-System-Design-Vol-2/01-proximity-service.md`, `02-nearby-friends.md`, `03-google-maps.md`).
+
+The geospatial machinery behind ride-matching:
+
+- **Spatial index — geohash vs quadtree.** **Geohash** encodes lat/long into a base-32 string; a shorter prefix = a bigger area (precision length maps to a radius), so "nearby" = shared prefix. **Quadtree** recursively splits space into 4 quadrants until each cell holds few points — an in-memory tree (~200M businesses fit in a couple GB). Geohash is simpler and DB-friendly; quadtree gives finer adaptive control.
+- **The geo index is small**, so the book prefers **read replicas over sharding** for the proximity DB.
+- **Live location updates (Nearby Friends)** are the hard part: hundreds of thousands of updates/sec fan out to millions of subscribers. Solution: **Redis Pub/Sub**, one channel per user, the channels **sharded across servers via a consistent-hash ring**; the bottleneck is **CPU** (fan-out), not memory.
+- **Routing (Maps)** uses **road-graph tiles** traversed by **A\***; **batching GPS updates** (e.g. every ~15 s instead of continuously) slashes ingest QPS by an order of magnitude.
+
+```mermaid
+flowchart TD
+    D[Driver location update] -->|every ~15s| Ingest[Location service]
+    Ingest --> GEO[(Geo index: geohash / quadtree)]
+    Rider[Rider requests ride] --> Q[Query nearby drivers by geohash prefix] --> GEO
+    Ingest -->|pub/sub, sharded by consistent hash| Sub[Subscribers/matching]
+```
+
+**Interview line:** *"Index driver locations with geohash (or a quadtree), keep it on read replicas since it's small, push live updates through sharded Redis pub/sub, and batch GPS every ~15s to cut ingest QPS; routing is A* over road-graph tiles."*
