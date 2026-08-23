@@ -327,17 +327,30 @@
         /* Grid & Article Flex Child Overflow Control (min-width: 0 prevents flex items from overflowing container) */
         #content-grid, #article-column, #note-article, .prose, .mermaid-container, .mermaid {
             min-width: 0 !important;
+            box-sizing: border-box !important;
         }
 
         /* Images Fit Screen Container */
         .prose img {
             max-width: 100% !important;
-            width: auto !important;
             height: auto !important;
             object-fit: contain;
             border-radius: 8px;
             margin: 1.5rem auto;
             display: block;
+        }
+
+        /* Code Blocks & Tables Fit Container */
+        .prose pre {
+            max-width: 100% !important;
+            overflow-x: auto !important;
+            box-sizing: border-box !important;
+        }
+        .prose table {
+            width: 100% !important;
+            max-width: 100% !important;
+            display: block !important;
+            overflow-x: auto !important;
         }
 
         /* Mermaid Diagram Hover & Click-to-Expand */
