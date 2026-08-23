@@ -378,8 +378,24 @@
 
         container.innerHTML = element.innerHTML;
         currentDiagramScale = 1;
-        applyDiagramScale();
 
+        const svg = container.querySelector("svg");
+        if (svg) {
+            // Remove inline 100% stretch style overrides copied from page card
+            svg.style.removeProperty("width");
+            svg.style.removeProperty("max-width");
+            svg.style.removeProperty("height");
+
+            // Constrain modal SVG to natural proportions within viewport
+            svg.style.maxWidth = "85vw";
+            svg.style.maxHeight = "75vh";
+            svg.style.width = "auto";
+            svg.style.height = "auto";
+            svg.style.margin = "auto";
+            svg.style.display = "block";
+        }
+
+        applyDiagramScale();
         modal.classList.remove("hidden");
         document.body.style.overflow = "hidden";
     }
@@ -392,7 +408,7 @@
 
     function zoomDiagram(factor) {
         currentDiagramScale *= factor;
-        currentDiagramScale = Math.min(Math.max(0.5, currentDiagramScale), 3.5);
+        currentDiagramScale = Math.min(Math.max(0.4, currentDiagramScale), 3.5);
         applyDiagramScale();
     }
 
@@ -405,7 +421,9 @@
         const container = document.getElementById("modal-diagram-container");
         const svg = container ? container.querySelector("svg") : null;
         if (!svg) return;
-        const svgData = new XMLSerializer().serializeToString(svg);
+        const clone = svg.cloneNode(true);
+        clone.removeAttribute("style");
+        const svgData = new XMLSerializer().serializeToString(clone);
         const blob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
@@ -418,12 +436,11 @@
 
     function applyDiagramScale() {
         const container = document.getElementById("modal-diagram-container");
-        const svg = container.querySelector("svg");
+        const svg = container ? container.querySelector("svg") : null;
         if (svg) {
             svg.style.transform = `scale(${currentDiagramScale})`;
             svg.style.transformOrigin = "center center";
-            svg.style.transition = "transform 0.2s ease";
-            svg.style.maxWidth = "none";
+            svg.style.transition = "transform 0.15s ease-out";
         }
     }
 
@@ -540,6 +557,16 @@
                     }
 
                     const enforceFit = () => {
+                        document.querySelectorAll(".mermaid foreignObject").forEach(fo => {
+                            fo.style.overflow = "visible";
+                            fo.removeAttribute("width");
+                            const div = fo.querySelector("div");
+                            if (div) {
+                                div.style.overflow = "visible";
+                                div.style.whiteSpace = "nowrap";
+                            }
+                        });
+
                         document.querySelectorAll(".mermaid-container").forEach(c => {
                             c.style.width = "100%";
                             c.style.maxWidth = "100%";

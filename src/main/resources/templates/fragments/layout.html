@@ -410,17 +410,27 @@
             stroke: #818cf8 !important;
             stroke-width: 2px !important;
         }
+        .mermaid foreignObject {
+            overflow: visible !important;
+            width: auto !important;
+        }
+        .mermaid foreignObject div, .mermaid foreignObject span {
+            white-space: nowrap !important;
+            overflow: visible !important;
+            width: auto !important;
+            display: inline-block !important;
+        }
         .mermaid .node .label, .mermaid .node text, .mermaid .node span, .mermaid .node tspan, .mermaid .label text {
             fill: #1e1b4b !important;
             color: #1e1b4b !important;
-            font-weight: 600 !important;
-            font-size: 13px !important;
+            font-weight: 500 !important;
+            font-family: inherit !important;
         }
         .dark .mermaid .node .label, .dark .mermaid .node text, .dark .mermaid .node span, .dark .mermaid .node tspan, .dark .mermaid .label text {
             fill: #e0e7ff !important;
             color: #e0e7ff !important;
-            font-weight: 600 !important;
-            font-size: 13px !important;
+            font-weight: 500 !important;
+            font-family: inherit !important;
         }
         .mermaid .edgePath .path, .mermaid .flowchart-link { stroke: #6366f1 !important; stroke-width: 2px !important; }
         .dark .mermaid .edgePath .path, .dark .mermaid .flowchart-link { stroke: #818cf8 !important; stroke-width: 2px !important; }
