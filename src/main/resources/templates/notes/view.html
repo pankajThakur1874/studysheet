@@ -122,8 +122,8 @@
         </aside>
 
         <!-- Center Article Content (Desktop 6 Cols) -->
-        <div id="article-column" class="lg:col-span-6 transition-all duration-300 flex flex-col justify-between">
-            <article id="note-article" class="prose w-full text-[#26303B] dark:text-[#EDEDE9] bg-white dark:bg-[#0B0C0E] p-6 md:p-10 rounded-xl border border-stone-200 dark:border-[#1E2126] shadow-xs" th:utext="${contentHtml}">
+        <div id="article-column" class="lg:col-span-6 transition-all duration-300 flex flex-col justify-between min-w-0">
+            <article id="note-article" class="prose w-full min-w-0 text-[#26303B] dark:text-[#EDEDE9] bg-white dark:bg-[#0B0C0E] p-6 md:p-10 rounded-xl border border-stone-200 dark:border-[#1E2126] shadow-xs overflow-hidden" th:utext="${contentHtml}">
                 Rendered markdown content.
             </article>
 
@@ -519,7 +519,7 @@
                 }
             };
 
-            function renderMermaidDiagrams() {
+            async function renderMermaidDiagrams() {
                 if (window.mermaid) {
                     const isDark = document.documentElement.classList.contains("dark");
                     mermaid.initialize({
@@ -530,16 +530,34 @@
                         gantt: { useMaxWidth: true },
                         sequence: { useMaxWidth: true }
                     });
-                    mermaid.run({
-                        querySelector: '.mermaid'
-                    });
 
-                    // Force SVG responsive scaling to fit screen width
-                    document.querySelectorAll(".mermaid svg").forEach(svg => {
-                        svg.style.maxWidth = "100%";
-                        svg.style.width = "100%";
-                        svg.style.height = "auto";
-                    });
+                    try {
+                        await mermaid.run({
+                            querySelector: '.mermaid'
+                        });
+                    } catch (err) {
+                        console.warn("Mermaid async execution warning:", err);
+                    }
+
+                    const enforceFit = () => {
+                        document.querySelectorAll(".mermaid svg").forEach(svg => {
+                            const viewBox = svg.getAttribute("viewBox");
+                            if (!viewBox) {
+                                const w = svg.getAttribute("width") || "800";
+                                const h = svg.getAttribute("height") || "600";
+                                svg.setAttribute("viewBox", `0 0 ${String(w).replace("px","")} ${String(h).replace("px","")}`);
+                            }
+                            svg.removeAttribute("width");
+                            svg.removeAttribute("height");
+                            svg.style.maxWidth = "100%";
+                            svg.style.width = "100%";
+                            svg.style.height = "auto";
+                            svg.style.display = "block";
+                        });
+                    };
+
+                    enforceFit();
+                    setTimeout(enforceFit, 150);
                 }
             }
 

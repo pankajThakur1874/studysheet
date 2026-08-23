@@ -324,9 +324,15 @@
         }
         .code-copy-btn:hover { background: rgba(255,255,255,0.25); color: #fff; }
 
+        /* Grid & Article Flex Child Overflow Control (min-width: 0 prevents flex items from overflowing container) */
+        #content-grid, #article-column, #note-article, .prose, .mermaid-container, .mermaid {
+            min-width: 0 !important;
+        }
+
         /* Images Fit Screen Container */
         .prose img {
             max-width: 100% !important;
+            width: auto !important;
             height: auto !important;
             object-fit: contain;
             border-radius: 8px;
@@ -341,6 +347,7 @@
             width: 100% !important;
             max-width: 100% !important;
             overflow: hidden !important;
+            box-sizing: border-box !important;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -365,6 +372,7 @@
         .mermaid {
             width: 100% !important;
             max-width: 100% !important;
+            box-sizing: border-box !important;
             display: flex !important;
             justify-content: center !important;
             align-items: center !important;
@@ -377,6 +385,7 @@
             font-family: inherit !important;
             display: block !important;
             margin: 0 auto !important;
+            box-sizing: border-box !important;
         }
         .mermaid .node rect, .mermaid .node circle, .mermaid .node polygon, .mermaid .node path {
             fill: #e0e7ff !important;
