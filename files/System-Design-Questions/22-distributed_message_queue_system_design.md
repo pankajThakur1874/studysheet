@@ -458,4 +458,3 @@ FAILURE     → controller reassigns replicas; consumers resume from committed o
 - **Rate limiter** — a leaky bucket *is* a bounded queue drained at a fixed rate; back-pressure via pull and long polling is the same "let the consumer set the pace" idea.
 - **Web crawler** — the URL Frontier is a specialized priority queue with per-host serialization; real crawlers often sit on top of Kafka.
 - **Idempotency & retries** — at-least-once delivery forces idempotent consumers, the same pattern every payments/webhooks system needs.
-```
