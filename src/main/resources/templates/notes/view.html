@@ -70,12 +70,6 @@
                 <button class="px-3 py-1.5 rounded-sm border border-stone-300 dark:border-[#2A2E35] bg-stone-100 dark:bg-[#121418] hover:bg-stone-200 dark:hover:bg-[#1A1D23] font-medium transition"
                         th:text="${note.pinned} ? 'Unpin' : '📌 Pin'">Pin</button>
             </form>
-            <a th:href="@{/notes/{id}/edit(id=${note.id})}"
-               class="px-3.5 py-1.5 rounded-sm bg-[#1D4ED8] hover:bg-blue-700 text-white font-bold shadow-xs transition">Edit</a>
-            <form th:action="@{/notes/{id}/delete(id=${note.id})}" method="post"
-                  onsubmit="return confirm('Delete this study note?');">
-                <button class="px-3 py-1.5 rounded-sm border border-rose-300 dark:border-rose-900/60 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 font-medium transition">Delete</button>
-            </form>
         </div>
     </div>
 

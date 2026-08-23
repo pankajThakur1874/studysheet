@@ -41,13 +41,9 @@
             </a>
 
             <div class="flex items-center justify-between mt-5 pt-3.5 border-t border-stone-100 dark:border-[#16191D] font-mono text-xs">
-                <a th:href="@{/notes(topicId=${t.id})}" class="text-amber-600 dark:text-[#FFB84D] font-medium hover:underline flex items-center gap-1">
+                <a th:href="@{/notes(topicId=${t.id})}" class="text-[#1D4ED8] font-medium hover:underline flex items-center gap-1">
                     Explore Docs &rarr;
                 </a>
-                <form th:action="@{/topics/{id}/delete(id=${t.id})}" method="post"
-                      onsubmit="return confirm('Delete this topic? Notes will keep their content but lose this topic.');">
-                    <button class="text-slate-400 hover:text-rose-600 transition">Delete</button>
-                </form>
             </div>
         </div>
     </div>
