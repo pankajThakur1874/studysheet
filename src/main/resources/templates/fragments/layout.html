@@ -324,8 +324,27 @@
         }
         .code-copy-btn:hover { background: rgba(255,255,255,0.25); color: #fff; }
 
+        /* Images Fit Screen Container */
+        .prose img {
+            max-width: 100% !important;
+            height: auto !important;
+            object-fit: contain;
+            border-radius: 8px;
+            margin: 1.5rem auto;
+            display: block;
+        }
+
         /* Mermaid Diagram Hover & Click-to-Expand */
-        .mermaid-container { position: relative; cursor: pointer; }
+        .mermaid-container {
+            position: relative;
+            cursor: pointer;
+            width: 100% !important;
+            max-width: 100% !important;
+            overflow: hidden !important;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
         .mermaid-container:hover::after {
             content: "🔍 Click to expand full-screen";
             position: absolute;
@@ -339,10 +358,26 @@
             border-radius: 0.375rem;
             backdrop-filter: blur(4px);
             pointer-events: none;
+            z-index: 10;
         }
 
         /* Crisp Mermaid Diagram Node & Label Contrast */
-        .mermaid svg { max-width: 100% !important; height: auto !important; font-family: inherit !important; }
+        .mermaid {
+            width: 100% !important;
+            max-width: 100% !important;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            overflow: hidden !important;
+        }
+        .mermaid svg {
+            max-width: 100% !important;
+            width: 100% !important;
+            height: auto !important;
+            font-family: inherit !important;
+            display: block !important;
+            margin: 0 auto !important;
+        }
         .mermaid .node rect, .mermaid .node circle, .mermaid .node polygon, .mermaid .node path {
             fill: #e0e7ff !important;
             stroke: #4f46e5 !important;

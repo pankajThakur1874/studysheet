@@ -485,7 +485,7 @@
                 mermaidBlocks.forEach(codeBlock => {
                     const pre = codeBlock.parentElement;
                     const div = document.createElement("div");
-                    div.className = "mermaid mermaid-container flex justify-center my-6 p-4 rounded-sm border border-stone-200 dark:border-[#1E2126] bg-white dark:bg-[#0B0C0E] shadow-xs overflow-x-auto cursor-pointer hover:border-blue-500 transition";
+                    div.className = "mermaid mermaid-container flex justify-center items-center my-6 p-4 rounded-xl border border-stone-200 dark:border-[#1E2126] bg-white dark:bg-[#0B0C0E] shadow-xs overflow-hidden w-full max-w-full cursor-pointer hover:border-blue-500 transition";
                     div.dataset.mermaidSrc = codeBlock.textContent;
                     div.textContent = codeBlock.textContent;
                     div.onclick = function() { openDiagramModal(div); };
@@ -526,10 +526,19 @@
                         startOnLoad: false,
                         theme: isDark ? "dark" : "default",
                         securityLevel: "loose",
-                        flowchart: { useMaxWidth: true, htmlLabels: true }
+                        flowchart: { useMaxWidth: true, htmlLabels: true },
+                        gantt: { useMaxWidth: true },
+                        sequence: { useMaxWidth: true }
                     });
                     mermaid.run({
                         querySelector: '.mermaid'
+                    });
+
+                    // Force SVG responsive scaling to fit screen width
+                    document.querySelectorAll(".mermaid svg").forEach(svg => {
+                        svg.style.maxWidth = "100%";
+                        svg.style.width = "100%";
+                        svg.style.height = "auto";
                     });
                 }
             }
