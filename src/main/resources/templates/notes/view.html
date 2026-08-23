@@ -97,14 +97,14 @@
                              class="font-heading text-[13px] font-semibold text-[#101828] dark:text-[#EDEDE9] flex items-center justify-between py-1.5 px-2 rounded-md hover:bg-[#F6F3ED] dark:hover:bg-[#121418] cursor-pointer transition select-none">
                             <div class="flex items-center gap-1.5 min-w-0">
                                 <span class="folder-arrow text-[10px] text-[#8A9099] transition-transform duration-200"
-                                      th:style="${note != null and entry.value.?[id == note.id].size() > 0} ? 'transform: rotate(0deg)' : 'transform: rotate(-90deg)'">▼</span>
+                                      th:style="${note != null and note.topic != null and entry.key.id == note.topic.id} ? 'transform: rotate(0deg)' : 'transform: rotate(-90deg)'">▼</span>
                                 <span class="truncate font-semibold text-[#101828] dark:text-[#EDEDE9]" th:text="${entry.key.name}">Folder</span>
                             </div>
                             <span class="chrome-label font-mono text-[10px]" th:text="${entry.value.size()}">0</span>
                         </div>
 
                         <!-- Folder Note Item List -->
-                        <ul th:class="'pl-2 space-y-1 transition-all ' + (${note != null and entry.value.?[id == note.id].size() > 0} ? '' : 'hidden')">
+                        <ul th:class="'pl-2 space-y-1 transition-all ' + (${note != null and note.topic != null and entry.key.id == note.topic.id} ? '' : 'hidden')">
                             <li th:each="n : ${entry.value}">
                                 <a th:href="@{/notes/{id}(id=${n.id})}"
                                    th:class="'nav-item-link ' + (${note != null and n.id == note.id} ? 'active' : '')">
