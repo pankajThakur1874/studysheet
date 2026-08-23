@@ -89,8 +89,12 @@ public class MarkdownImporterService {
             // Determine Tags
             String tagsCsv = resolveTagsCsv(fileName, pathStr);
 
-            // Check existing by title
-            Optional<Note> existingOpt = noteRepository.findByTitleIgnoreCase(title.trim());
+            // Check existing note by title and topic to prevent cross-folder note overwrites
+            Optional<Note> existingOpt = noteRepository.findByTitleIgnoreCaseAndTopicId(title.trim(), topic.getId());
+            if (existingOpt.isEmpty()) {
+                existingOpt = noteRepository.findByTitleIgnoreCase(title.trim())
+                        .filter(n -> n.getTopic() != null && n.getTopic().getId().equals(topic.getId()));
+            }
 
             Note note;
             if (existingOpt.isPresent()) {

@@ -35,7 +35,7 @@
                 <div class="flex items-center justify-between gap-2">
                     <h3 class="font-medium text-lg text-slate-900 dark:text-[#EDEDE9] group-hover:text-amber-600 dark:group-hover:text-[#FFB84D] transition" th:text="${t.name}">Topic Name</h3>
                     <span class="px-2.5 py-1 text-xs font-mono rounded-sm bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-[#FFB84D] font-bold border border-amber-200 dark:border-amber-900/60 shrink-0"
-                          th:text="${topicNoteCounts.get(t.id)} + ' docs'">0 docs</span>
+                          th:text="${(topicNoteCounts != null and topicNoteCounts.get(t.id) != null) ? topicNoteCounts.get(t.id) : 0} + ' docs'">0 docs</span>
                 </div>
                 <p class="text-xs text-slate-500 dark:text-[#8E959D] line-clamp-2" th:text="${t.description != null and !t.description.isBlank()} ? ${t.description} : 'No description provided.'">Description</p>
             </a>

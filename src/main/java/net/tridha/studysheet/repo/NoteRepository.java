@@ -13,6 +13,8 @@ public interface NoteRepository extends JpaRepository<Note, Long> {
 
     Optional<Note> findByTitleIgnoreCase(String title);
 
+    Optional<Note> findByTitleIgnoreCaseAndTopicId(String title, Long topicId);
+
     List<Note> findAllByOrderByTitleAsc();
 
     List<Note> findAllByOrderByPinnedDescUpdatedAtDesc();
