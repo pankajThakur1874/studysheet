@@ -2,9 +2,8 @@ services:
   - type: web
     name: studysheet
     env: docker
-    dockerfilePath: ./Dockerfile
     plan: free
-    region: oregon
+    healthCheckPath: /health
     envVars:
-      - key: PORT
-        value: 10000
+      - key: RENDER_EXTERNAL_URL
+        sync: false
