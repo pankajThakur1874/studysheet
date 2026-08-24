@@ -92,7 +92,7 @@ flowchart LR
     G --> P[Payment Service]
     P --> I[Idempotency Check]
     I --> S[Payment State Machine]
-    S --> D[(PostgreSQL)]
+    S --> D["(PostgreSQL)"]
     S --> X[Processor Adapter]
     X --> EP[External Processor]
     EP --> W[Webhook]
@@ -117,7 +117,7 @@ Use this second flowchart when the interviewer asks **"walk me through the compl
 ```mermaid
 flowchart TD
     A[Payment Request] --> B{Idempotency Key exists?}
-    B -->|Yes| C[Return existing payment/result]
+    B -->|Yes| C["Return existing payment/result"]
     B -->|No| D[Create PROCESSING payment]
     D --> E[Call external processor]
     E --> F{Processor response?}
@@ -131,7 +131,7 @@ flowchart TD
     G --> L[Write Outbox in same DB transaction]
     H --> L
     L --> M[Kafka Consumers]
-    M --> N[Notification / Analytics / Audit]
+    M --> N["Notification / Analytics / Audit"]
 ```
 
 ## 8. HLD Deep Dive — Why Each Decision?

@@ -96,7 +96,7 @@ Datalog is less convenient for simple one-off queries but scales better to compl
 
 ```mermaid
 flowchart TD
-    L[Lucy: person] -->|born_in| I[Idaho]
+    L["Lucy: person"] -->|born_in| I[Idaho]
     I -->|within| US[United States]
     US -->|within| NA[North America]
     L -->|lives_in| LON[London]

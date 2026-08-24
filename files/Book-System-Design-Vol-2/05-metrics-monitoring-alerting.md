@@ -36,12 +36,12 @@ Five fundamental components: **data collection, data transmission, data storage,
 
 ```mermaid
 flowchart LR
-    MS[Metrics Source: app servers, DBs, queues] --> MC[Metrics Collector]
-    MC --> TSDB[(Time-Series Database)]
+    MS["Metrics Source: app servers, DBs, queues"] --> MC[Metrics Collector]
+    MC --> TSDB["(Time-Series Database)"]
     TSDB --> QS[Query Service]
     QS --> ALERT[Alerting System]
     QS --> VIZ[Visualization System]
-    ALERT --> CH[Email / SMS / PagerDuty / HTTP]
+    ALERT --> CH["Email / SMS / PagerDuty / HTTP"]
 ```
 
 - **Metrics source** — application servers, SQL databases, message queues, etc.
@@ -80,9 +80,9 @@ Occasional data loss is acceptable for metrics (fire-and-forget is fine).
 
 ```mermaid
 flowchart LR
-    SD[Service Discovery: etcd / ZooKeeper] -->|discover targets| MC[Metrics Collector]
+    SD["Service Discovery: etcd / ZooKeeper"] -->|discover targets| MC[Metrics Collector]
     WS["Web Servers /metrics endpoint"] -->|HTTP pull| MC
-    MC --> TSDB[(Time-Series DB)]
+    MC --> TSDB["(Time-Series DB)"]
 ```
 
 **Push model (e.g., Amazon CloudWatch, Graphite):** a **collection agent** installed on each monitored server pushes metrics to the collector, and can **aggregate locally** first (reducing volume). If the collector is overwhelmed, the agent buffers locally and resends — but in auto-scaling groups (servers rotated out), local buffering risks data loss. The collector should be an **auto-scaling cluster behind a load balancer**, scaling on CPU load.
@@ -105,8 +105,8 @@ Risk: if the TSDB is unavailable, data is lost. Add a **queue (Kafka)** between 
 flowchart LR
     MS[Metrics Source] --> MC[Metrics Collector]
     MC --> K[Kafka]
-    K --> CONS[Consumers / Stream Processors: Storm, Flink, Spark]
-    CONS --> TSDB[(Time-Series DB)]
+    K --> CONS["Consumers / Stream Processors: Storm, Flink, Spark"]
+    CONS --> TSDB["(Time-Series DB)"]
     TSDB --> QS[Query Service]
 ```
 
@@ -142,12 +142,12 @@ Prometheus and InfluxDB **don't use SQL** — SQL for time series is hard (a mov
 ```mermaid
 flowchart LR
     RC[Rule config files - YAML] --> AM[Alert Manager]
-    Cache[(Cache)] --> AM
+    Cache["(Cache)"] --> AM
     QS[Query Service] --> AM
-    AM --> AS[(Alert Store - Cassandra)]
+    AM --> AS["(Alert Store - Cassandra)"]
     AM --> K[Kafka]
     K --> AC[Alert Consumers]
-    AC --> CH[Email / SMS / PagerDuty / HTTP]
+    AC --> CH["Email / SMS / PagerDuty / HTTP"]
 ```
 
 Flow:

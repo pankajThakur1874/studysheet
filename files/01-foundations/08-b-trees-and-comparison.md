@@ -139,12 +139,12 @@ flowchart TD
     ROOT --> A["Interior page<br/>[<100] [100-200]"]
     ROOT --> B["Interior page<br/>[200-300] [300-400]"]
     ROOT --> C["Interior page<br/>[400-600] [>600]"]
-    A --> L1[(Leaf: keys 1-99<br/>values)]
-    A --> L2[(Leaf: keys 100-199)]
-    B --> L3[(Leaf: keys 200-299)]
-    B --> L4[(Leaf: keys 300-399)]
-    C --> L5[(Leaf: keys 400-599)]
-    C --> L6[(Leaf: keys 600+)]
+    A --> L1[("Leaf: keys 1-99<br/>values")]
+    A --> L2[("Leaf: keys 100-199")]
+    B --> L3[("Leaf: keys 200-299")]
+    B --> L4[("Leaf: keys 300-399")]
+    C --> L5[("Leaf: keys 400-599")]
+    C --> L6[("Leaf: keys 600+")]
 ```
 
 ```mermaid

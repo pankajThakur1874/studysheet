@@ -49,8 +49,8 @@ Key properties: **objects are immutable**; storage acts like a **key-value store
 flowchart TD
     C[Client] --> LB[Load Balancer]
     LB --> API[API Service - stateless]
-    API --> IAM[Identity & Access Management]
-    API --> MS[Metadata Service] --> MDB[(Metadata DB)]
+    API --> IAM["Identity & Access Management"]
+    API --> MS[Metadata Service] --> MDB["(Metadata DB)"]
     API --> DS[Data Store Service]
     DS --> P[Primary Storage Node]
     P --> S1[Secondary Storage Node]

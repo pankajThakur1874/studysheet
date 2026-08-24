@@ -114,7 +114,7 @@ flowchart TD
     DOC --> D2[Duplication on update]
     DOC --> D3[App-side joins if you need them]
 
-    REL --> R1[Normalize once, join at query time]
+    REL --> R1["Normalize once, join at query time"]
     REL --> R2[Optimizer picks the access path]
     REL --> R3[Multiple lookups per read]
 ```

@@ -97,14 +97,14 @@ Part I is the single machine. Part II is the bill that arrives when you leave it
 
 ```mermaid
 flowchart TD
-    RSM[Reliability / Scalability / Maintainability]
+    RSM["Reliability / Scalability / Maintainability"]
 
     RSM --> DM[Data Models]
     RSM --> ST[Storage Engines]
     DM --> QL[Query Languages]
-    ST --> LSM[LSM-Trees & B-Trees]
-    ST --> OLAP[OLTP vs OLAP / Column Storage]
-    DM --> ENC[Encoding & Evolution]
+    ST --> LSM["LSM-Trees & B-Trees"]
+    ST --> OLAP["OLTP vs OLAP / Column Storage"]
+    DM --> ENC["Encoding & Evolution"]
 
     LSM --> REP[Replication]
     ENC --> REP
@@ -116,10 +116,10 @@ flowchart TD
     TXN --> ISO[Isolation Levels]
     ISO --> SER[Serializability]
 
-    REP --> TROUBLE[Unreliable Networks, Clocks, Pauses]
+    REP --> TROUBLE["Unreliable Networks, Clocks, Pauses"]
     PART --> TROUBLE
     TROUBLE --> LIN[Linearizability]
-    TROUBLE --> ORD[Ordering & Causality]
+    TROUBLE --> ORD["Ordering & Causality"]
     LIN --> CONSENSUS[Consensus]
     ORD --> CONSENSUS
     SER --> TWOPC[Two-Phase Commit]
@@ -129,11 +129,11 @@ flowchart TD
     LSM --> BATCH
     BATCH --> STREAM[Stream Processing]
     REP --> STREAM
-    STREAM --> CDC[CDC & Event Sourcing]
-    CDC --> INTEG[Data Integration / Unbundling]
+    STREAM --> CDC["CDC & Event Sourcing"]
+    CDC --> INTEG["Data Integration / Unbundling"]
     BATCH --> INTEG
     INTEG --> CORRECT[End-to-End Correctness]
-    CORRECT --> ETHICS[Ethics & Responsibility]
+    CORRECT --> ETHICS["Ethics & Responsibility"]
 ```
 
 **How to read this map.** An arrow means *"you will be confused without the source topic."* Note the three convergence points — they're the intellectual peaks of the book:

@@ -53,8 +53,8 @@ flowchart TD
     Client[Client app] --> LB[Load Balancer]
     LB -->|/search/nearby| LBS[Location-Based Service - stateless]
     LB -->|/businesses/:id| BS[Business Service]
-    LBS -->|Read| Replica[(Read Replicas)]
-    BS -->|Write| Primary[(Primary DB)]
+    LBS -->|Read| Replica["(Read Replicas)"]
+    BS -->|Write| Primary["(Primary DB)"]
     Primary -->|Replicate| Replica
 ```
 
@@ -126,13 +126,13 @@ Deploy LBS to multiple regions/AZs to: (1) put users physically closer, (2) spre
 
 ```mermaid
 flowchart TD
-    A[Client sends lat/long + 500m radius] --> B[Load Balancer]
+    A["Client sends lat/long + 500m radius"] --> B[Load Balancer]
     B --> C[LBS]
     C --> D[Map 500m to geohash length 6]
-    D --> E[Compute geohash + 8 neighbors]
+    D --> E["Compute geohash + 8 neighbors"]
     E --> F["Query Geohash Redis for business IDs (parallel)"]
     F --> G["Fetch business objects from Business Info Redis"]
-    G --> H[Calculate distances, rank, return to client]
+    G --> H["Calculate distances, rank, return to client"]
 ```
 
 ## 6. Scaling, Bottlenecks & Trade-offs

@@ -51,6 +51,6 @@ The forex market has **3 layers**: the **retail market** (funding pools, where P
 
 ```mermaid
 flowchart TD
-    Retail[Retail market<br/>funding pools, PayPal pre-buys] --> Wholesale[Wholesale market<br/>banks + forex providers, batch orders]
-    Wholesale --> Top[Top-level participants<br/>multinational banks, CDs]
+    Retail["Retail market<br/>funding pools, PayPal pre-buys"] --> Wholesale["Wholesale market<br/>banks + forex providers, batch orders"]
+    Wholesale --> Top["Top-level participants<br/>multinational banks, CDs"]
 ```

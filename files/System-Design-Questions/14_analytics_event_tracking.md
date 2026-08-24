@@ -72,9 +72,9 @@ flowchart LR
     C[Client SDK] --> EC[Event Collector]
     EC --> K[Kafka]
     K --> SP[Stream Processor]
-    SP --> OLAP[(OLAP Store)]
-    K --> RAW[(Object Storage Raw Archive)]
-    K --> A[Alerts / Other Consumers]
+    SP --> OLAP["(OLAP Store)"]
+    K --> RAW["(Object Storage Raw Archive)"]
+    K --> A["Alerts / Other Consumers"]
     API[Analytics API] --> OLAP
     API --> DASH[Dashboard]
 ```
@@ -91,7 +91,7 @@ Use this second flowchart when the interviewer asks **"walk me through the compl
 flowchart TD
     A[Client event] --> B[Validate schema]
     B --> C{Valid?}
-    C -->|No| D[Reject / dead-letter]
+    C -->|No| D["Reject / dead-letter"]
     C -->|Yes| E[Publish to Kafka]
     E --> F[Partition by chosen key]
     F --> G[Stream processor]
@@ -494,11 +494,11 @@ Book specifics for the aggregation pipeline:
 
 ```mermaid
 flowchart LR
-    Clicks[Click events] --> K[[Kafka: durable log]]
-    K --> F[Flink: window + aggregate<br/>event-time + watermark]
-    F -->|exactly-once: offset+result in one txn| DB[(Aggregated results)]
+    Clicks[Click events] --> K[["Kafka: durable log"]]
+    K --> F["Flink: window + aggregate<br/>event-time + watermark"]
+    F -->|exactly-once: offset+result in one txn| DB["(Aggregated results)"]
     K -.replay for reprocessing (Kappa).-> F
-    Raw[(Raw events)] --> Recon[Nightly reconciliation] --> DB
+    Raw["(Raw events)"] --> Recon[Nightly reconciliation] --> DB
 ```
 
 **Interview line:** *"Kafka for durable ingest, Flink for windowed aggregation with event-time + watermarks for late events, Kappa so reprocessing is just a replay, exactly-once by committing the offset and result in one transaction, and a nightly reconciliation job as the accuracy backstop."*

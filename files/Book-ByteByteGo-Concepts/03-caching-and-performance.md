@@ -18,13 +18,13 @@ There are 5 common strategies, split into reads and writes (some can be combined
 ```mermaid
 flowchart TD
     subgraph Reads
-        CA[Cache Aside:<br/>app fills cache on miss]
-        RT[Read Through:<br/>cache loads DB on miss]
+        CA["Cache Aside:<br/>app fills cache on miss"]
+        RT["Read Through:<br/>cache loads DB on miss"]
     end
     subgraph Writes
-        WA[Write Around:<br/>write to DB, skip cache]
-        WB[Write Back:<br/>write cache now, DB later]
-        WT[Write Through:<br/>write cache + DB together]
+        WA["Write Around:<br/>write to DB, skip cache"]
+        WB["Write Back:<br/>write cache now, DB later"]
+        WT["Write Through:<br/>write cache + DB together"]
     end
 ```
 
@@ -67,11 +67,11 @@ A cache miss attack happens when someone repeatedly asks for data that exists **
 
 ```mermaid
 flowchart TD
-    Q[Request for non-existent key] --> BF{Bloom filter:<br/>key possibly exists?}
-    BF -->|no| Stop[Reject early, DB not touched]
+    Q[Request for non-existent key] --> BF{"Bloom filter:<br/>key possibly exists?"}
+    BF -->|no| Stop["Reject early, DB not touched"]
     BF -->|yes| C{In cache?}
     C -->|yes| Ret[Return value]
-    C -->|no| DB[Query DB, cache result<br/>incl. null with short TTL]
+    C -->|no| DB["Query DB, cache result<br/>incl. null with short TTL"]
 ```
 
 ## Tradeoff Between Latency and Consistency

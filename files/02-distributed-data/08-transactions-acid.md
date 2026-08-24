@@ -104,12 +104,12 @@ The book's honest caveat: **perfect durability doesn't exist.** Disks can fail e
 
 ```mermaid
 flowchart TD
-    T[Transaction: debit A, credit B] --> A{All operations succeed?}
-    A -->|yes| COMMIT[COMMIT — both applied, durable]
+    T["Transaction: debit A, credit B"] --> A{All operations succeed?}
+    A -->|yes| COMMIT["COMMIT — both applied, durable"]
     A -->|no / crash / conflict| ABORT[ABORT — discard all writes]
     ABORT --> RETRY{Retry?}
     RETRY -->|transient error| T
-    RETRY -->|permanent error| FAIL[Give up / surface error]
+    RETRY -->|permanent error| FAIL["Give up / surface error"]
     note["Atomicity turns dozens of partial-failure states into ONE: abort → retry"]
 ```
 

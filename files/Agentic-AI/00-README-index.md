@@ -25,25 +25,25 @@ You're a strong backend engineer who is **new to AI**. You don't need any machin
 
 ```mermaid
 flowchart TD
-    LLM[LLM: predicts text] --> LOOP[The Agent Loop<br/>reason → act → observe]
-    LOOP --> TOOLS[Tool Use / Function Calling]
-    LOOP --> MEM[Memory & State]
-    LOOP --> PLAN[Planning & Reasoning]
-    TOOLS --> RAG[RAG: give it knowledge]
+    LLM["LLM: predicts text"] --> LOOP["The Agent Loop<br/>reason → act → observe"]
+    LOOP --> TOOLS["Tool Use / Function Calling"]
+    LOOP --> MEM["Memory & State"]
+    LOOP --> PLAN["Planning & Reasoning"]
+    TOOLS --> RAG["RAG: give it knowledge"]
     MEM --> RAG
     PLAN --> WF[Workflow Patterns]
     WF --> MULTI[Multi-Agent Systems]
-    TOOLS --> MCP[MCP: standard tool protocol]
+    TOOLS --> MCP["MCP: standard tool protocol"]
     WF --> BUILD[Build a real agent]
     MULTI --> BUILD
     RAG --> BUILD
-    BUILD --> EVAL[Evaluate & Test]
-    BUILD --> OBS[Observe & Trace]
-    BUILD --> GUARD[Guardrails & Security]
+    BUILD --> EVAL["Evaluate & Test"]
+    BUILD --> OBS["Observe & Trace"]
+    BUILD --> GUARD["Guardrails & Security"]
     EVAL --> PROD[Deploy to Production]
     OBS --> PROD
     GUARD --> PROD
-    PROD --> ADV[Advanced: Context Engineering,<br/>long-horizon tasks]
+    PROD --> ADV["Advanced: Context Engineering,<br/>long-horizon tasks"]
 ```
 
 ---

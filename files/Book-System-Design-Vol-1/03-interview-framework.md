@@ -24,9 +24,9 @@ Every interview is different, but these four steps are common ground.
 
 ```mermaid
 flowchart LR
-    S1[Step 1: Understand problem<br/>& set scope] --> S2[Step 2: High-level design<br/>& get buy-in]
-    S2 --> S3[Step 3: Design deep dive]
-    S3 --> S4[Step 4: Wrap up]
+    S1["Step 1: Understand problem<br/>& set scope"] --> S2["Step 2: High-level design<br/>& get buy-in"]
+    S2 --> S3["Step 3: Design deep dive"]
+    S3 --> S4["Step 4: Wrap up"]
 ```
 
 ### Step 1 — Understand the problem and establish design scope
@@ -76,10 +76,10 @@ A rough guide (actual split depends on the problem):
 
 ```mermaid
 flowchart TD
-    A[45 min interview] --> B[Step 1: 3-10 min]
-    A --> C[Step 2: 10-15 min]
-    A --> D[Step 3: 10-25 min]
-    A --> E[Step 4: 3-5 min]
+    A[45 min interview] --> B["Step 1: 3-10 min"]
+    A --> C["Step 2: 10-15 min"]
+    A --> D["Step 3: 10-25 min"]
+    A --> E["Step 4: 3-5 min"]
 ```
 
 ## 5. Deep Dive — Dos and Don'ts

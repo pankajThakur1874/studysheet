@@ -78,11 +78,11 @@ The following is the primary interview flowchart. Draw this first, then explain 
 flowchart LR
     C[Client] --> G[API Gateway]
     G --> T[Tweet Service]
-    T --> D[(Post Store)]
+    T --> D["(Post Store)"]
     T --> O[Outbox]
     O --> K[Kafka]
     K --> F[Fanout Workers]
-    F --> TL[(Timeline Store / Redis)]
+    F --> TL[("Timeline Store / Redis")]
     C --> FE[Feed Service]
     FE --> TL
     FE --> R[Ranking]
@@ -512,7 +512,7 @@ flowchart TD
     P[User posts] --> Q{Celebrity?}
     Q -->|No| Push[Push post_id into each follower's feed cache]
     Q -->|Yes| Skip[Do NOT fan out]
-    R[Follower reads feed] --> Merge[Read own feed cache + pull celebrity posts, merge by time]
+    R[Follower reads feed] --> Merge["Read own feed cache + pull celebrity posts, merge by time"]
 ```
 
 **Interview line:** *"I'd fan out on write for normal users and fall back to fan-out on read for celebrities — the hybrid avoids the hot-key write storm while keeping most reads a cheap cache lookup, and the feed cache holds only post IDs."*

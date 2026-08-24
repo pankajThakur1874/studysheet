@@ -12,7 +12,7 @@ You pay per token (input + output), and latency scales with output tokens and mo
 
 ```mermaid
 flowchart LR
-    Levers[Cost/latency levers] --> C[Prompt caching]
+    Levers["Cost/latency levers"] --> C[Prompt caching]
     Levers --> R[Model routing]
     Levers --> S[Streaming]
     Levers --> B[Batching]
@@ -38,7 +38,7 @@ flowchart LR
       S[System prompt] --> Tls[Tool definitions] --> H[Prior history]
     end
     H --> BP[cache breakpoint]
-    BP --> V[Volatile: this turn's new input]
+    BP --> V["Volatile: this turn's new input"]
     V --> M[[LLM]]
 ```
 
@@ -121,9 +121,9 @@ flowchart TD
     Start[Agent request] --> Cache[Stable cached prefix]
     Cache --> Route[Route to cheapest capable model]
     Route --> Effort[Set effort to task difficulty]
-    Effort --> Ctx[Keep context lean: retrieve + compact]
+    Effort --> Ctx["Keep context lean: retrieve + compact"]
     Ctx --> Stream[Stream output]
-    Stream --> Measure[Measure cost/latency per task - Ch 15]
+    Stream --> Measure["Measure cost/latency per task - Ch 15"]
     Measure --> Start
 ```
 

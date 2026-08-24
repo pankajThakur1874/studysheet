@@ -31,9 +31,9 @@ An eval has three parts:
 
 ```mermaid
 flowchart LR
-    D[(Dataset: inputs + expected/rubric)] --> R[Run agent on each]
+    D[("Dataset: inputs + expected/rubric")] --> R[Run agent on each]
     R --> S[Score each output]
-    S --> M[Aggregate metric: pass rate / avg score]
+    S --> M["Aggregate metric: pass rate / avg score"]
     M --> Cmp{Better or worse than baseline?}
 ```
 
@@ -63,8 +63,8 @@ Use a (usually strong) model to grade outputs against explicit criteria. Powerfu
 
 ```mermaid
 flowchart LR
-    O[Agent output] --> J[[Judge model + rubric]]
-    Ref[Reference / criteria] --> J
+    O[Agent output] --> J[["Judge model + rubric"]]
+    Ref["Reference / criteria"] --> J
     J --> Score["Score + explanation<br/>e.g. {correct: true, clarity: 4/5}"]
 ```
 
@@ -90,10 +90,10 @@ Agents are multi-step, so evaluate at multiple levels:
 
 ```mermaid
 flowchart TD
-    A[Agent run] --> E1[Outcome: goal met?]
-    A --> E2[Trajectory: sensible steps?]
-    A --> E3[Tool use: right tool, valid args?]
-    A --> E4[Cost & latency]
+    A[Agent run] --> E1["Outcome: goal met?"]
+    A --> E2["Trajectory: sensible steps?"]
+    A --> E3["Tool use: right tool, valid args?"]
+    A --> E4["Cost & latency"]
 ```
 
 ---

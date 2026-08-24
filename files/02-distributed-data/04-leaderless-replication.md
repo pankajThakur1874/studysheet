@@ -128,9 +128,9 @@ Because clients write to nodes in any order, and nodes can go down and recover, 
 
 ```mermaid
 flowchart TD
-    C[Client] -->|write to all n, wait for w| R1[(Replica 1)]
-    C -->|write| R2[(Replica 2)]
-    C -.->|down, misses write| R3[(Replica 3)]
+    C[Client] -->|write to all n, wait for w| R1["(Replica 1)"]
+    C -->|write| R2["(Replica 2)"]
+    C -.->|down, misses write| R3["(Replica 3)"]
     C2[Client] -->|read from all n, wait for r| R1
     C2 -->|read| R3
     R1 -->|newer version| C2

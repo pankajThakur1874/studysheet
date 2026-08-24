@@ -129,11 +129,11 @@ consistency = ONE | QUORUM | ALL
 
 ```mermaid
 flowchart TD
-    Client -->|get/put| Coord[Coordinator node<br/>acts as proxy]
-    Coord --> Ring{Consistent hash ring<br/>locate key's N replicas}
-    Ring --> N1[(Replica n1)]
-    Ring --> N2[(Replica n2)]
-    Ring --> N3[(Replica n3)]
+    Client -->|get/put| Coord["Coordinator node<br/>acts as proxy"]
+    Coord --> Ring{"Consistent hash ring<br/>locate key's N replicas"}
+    Ring --> N1["(Replica n1)"]
+    Ring --> N2["(Replica n2)"]
+    Ring --> N3["(Replica n3)"]
 
     subgraph Cluster [Decentralized — every node is identical]
       N1 -. gossip .- N2
@@ -162,10 +162,10 @@ The design borrows from **Dynamo, Cassandra, and BigTable**. Key properties:
 
 ```mermaid
 flowchart TD
-    CAP[CAP Theorem: pick 2 of 3]
-    CAP --> CP[CP: Consistency + Partition<br/>sacrifices Availability<br/>e.g. bank systems]
-    CAP --> AP[AP: Availability + Partition<br/>sacrifices Consistency<br/>e.g. Dynamo, Cassandra]
-    CAP --> CA[CA: Consistency + Availability<br/>sacrifices Partition tolerance<br/>NOT possible in real systems]
+    CAP["CAP Theorem: pick 2 of 3"]
+    CAP --> CP["CP: Consistency + Partition<br/>sacrifices Availability<br/>e.g. bank systems"]
+    CAP --> AP["AP: Availability + Partition<br/>sacrifices Consistency<br/>e.g. Dynamo, Cassandra"]
+    CAP --> CA["CA: Consistency + Availability<br/>sacrifices Partition tolerance<br/>NOT possible in real systems"]
 ```
 
 Networks *always* partition eventually, so **CA is impossible in the real world** — a real system must be CP or AP. Concretely, with replicas n1, n2, n3 and n3 partitioned off:
@@ -186,9 +186,9 @@ Copy each item to **N nodes**: hash the key to a ring spot, then walk **clockwis
 
 ```mermaid
 flowchart LR
-    K[hash key0] --> S1[(s1)]
-    S1 -->|clockwise| S2[(s2)]
-    S2 -->|clockwise| S3[(s3)]
+    K[hash key0] --> S1["(s1)"]
+    S1 -->|clockwise| S2["(s2)"]
+    S2 -->|clockwise| S3["(s3)"]
     S1 & S2 & S3 --> R[3 replicas of key0]
 ```
 
@@ -208,9 +208,9 @@ A **coordinator** proxies between client and nodes. Note: **W=1 does *not* mean 
 ```mermaid
 flowchart TD
     C[Client put] --> Coord[Coordinator]
-    Coord --> R1[(n1)]
-    Coord --> R2[(n2)]
-    Coord --> R3[(n3)]
+    Coord --> R1["(n1)"]
+    Coord --> R2["(n2)"]
+    Coord --> R3["(n3)"]
     R1 -->|ack| Coord
     R2 -->|ack| Coord
     Coord -->|W=2 acks received → success| C
@@ -240,12 +240,12 @@ Replication creates conflicts. If n1 and n2 both hold the same item and, concurr
 
 ```mermaid
 flowchart TD
-    D1["D1 [Sx:1]"] -->|update via Sx| D2["D2 [Sx:2]"]
-    D2 -->|update via Sy| D3["D3 [Sx:2, Sy:1]"]
-    D2 -->|update via Sz| D4["D4 [Sx:2, Sz:1]"]
-    D3 --> CFLICT{D3 vs D4<br/>CONFLICT — siblings}
+    D1["D1 ["Sx:1"]"] -->|update via Sx| D2["D2 ["Sx:2"]"]
+    D2 -->|update via Sy| D3["D3 ["Sx:2, Sy:1"]"]
+    D2 -->|update via Sz| D4["D4 ["Sx:2, Sz:1"]"]
+    D3 --> CFLICT{"D3 vs D4<br/>CONFLICT — siblings"}
     D4 --> CFLICT
-    CFLICT -->|client merges, write via Sx| D5["D5 [Sx:3, Sy:1, Sz:1]"]
+    CFLICT -->|client merges, write via Sx| D5["D5 ["Sx:3, Sy:1, Sz:1"]"]
 ```
 
 Rules for comparing versions X and Y:
@@ -260,10 +260,10 @@ Rules for comparing versions X and Y:
 
 ```mermaid
 flowchart TD
-    W[Write request arrives at node] --> C[1. Append to commit log on disk<br/>durability]
+    W[Write request arrives at node] --> C["1. Append to commit log on disk<br/>durability"]
     C --> M[2. Update memtable in memory]
-    M --> F{Memtable full /<br/>threshold reached?}
-    F -->|Yes| S[3. Flush to an immutable SSTable on disk<br/>sorted key,value pairs]
+    M --> F{"Memtable full /<br/>threshold reached?"}
+    F -->|Yes| S["3. Flush to an immutable SSTable on disk<br/>sorted key,value pairs"]
     F -->|No| K[Stay in memory]
 ```
 
@@ -273,12 +273,12 @@ An **SSTable** (Sorted-String Table) is a sorted, immutable list of `<key, value
 
 ```mermaid
 flowchart TD
-    R[Read request arrives at node] --> M{1. In memtable / cache?}
+    R[Read request arrives at node] --> M{"1. In memtable / cache?"}
     M -->|Yes| Ret[Return to client]
     M -->|No| BF[2. Consult bloom filter]
-    BF --> W[3. Bloom filter → which SSTables MIGHT hold the key]
+    BF --> W["3. Bloom filter → which SSTables MIGHT hold the key"]
     W --> SS[4. Read those SSTables]
-    SS --> Ret2[5. Merge newest version, return]
+    SS --> Ret2["5. Merge newest version, return"]
 ```
 
 A **bloom filter** is a space-efficient probabilistic membership test: it can say "*maybe present*" (check that SSTable) or "*definitely absent*" (skip it) — never a false "absent." That keeps disk reads cheap even with many SSTables.
@@ -313,7 +313,7 @@ A **bloom filter** is a space-efficient probabilistic membership test: it can sa
 
 ```mermaid
 flowchart LR
-    A[Node A<br/>heartbeat++] -->|send to random| B[Node B]
+    A["Node A<br/>heartbeat++"] -->|send to random| B[Node B]
     A --> C[Node C]
     B -->|forward| D[Node D]
     C -->|forward| E[Node E]

@@ -60,11 +60,11 @@ The following is the primary interview flowchart. Draw this first, then explain 
 
 ```mermaid
 flowchart LR
-    DB[(Source DB)] --> CDC[CDC / Kafka]
+    DB["(Source DB)"] --> CDC["CDC / Kafka"]
     CDC --> IDX[Indexing Service]
-    IDX --> ES[(Elasticsearch / OpenSearch)]
+    IDX --> ES[("Elasticsearch / OpenSearch")]
     C[Client] --> API[Search API]
-    API --> CACHE[(Redis Cache)]
+    API --> CACHE["(Redis Cache)"]
     CACHE --> ES
     ES --> API
     API --> C
@@ -86,10 +86,10 @@ flowchart TD
     D -->|Yes| E[Return cached suggestions]
     D -->|No| F[Parse query]
     F --> G[Search index]
-    G --> H[Rank + filter]
+    G --> H["Rank + filter"]
     H --> I[Cache result]
     I --> J[Return results]
-    K[Source DB change] --> L[CDC/Kafka]
+    K[Source DB change] --> L["CDC/Kafka"]
     L --> M[Index worker]
     M --> G
 ```
@@ -484,8 +484,8 @@ Book specifics to fold in:
 
 ```mermaid
 flowchart LR
-    Logs[(Query logs)] --> Agg[Weekly aggregation] --> Build[Build trie + top-k per node] --> TDB[(Trie store, sharded)]
-    Key[Keystroke] --> TDB --> TopK[Return cached top-k in O(1)]
+    Logs["(Query logs)"] --> Agg[Weekly aggregation] --> Build["Build trie + top-k per node"] --> TDB[("Trie store, sharded")]
+    Key[Keystroke] --> TDB --> TopK["Return cached top-k in O(1)"]
 ```
 
 **Interview line:** *"A trie with top-k cached at each node and a bounded prefix length for O(1) reads, rebuilt offline weekly from aggregated query logs, sharded via a shard-map to handle uneven letter distribution."*

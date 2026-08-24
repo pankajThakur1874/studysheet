@@ -146,10 +146,10 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    ZK[(ZooKeeper<br/>authoritative partition→node map)]
-    N1[(Node 1)] -->|register| ZK
-    N2[(Node 2)] -->|register| ZK
-    N3[(Node 3)] -->|register| ZK
+    ZK[("ZooKeeper<br/>authoritative partition→node map")]
+    N1["(Node 1)"] -->|register| ZK
+    N2["(Node 2)"] -->|register| ZK
+    N3["(Node 3)"] -->|register| ZK
     R[Routing tier] -->|subscribe, notified on change| ZK
     C[Client] --> R
     R -->|forward to correct node| N2

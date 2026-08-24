@@ -126,16 +126,16 @@ Three flows — **only the first is latency-critical**:
 
 ```mermaid
 flowchart LR
-    Client --> Broker --> GW[Client gateway<br/>auth, validate, rate-limit, FIX]
-    GW --> OM[Order manager<br/>order state]
+    Client --> Broker --> GW["Client gateway<br/>auth, validate, rate-limit, FIX"]
+    GW --> OM["Order manager<br/>order state"]
     OM <-->|risk checks| RM[Risk manager]
     OM <-->|funds / withhold| W[Wallet]
-    OM --> SEQ[Sequencer<br/>single writer]
-    SEQ --> ME[Matching engine<br/>order book per symbol]
+    OM --> SEQ["Sequencer<br/>single writer"]
+    SEQ --> ME["Matching engine<br/>order book per symbol"]
     ME -->|2 executions| SEQ --> OM --> GW --> Broker --> Client
 
     ME -->|execution stream| MDP[Market data publisher] --> DS[Data service] --> Broker
-    OM & ME --> RPT[Reporter] --> DB[(Database)]
+    OM & ME --> RPT[Reporter] --> DB["(Database)"]
 ```
 
 - **Trading flow (critical path ⭐):** gateway → order manager → sequencer → matching engine. A match emits **two executions (fills)** — one buy, one sell — sequenced for determinism, returned to the client.
@@ -218,10 +218,10 @@ Stateless services (gateway) scale horizontally. Stateful ones (order manager, m
 ```mermaid
 flowchart LR
     subgraph EventStore[Event Store - mmap]
-      E[NewOrderEvent / OrderFilledEvent]
+      E["NewOrderEvent / OrderFilledEvent"]
     end
-    Hot[Matching Engine — HOT / primary] -->|emits events| E
-    E --> Warm[Matching Engine — WARM / secondary]
+    Hot["Matching Engine — HOT / primary"] -->|emits events| E
+    E --> Warm["Matching Engine — WARM / secondary"]
     Warm -.->|emits nothing; takes over on failure| E
 ```
 
@@ -235,10 +235,10 @@ If warm instances also fail (rare but catastrophic), replicate core data to data
 
 ```mermaid
 flowchart LR
-    C[Commands] --> Leader[Raft Leader<br/>own mmap event store]
+    C[Commands] --> Leader["Raft Leader<br/>own mmap event store"]
     Leader -->|AppendEntries RPC| F1[Follower]
     Leader -->|AppendEntries RPC| F2[Follower]
-    F1 & F2 -.missed heartbeat → election timeout.-> Cand[Candidate: RequestVote]
+    F1 & F2 -.missed heartbeat → election timeout.-> Cand["Candidate: RequestVote"]
     Cand -.majority.-> Leader
 ```
 

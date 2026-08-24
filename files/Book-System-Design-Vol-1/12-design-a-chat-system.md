@@ -63,7 +63,7 @@ Because WebSocket connections are persistent, **efficient connection management 
 flowchart LR
     C1[Client] -- WebSocket --> CS[Chat Servers]
     C1 -- HTTP --> API[API Servers]
-    CS --> KV[(Key-Value Store: chat history)]
+    CS --> KV[("Key-Value Store: chat history")]
     C1 -- WebSocket --> PS[Presence Servers]
     CS --> NS[Notification Servers]
     PS --> KV

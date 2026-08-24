@@ -49,10 +49,10 @@ flowchart TD
     U -->|fetch tiles| CDN[CDN - precomputed map images]
     LB --> NAV[Navigation Service]
     LB --> LOC[Location Service]
-    NAV --> GEO[(Geocoding DB)]
-    NAV --> RT[(Routing Tiles - Object Storage)]
-    LOC --> ULDB[(User Location DB)]
-    CDN --> Origin[(Precomputed Map Images Origin)]
+    NAV --> GEO["(Geocoding DB)"]
+    NAV --> RT["(Routing Tiles - Object Storage)"]
+    LOC --> ULDB["(User Location DB)"]
+    CDN --> Origin["(Precomputed Map Images Origin)"]
 ```
 
 ### Map 101 (background concepts)
@@ -107,10 +107,10 @@ Beyond writing to the location DB, updates go into **Kafka**. Consumers include 
 ```mermaid
 flowchart LR
     LOC[Location Service] --> K[Kafka]
-    K --> T[Traffic Update Service] --> TDB[(Traffic DB)]
-    K --> ML[ML Personalization] --> PDB[(Personalization DB)]
-    K --> RTP[Routing Tile Processing] --> RT[(Routing Tiles - S3)]
-    K --> AN[Analytics] --> ADB[(Analytics DB)]
+    K --> T[Traffic Update Service] --> TDB["(Traffic DB)"]
+    K --> ML[ML Personalization] --> PDB["(Personalization DB)"]
+    K --> RTP[Routing Tile Processing] --> RT["(Routing Tiles - S3)"]
+    K --> AN[Analytics] --> ADB["(Analytics DB)"]
 ```
 
 ### Rendering optimization

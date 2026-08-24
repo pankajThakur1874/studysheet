@@ -134,12 +134,12 @@ This is also why the replication log (Topic 10), Kafka (Topic 30), WAL-based CDC
 
 ```mermaid
 flowchart TD
-    DB[(Source DB\nsystem of record)]
-    CDC[CDC tool\n(Debezium / Maxwell)]
-    K[Kafka topic\n(CDC events, ordered)]
-    SI[Search Index\n(consumer group A)]
-    CA[Cache invalidation\n(consumer group B)]
-    WH[Analytics warehouse\n(consumer group C)]
+    DB["(Source DB\nsystem of record)"]
+    CDC["CDC tool\n(Debezium / Maxwell)"]
+    K["Kafka topic\n(CDC events, ordered)"]
+    SI["Search Index\n(consumer group A)"]
+    CA["Cache invalidation\n(consumer group B)"]
+    WH["Analytics warehouse\n(consumer group C)"]
     
     DB -->|WAL / binlog| CDC
     CDC -->|publish in commit order| K

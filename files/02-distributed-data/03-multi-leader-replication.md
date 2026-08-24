@@ -113,17 +113,17 @@ To track which writes are concurrent versus which causally follow others, you us
 ```mermaid
 flowchart TD
     subgraph DC1[Datacenter 1]
-        L1[(Leader 1)] --> F1a[(Follower)]
-        L1 --> F1b[(Follower)]
+        L1["(Leader 1)"] --> F1a["(Follower)"]
+        L1 --> F1b["(Follower)"]
     end
     subgraph DC2[Datacenter 2]
-        L2[(Leader 2)] --> F2a[(Follower)]
-        L2 --> F2b[(Follower)]
+        L2["(Leader 2)"] --> F2a["(Follower)"]
+        L2 --> F2b["(Follower)"]
     end
     L1 <-->|async inter-DC replication| L2
     C1[Local clients] --> L1
     C2[Local clients] --> L2
-    note[Both leaders accept writes → conflicts possible on the same data]
+    note["Both leaders accept writes → conflicts possible on the same data"]
 ```
 
 ```mermaid
@@ -144,9 +144,9 @@ sequenceDiagram
 flowchart LR
     subgraph Topologies
       direction TB
-      A[All-to-all: robust, but out-of-order arrival]
-      C[Circular: simple, single failure breaks the ring]
-      S[Star: central hub, hub is a bottleneck/SPOF]
+      A["All-to-all: robust, but out-of-order arrival"]
+      C["Circular: simple, single failure breaks the ring"]
+      S["Star: central hub, hub is a bottleneck/SPOF"]
     end
 ```
 

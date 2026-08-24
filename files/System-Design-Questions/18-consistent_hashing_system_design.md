@@ -150,10 +150,10 @@ class ConsistentHashRing {
 ```mermaid
 flowchart TD
     C[Client wants key K] --> H["hash(K) → position P on ring"]
-    H --> R{Walk clockwise<br/>from P}
+    H --> R{"Walk clockwise<br/>from P"}
     R --> VN[First virtual node hit]
     VN --> PS[Maps back to physical server]
-    PS --> DATA[(Server holding K)]
+    PS --> DATA["(Server holding K)"]
 
     subgraph Ring [Hash Ring 0 .. 2^160-1]
       direction LR

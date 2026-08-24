@@ -60,7 +60,7 @@ Clarify these with the interviewer (the book does):
 
 ```mermaid
 flowchart TD
-    R[Requirements:<br/>unique · 64-bit · numeric · time-sortable · 10k/s] --> A[Multi-master auto_increment]
+    R["Requirements:<br/>unique · 64-bit · numeric · time-sortable · 10k/s"] --> A[Multi-master auto_increment]
     R --> B[UUID 128-bit]
     R --> C[Ticket server - Flickr]
     R --> D[Twitter Snowflake ⭐]

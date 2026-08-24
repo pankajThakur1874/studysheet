@@ -14,9 +14,9 @@ Isolation is enforced by **MVCC (Multi-Version Concurrency Control)** and locks.
 
 ```mermaid
 flowchart TD
-    S[Serializable<br/>strongest] --> RR[Repeatable Read]
+    S["Serializable<br/>strongest"] --> RR[Repeatable Read]
     RR --> RC[Read Committed]
-    RC --> RU[Read Uncommitted<br/>weakest]
+    RC --> RU["Read Uncommitted<br/>weakest"]
 ```
 
 ## How to Choose the Right Database
@@ -36,10 +36,10 @@ You can route in two ways: put routing logic in the app code, or use **database 
 
 ```mermaid
 flowchart TD
-    App[Order Service] --> MW[DB Middleware / Proxy]
-    MW -->|writes| P[(Primary DB)]
-    P -->|replication| R1[(Replica 1)]
-    P -->|replication| R2[(Replica 2)]
+    App[Order Service] --> MW["DB Middleware / Proxy"]
+    MW -->|writes| P["(Primary DB)"]
+    P -->|replication| R1["(Replica 1)"]
+    P -->|replication| R2["(Replica 2)"]
     MW -->|reads| R1
     MW -->|reads| R2
 ```
@@ -52,11 +52,11 @@ It's usually faster than pessimistic locking because nothing is locked. But unde
 
 ```mermaid
 flowchart TD
-    A[Read row + version=N] --> B[Modify data]
-    B --> C[Write back with version=N+1]
-    C --> D{DB check:<br/>new version == N+1?}
+    A["Read row + version=N"] --> B[Modify data]
+    B --> C["Write back with version=N+1"]
+    C --> D{"DB check:<br/>new version == N+1?"}
     D -->|yes| E[Commit success]
-    D -->|no| F[Abort, retry from read]
+    D -->|no| F["Abort, retry from read"]
 ```
 
 ## Vertical vs Horizontal Partitioning
@@ -72,10 +72,10 @@ For sharding, a **routing algorithm** decides which shard holds a row:
 
 ```mermaid
 flowchart LR
-    T[Original Table] --> V[Vertical:<br/>split by columns]
-    T --> H[Horizontal / Shard:<br/>split by rows]
-    H --> S1[(Shard 1<br/>IDs 1,2)]
-    H --> S2[(Shard 2<br/>IDs 3,4)]
+    T[Original Table] --> V["Vertical:<br/>split by columns"]
+    T --> H["Horizontal / Shard:<br/>split by rows"]
+    H --> S1[("Shard 1<br/>IDs 1,2")]
+    H --> S2[("Shard 2<br/>IDs 3,4")]
 ```
 
 ## Block, File, and Object Storage
@@ -90,8 +90,8 @@ Three broad storage categories, each a higher-level abstraction than the last:
 
 ```mermaid
 flowchart TD
-    B[Block storage<br/>raw blocks, single owner] --> F[File storage<br/>files + directories, shared]
-    B --> O[Object storage<br/>flat objects, REST API, cheap/durable]
+    B["Block storage<br/>raw blocks, single owner"] --> F["File storage<br/>files + directories, shared"]
+    B --> O["Object storage<br/>flat objects, REST API, cheap/durable"]
 ```
 
 ## Erasure Coding
@@ -105,9 +105,9 @@ flowchart TD
     D[Data] --> C[Split into d1 d2 d3 d4]
     C --> P[Compute parities p1 p2]
     subgraph Failure
-        L[d3, d4 lost]
+        L["d3, d4 lost"]
     end
-    P --> R[Rebuild d3, d4 from d1, d2, p1, p2]
+    P --> R["Rebuild d3, d4 from d1, d2, p1, p2"]
 ```
 
 ## Why Is a Solid-State Drive (SSD) Fast?

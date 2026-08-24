@@ -132,19 +132,19 @@ flowchart TD
     W[Write arrives] --> WAL[Append to write-ahead log — crash recovery only]
     WAL --> MT[Insert into memtable — in-memory balanced tree]
     MT -->|memtable exceeds threshold| FLUSH[Flush to disk as new SSTable]
-    FLUSH --> L0[(SSTable — newest)]
-    L0 -.background compaction.-> L1[(SSTable — older, merged)]
-    L1 -.background compaction.-> L2[(SSTable — oldest, largest)]
+    FLUSH --> L0["(SSTable — newest)"]
+    L0 -.background compaction.-> L1[("SSTable — older, merged")]
+    L1 -.background compaction.-> L2[("SSTable — oldest, largest")]
     FLUSH --> DISCARD[Discard corresponding WAL segment]
 ```
 
 ```mermaid
 flowchart TD
-    R[Read key K] --> B{Bloom filter says<br/>K might exist?}
-    B -->|definitely not| MISS[Return not-found — no disk I/O]
+    R[Read key K] --> B{"Bloom filter says<br/>K might exist?"}
+    B -->|definitely not| MISS["Return not-found — no disk I/O"]
     B -->|maybe| M{In memtable?}
     M -->|yes| RET[Return value]
-    M -->|no| S1{In newest SSTable?<br/>sparse index → block → scan}
+    M -->|no| S1{"In newest SSTable?<br/>sparse index → block → scan"}
     S1 -->|yes| RET
     S1 -->|no| S2{Next older SSTable?}
     S2 -->|yes| RET

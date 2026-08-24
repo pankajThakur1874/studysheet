@@ -117,13 +117,13 @@ These problems have no easy solutions, which is why some operations teams **pref
 
 ```mermaid
 flowchart TD
-    C1[Client writes] --> L[(Leader)]
+    C1[Client writes] --> L["(Leader)"]
     C2[Client reads] --> L
-    C3[Client reads] --> F1[(Follower 1)]
-    C4[Client reads] --> F2[(Follower 2)]
+    C3[Client reads] --> F1["(Follower 1)"]
+    C4[Client reads] --> F2["(Follower 2)"]
     L -->|replication log stream| F1
     L -->|replication log stream| F2
-    note[Writes: leader only. Reads: any replica.]
+    note["Writes: leader only. Reads: any replica."]
 ```
 
 ```mermaid

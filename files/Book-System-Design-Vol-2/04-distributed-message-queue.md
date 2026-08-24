@@ -57,7 +57,7 @@ flowchart LR
     end
     B -->|consume| CG1[Consumer Group 1]
     B --> CG2[Consumer Group 2]
-    ZK[ZooKeeper / etcd: metadata, state, coordination] --- B
+    ZK["ZooKeeper / etcd: metadata, state, coordination"] --- B
 ```
 
 **Storage & coordination:**
@@ -145,7 +145,7 @@ Each partition has multiple **replicas** across different brokers — one **lead
 
 ```mermaid
 flowchart TD
-    Prod[Producer] -->|produce| L[Leader replica: committed offset 13]
+    Prod[Producer] -->|produce| L["Leader replica: committed offset 13"]
     L -->|synced| R2[Replica-2 in ISR]
     L -->|synced| R3[Replica-3 in ISR]
     L -.->|lagging, not in ISR| R4[Replica-4]

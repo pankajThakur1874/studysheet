@@ -67,10 +67,10 @@ flowchart LR
     U[User posts] --> LB[Load Balancer]
     LB --> WS[Web Servers]
     WS --> PS[Post Service]
-    PS --> DB[(Database)]
-    PS --> C[(Cache)]
+    PS --> DB["(Database)"]
+    PS --> C["(Cache)"]
     WS --> FS[Fanout Service]
-    FS --> NC[(News Feed Cache)]
+    FS --> NC["(News Feed Cache)"]
     WS --> NS[Notification Service]
 ```
 
@@ -106,11 +106,11 @@ Important memory trick: storing full user and post objects would use too much me
 
 ```mermaid
 flowchart TD
-    Post[New post published] --> G[(Graph DB: get friend IDs)]
-    G --> UC[(User cache: filter friends)]
-    UC --> MQ[Message Queue: friend list + post ID]
+    Post[New post published] --> G[("Graph DB: get friend IDs")]
+    G --> UC[("User cache: filter friends")]
+    UC --> MQ["Message Queue: friend list + post ID"]
     MQ --> FW[Fanout Workers]
-    FW --> NFC[(News Feed Cache: post_id to user_id)]
+    FW --> NFC[("News Feed Cache: post_id to user_id")]
 ```
 
 ### News feed retrieval deep dive

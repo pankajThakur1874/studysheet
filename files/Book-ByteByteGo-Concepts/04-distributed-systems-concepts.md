@@ -18,7 +18,7 @@ flowchart LR
     R1[Globally unique] --> ID[64-bit numeric ID]
     R2[Roughly time-sorted] --> ID
     R3[Numeric only] --> ID
-    R4[Highly scalable, low latency] --> ID
+    R4["Highly scalable, low latency"] --> ID
 ```
 
 ## At-Most Once, At-Least Once, and Exactly Once
@@ -31,9 +31,9 @@ Message queues coordinate the independent building blocks of a system. There are
 
 ```mermaid
 flowchart TD
-    AM[At-most once<br/>may lose, never duplicate] --> Metrics[Use: metrics/monitoring]
-    AL[At-least once<br/>never lose, may duplicate] --> Dedup[Use: dedup possible]
-    EO[Exactly once<br/>never lose, never duplicate] --> Money[Use: payments, trading]
+    AM["At-most once<br/>may lose, never duplicate"] --> Metrics["Use: metrics/monitoring"]
+    AL["At-least once<br/>never lose, may duplicate"] --> Dedup["Use: dedup possible"]
+    EO["Exactly once<br/>never lose, never duplicate"] --> Money["Use: payments, trading"]
 ```
 
 ## How to Scale a Website to Millions of Users
@@ -52,10 +52,10 @@ flowchart TD
     U[Users] --> LB[Load Balancer]
     LB --> A1[App Server]
     LB --> A2[App Server]
-    A1 --> Cache[(Cache layer)]
-    A1 --> P[(Primary DB - writes)]
-    P --> R1[(Read Replica)]
-    P --> R2[(Read Replica)]
+    A1 --> Cache["(Cache layer)"]
+    A1 --> P["(Primary DB - writes)"]
+    P --> R1["(Read Replica)"]
+    P --> R2["(Read Replica)"]
 ```
 
 ## Handling a Large-Scale Outage

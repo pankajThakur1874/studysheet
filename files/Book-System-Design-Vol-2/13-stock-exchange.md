@@ -47,7 +47,7 @@ flowchart LR
     SEQ --> ME[Matching engine]
     ME -->|executions| SEQ --> OM --> GW --> Broker --> Client
     ME -->|execution stream| MDP[Market data publisher] --> DS[Data service] --> Broker
-    OM & ME --> RPT[Reporter] --> DB[(Database)]
+    OM & ME --> RPT[Reporter] --> DB["(Database)"]
 ```
 
 **Trading flow (critical path):** gateway → order manager → sequencer → matching engine. The gateway does auth, validation, rate limiting, normalization, and FIX support. The order manager runs risk checks, verifies wallet funds, and forwards to the sequencer; when a match is found the matching engine emits **two executions (fills)** — one buy, one sell — sequenced for determinism, then returned to the client.
@@ -86,7 +86,7 @@ With components on separate servers over a network, round-trip network latency �
 ```mermaid
 flowchart TB
     subgraph Single Server
-      OM2[Order Manager] --- MB[mmap event store / message bus]
+      OM2[Order Manager] --- MB["mmap event store / message bus"]
       ME2[Matching Engine] --- MB
       MDP2[Market Data Publisher] --- MB
       RPT2[Reporter] --- MB
@@ -105,10 +105,10 @@ Find single points of failure and add redundancy; make failure detection + failo
 ```mermaid
 flowchart LR
     subgraph Event Store mmap
-      E[NewOrderEvent / OrderFilledEvent]
+      E["NewOrderEvent / OrderFilledEvent"]
     end
-    Hot[Matching Engine - Hot / primary] -->|emits events| E
-    E --> Warm[Matching Engine - Warm / secondary]
+    Hot["Matching Engine - Hot / primary"] -->|emits events| E
+    E --> Warm["Matching Engine - Warm / secondary"]
     Warm -.->|does not emit; takes over on failure| E
 ```
 

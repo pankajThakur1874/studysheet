@@ -50,7 +50,7 @@ A URL like `https://example.com/product/electric/phone` has 4 parts: **scheme** 
 
 ```mermaid
 flowchart TD
-    A[Type URL + Enter] --> B[DNS lookup for IP<br/>check browser/OS/network/ISP cache]
+    A["Type URL + Enter"] --> B["DNS lookup for IP<br/>check browser/OS/network/ISP cache"]
     B --> C[Open TCP connection to server IP]
     C --> D["Send HTTP request<br/>GET /phone HTTP/1.1"]
     D --> E["Server responds<br/>HTTP/1.1 200 OK + HTML"]
@@ -68,8 +68,8 @@ A CDN is a set of servers spread out geographically (called **edge servers**) th
 ```mermaid
 flowchart TD
     U[User in New York] --> Res[DNS Resolver]
-    Res --> Auth[Authoritative name server<br/>returns CDN alias]
-    Auth --> LB[CDN Load Balancer<br/>picks best edge by IP/ISP/load]
+    Res --> Auth["Authoritative name server<br/>returns CDN alias"]
+    Auth --> LB["CDN Load Balancer<br/>picks best edge by IP/ISP/load"]
     LB --> Edge[Nearby CDN Edge Server]
     Edge -->|cache hit| U
     Edge -.cache miss.-> Regional[Regional CDN]

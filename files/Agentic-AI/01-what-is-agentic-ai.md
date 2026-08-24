@@ -32,10 +32,10 @@ Break that into the four ingredients:
 
 ```mermaid
 flowchart LR
-    G[🎯 Goal<br/>what to achieve] --> LLM[🧠 LLM<br/>the reasoning engine]
-    LLM --> T[🔧 Tools<br/>how it acts on the world]
-    LLM --> M[💾 Memory<br/>what it remembers]
-    LLM --> L[🔁 Loop<br/>keep going until done]
+    G["🎯 Goal<br/>what to achieve"] --> LLM["🧠 LLM<br/>the reasoning engine"]
+    LLM --> T["🔧 Tools<br/>how it acts on the world"]
+    LLM --> M["💾 Memory<br/>what it remembers"]
+    LLM --> L["🔁 Loop<br/>keep going until done"]
     T --> LLM
     M --> LLM
     L --> LLM
@@ -81,11 +81,11 @@ Ask these questions:
 
 ```mermaid
 flowchart TD
-    Q1{Is the task open-ended?<br/>Can't predict the steps in advance?} -->|No| WF[Use a workflow / chain.<br/>Cheaper, testable, reliable.]
-    Q1 -->|Yes| Q2{Does it need tools /<br/>external actions?}
-    Q2 -->|No| PROMPT[Maybe just a better prompt<br/>or a single call.]
-    Q2 -->|Yes| Q3{Is the cost of a wrong<br/>autonomous action acceptable<br/>or gated by a human?}
-    Q3 -->|No| HITL[Agent + human-in-the-loop<br/>on risky actions.]
+    Q1{"Is the task open-ended?<br/>Can't predict the steps in advance?"} -->|No| WF["Use a workflow / chain.<br/>Cheaper, testable, reliable."]
+    Q1 -->|Yes| Q2{"Does it need tools /<br/>external actions?"}
+    Q2 -->|No| PROMPT["Maybe just a better prompt<br/>or a single call."]
+    Q2 -->|Yes| Q3{"Is the cost of a wrong<br/>autonomous action acceptable<br/>or gated by a human?"}
+    Q3 -->|No| HITL["Agent + human-in-the-loop<br/>on risky actions."]
     Q3 -->|Yes| AGENT[Build an agent. ✅]
 ```
 

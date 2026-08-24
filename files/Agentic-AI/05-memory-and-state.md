@@ -64,9 +64,9 @@ Long-term memory persists across sessions and beyond the window's limit. You sto
 
 ```mermaid
 flowchart TD
-    LT[Long-term memory] --> E[Episodic<br/>what happened]
-    LT --> S[Semantic<br/>facts & preferences]
-    LT --> P[Procedural<br/>how-to / skills]
+    LT[Long-term memory] --> E["Episodic<br/>what happened"]
+    LT --> S["Semantic<br/>facts & preferences"]
+    LT --> P["Procedural<br/>how-to / skills"]
 ```
 
 **How it's used, mechanically:** before (or during) a turn, you fetch the relevant records and inject them into the context — as a system note, a message, or a tool result. "Retrieving semantic memory into the window" is exactly **RAG**, which gets its own chapter (Ch 6).
@@ -83,10 +83,10 @@ Two concrete patterns you'll actually build:
 
 ```mermaid
 flowchart TD
-    Q1{Needed only for<br/>this task/session?} -->|Yes| ST[Short-term:<br/>keep in context history]
-    Q1 -->|No| Q2{Must survive<br/>across sessions?}
-    Q2 -->|Yes| LT[Long-term:<br/>external store + retrieve back]
-    Q2 -->|Large & occasionally needed| RAG[Retrieve on demand<br/>= RAG - Ch 6]
+    Q1{"Needed only for<br/>this task/session?"} -->|Yes| ST["Short-term:<br/>keep in context history"]
+    Q1 -->|No| Q2{"Must survive<br/>across sessions?"}
+    Q2 -->|Yes| LT["Long-term:<br/>external store + retrieve back"]
+    Q2 -->|Large & occasionally needed| RAG["Retrieve on demand<br/>= RAG - Ch 6"]
 ```
 
 | | Short-term (context) | Long-term (external) |
@@ -111,9 +111,9 @@ A long-running agent *will* fill its window. Four techniques, cheapest first:
 ```mermaid
 flowchart LR
     G[Context filling up] --> T[Truncate oldest]
-    G --> S[Summarize / compact]
+    G --> S["Summarize / compact"]
     G --> C[Clear stale tool results]
-    G --> E[Externalize + retrieve on demand]
+    G --> E["Externalize + retrieve on demand"]
     T -.lossy.-> T
     E -.most scalable.-> E
 ```

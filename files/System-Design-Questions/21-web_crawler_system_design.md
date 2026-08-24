@@ -151,17 +151,17 @@ GET /v1/crawl/stats
 
 ```mermaid
 flowchart TD
-    S[Seed URLs] --> F[URL Frontier<br/>to-download queue]
-    F --> D[HTML Downloader<br/>many servers × many threads]
-    DNS[(DNS Cache<br/>domain → IP)] --> D
-    RB[(robots.txt cache)] --> D
-    D --> P[Content Parser<br/>validate / clean HTML]
-    P --> CS{Content Seen?<br/>hash compare}
+    S[Seed URLs] --> F["URL Frontier<br/>to-download queue"]
+    F --> D["HTML Downloader<br/>many servers × many threads"]
+    DNS[("DNS Cache<br/>domain → IP")] --> D
+    RB["(robots.txt cache)"] --> D
+    D --> P["Content Parser<br/>validate / clean HTML"]
+    P --> CS{"Content Seen?<br/>hash compare"}
     CS -->|Duplicate| X[Discard page]
-    CS -->|New| ST[(Content Storage<br/>30 PB, sharded)]
-    ST --> LE[Link Extractor<br/>relative → absolute]
-    LE --> UF[URL Filter<br/>ext / blacklist / spam]
-    UF --> US{URL Seen?<br/>bloom filter + hash}
+    CS -->|New| ST[("Content Storage<br/>30 PB, sharded")]
+    ST --> LE["Link Extractor<br/>relative → absolute"]
+    LE --> UF["URL Filter<br/>ext / blacklist / spam"]
+    UF --> US{"URL Seen?<br/>bloom filter + hash"}
     US -->|Seen| Y[Do nothing]
     US -->|New| F
 ```
@@ -198,19 +198,19 @@ The Frontier is a smart queue that solves **politeness**, **priority**, and **fr
 
 ```mermaid
 flowchart TD
-    IN[New URLs from filters] --> PR[Prioritizer<br/>score by PageRank / traffic / update freq]
-    PR --> F1[Front queue f1<br/>high priority]
+    IN[New URLs from filters] --> PR["Prioritizer<br/>score by PageRank / traffic / update freq"]
+    PR --> F1["Front queue f1<br/>high priority"]
     PR --> F2[Front queue f2]
-    PR --> Fn[Front queue fn<br/>low priority]
-    F1 & F2 & Fn --> FS[Front Selector<br/>random, biased to high priority]
-    FS --> QR[Back-Queue Router<br/>one host per queue]
-    QR --> B1[Back FIFO b1<br/>host A only]
-    QR --> B2[Back FIFO b2<br/>host B only]
-    QR --> Bn[Back FIFO bn<br/>host N only]
-    MT[(Host → queue<br/>mapping table)] --- QR
-    B1 --> W1[Worker 1<br/>host A, with delay]
-    B2 --> W2[Worker 2<br/>host B, with delay]
-    Bn --> Wn[Worker N<br/>host N, with delay]
+    PR --> Fn["Front queue fn<br/>low priority"]
+    F1 & F2 & Fn --> FS["Front Selector<br/>random, biased to high priority"]
+    FS --> QR["Back-Queue Router<br/>one host per queue"]
+    QR --> B1["Back FIFO b1<br/>host A only"]
+    QR --> B2["Back FIFO b2<br/>host B only"]
+    QR --> Bn["Back FIFO bn<br/>host N only"]
+    MT[("Host → queue<br/>mapping table")] --- QR
+    B1 --> W1["Worker 1<br/>host A, with delay"]
+    B2 --> W2["Worker 2<br/>host B, with delay"]
+    Bn --> Wn["Worker N<br/>host N, with delay"]
 ```
 
 **Politeness (back queues).** The invariant: **at most one download in flight per host, with a delay between requests.**
@@ -235,14 +235,14 @@ Deduplication happens **twice**, at two different stages, because there are two 
 flowchart LR
     subgraph After_Download["After download — dedup the BODY"]
       Body[Page HTML] --> H1[hash content]
-      H1 --> CSeen{hash in<br/>Content-Seen set?}
+      H1 --> CSeen{"hash in<br/>Content-Seen set?"}
       CSeen -->|yes ~29%| Drop1[Discard — don't store]
-      CSeen -->|no| Store[Store + record hash]
+      CSeen -->|no| Store["Store + record hash"]
     end
     subgraph Before_Enqueue["Before enqueue — dedup the URL"]
-      Link[Extracted URL] --> H2[hash / normalize URL]
-      H2 --> USeen{URL in<br/>bloom filter?}
-      USeen -->|probably yes| Drop2[Skip — already queued/visited]
+      Link[Extracted URL] --> H2["hash / normalize URL"]
+      H2 --> USeen{"URL in<br/>bloom filter?"}
+      USeen -->|probably yes| Drop2["Skip — already queued/visited"]
       USeen -->|no| Enq[Add to Frontier]
     end
 ```

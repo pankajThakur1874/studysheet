@@ -54,10 +54,10 @@ flowchart TD
     M -->|HTTP| LB
     LB --> WS[WebSocket Servers - stateful]
     LB --> API[REST API Servers - stateless]
-    WS --> LC[(Redis Location Cache - TTL)]
-    WS --> LH[(Location History DB - Cassandra)]
-    WS --> PS[Redis Pub/Sub]
-    API --> UDB[(User + Friendship DB)]
+    WS --> LC["(Redis Location Cache - TTL)"]
+    WS --> LH["(Location History DB - Cassandra)"]
+    WS --> PS["Redis Pub/Sub"]
+    API --> UDB[("User + Friendship DB")]
     PS --> WS
 ```
 
@@ -123,9 +123,9 @@ To publish: the WebSocket server consults the ring to find the right Pub/Sub ser
 ```mermaid
 flowchart LR
     WSserver[WebSocket Server] -->|hash channel name| Ring[Hash Ring in Service Discovery]
-    Ring -->|routes to| PS1[Pub/Sub Server 1]
-    Ring --> PS2[Pub/Sub Server 2]
-    Ring --> PS3[Pub/Sub Server N]
+    Ring -->|routes to| PS1["Pub/Sub Server 1"]
+    Ring --> PS2["Pub/Sub Server 2"]
+    Ring --> PS3["Pub/Sub Server N"]
 ```
 
 ### Scaling the Pub/Sub cluster (treat as stateful)

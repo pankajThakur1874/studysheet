@@ -73,10 +73,10 @@ flowchart LR
     U[User Client] --> LB[Load Balancer]
     LB --> API[API Servers]
     U --> BS[Block Servers]
-    BS --> CS[(Cloud Storage S3)]
-    CS --> Cold[(Cold Storage)]
-    API --> MDB[(Metadata DB)]
-    API --> MC[(Metadata Cache)]
+    BS --> CS["(Cloud Storage S3)"]
+    CS --> Cold["(Cold Storage)"]
+    API --> MDB["(Metadata DB)"]
+    API --> MC["(Metadata Cache)"]
     API --> NS[Notification Service]
     NS --> U2[Other Clients]
     NS --> OBQ[Offline Backup Queue]
@@ -97,7 +97,7 @@ flowchart LR
     Split --> Comp[Compress each block]
     Comp --> Enc[Encrypt each block]
     Enc --> Up[Upload only modified blocks]
-    Up --> CS[(Cloud Storage)]
+    Up --> CS["(Cloud Storage)"]
 ```
 
 ### High consistency requirement

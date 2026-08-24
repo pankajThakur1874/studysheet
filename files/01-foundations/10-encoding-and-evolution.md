@@ -185,12 +185,12 @@ flowchart LR
 ```mermaid
 flowchart TD
     subgraph Avro["Avro schema resolution"]
-        WS[Writer's schema<br/>used to encode]
-        RS[Reader's schema<br/>expected on decode]
+        WS["Writer's schema<br/>used to encode"]
+        RS["Reader's schema<br/>expected on decode"]
         WS --> M[Match fields BY NAME]
         RS --> M
-        M --> R1[In writer, not reader → ignore]
-        M --> R2[In reader, not writer → use default]
+        M --> R1["In writer, not reader → ignore"]
+        M --> R2["In reader, not writer → use default"]
     end
 ```
 

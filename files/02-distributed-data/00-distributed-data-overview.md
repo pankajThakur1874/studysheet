@@ -90,24 +90,24 @@ Part I, especially: Reliability (Topic 1), Scalability (Topic 2), Storage/LSM (T
 flowchart TD
     SL[10. Single-Leader Replication] --> LAG[11. Replication Lag]
     SL --> ML[12. Multi-Leader]
-    SL --> LL[13. Leaderless / Quorums]
+    SL --> LL["13. Leaderless / Quorums"]
     LAG --> ML
     LAG --> LL
 
     SL --> PART[14. Partitioning]
     PART --> SEC[15. Secondary Indexes]
-    PART --> REB[16. Rebalancing & Routing]
+    PART --> REB["16. Rebalancing & Routing"]
 
-    TXN[17. Transactions & ACID] --> ISO[18. Weak Isolation]
+    TXN["17. Transactions & ACID"] --> ISO[18. Weak Isolation]
     ISO --> SER[19. Serializability]
 
-    NET[20. Unreliable Networks] --> CLK[21. Clocks & Pauses]
-    CLK --> TRUTH[22. Truth & Fencing]
+    NET[20. Unreliable Networks] --> CLK["21. Clocks & Pauses"]
+    CLK --> TRUTH["22. Truth & Fencing"]
     NET --> TRUTH
 
     LAG --> LIN[23. Linearizability]
     NET --> LIN
-    LIN --> ORD[24. Ordering & Causality]
+    LIN --> ORD["24. Ordering & Causality"]
 
     SER --> TPC[25. Two-Phase Commit]
     NET --> TPC

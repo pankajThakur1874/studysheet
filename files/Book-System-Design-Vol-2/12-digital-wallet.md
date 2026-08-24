@@ -44,9 +44,9 @@ Balances are a `<user, balance>` map. One Redis node can't do 1M TPS, so run a *
 ```mermaid
 flowchart TD
     C[Transfer command] --> WS[Wallet service - stateless]
-    WS -->|deduct $1 from A| R1[(Redis: A)]
-    WS -->|add $1 to B| R2[(Redis: B)]
-    ZK[ZooKeeper: partition info] --- WS
+    WS -->|deduct $1 from A| R1[("Redis: A")]
+    WS -->|add $1 to B| R2[("Redis: B")]
+    ZK["ZooKeeper: partition info"] --- WS
 ```
 
 **Problem:** the two Redis updates are **not atomic**. If the wallet service crashes after the first update but before the second, the transfer is incomplete. We need both updates in **one atomic transaction**.
@@ -122,10 +122,10 @@ Four key terms:
 
 ```mermaid
 flowchart LR
-    Cmd[Command queue - Kafka] --> SM1[State machine: validate]
+    Cmd[Command queue - Kafka] --> SM1["State machine: validate"]
     SM1 --> Evt[Event queue]
-    Evt --> SM2[State machine: apply]
-    SM2 --> DB[(State / balances)]
+    Evt --> SM2["State machine: apply"]
+    SM2 --> DB[("State / balances")]
 ```
 
 Wallet flow: commands (transfer requests) go to a **Kafka** FIFO queue; the state machine reads each command, reads balance state, validates (sufficient funds?), and if valid emits **two events** (`A:-$1`, `C:+$1`), then applies each event to update the DB.
@@ -152,7 +152,7 @@ flowchart LR
     Cmd[Commands] --> L[Raft Leader]
     L -->|replicate events| F1[Follower]
     L -->|replicate events| F2[Follower]
-    L --> Q[Query / Read]
+    L --> Q["Query / Read"]
 ```
 
 Failure handling: if the **leader crashes**, Raft **elects a new leader**; if the crash happened before commands became events, the client sees a timeout/error and **resends** to the new leader. A **follower crash** is easy — Raft retries until it restarts or is replaced.

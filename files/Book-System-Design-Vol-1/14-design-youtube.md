@@ -56,14 +56,14 @@ Three top-level components:
 
 ```mermaid
 flowchart TD
-    U[User uploads] --> OS[(Original Blob Storage)]
+    U[User uploads] --> OS["(Original Blob Storage)"]
     OS --> TS[Transcoding Servers]
-    TS --> TSt[(Transcoded Storage)]
+    TS --> TSt["(Transcoded Storage)"]
     TS --> CQ[Completion Queue]
     TSt --> CDN[CDN]
     CQ --> CH[Completion Handler Workers]
-    CH --> MDB[(Metadata DB)]
-    CH --> MC[(Metadata Cache)]
+    CH --> MDB["(Metadata DB)"]
+    CH --> MC["(Metadata Cache)"]
     U -. parallel .-> API[API Servers update metadata]
     API --> MDB
     API --> MC

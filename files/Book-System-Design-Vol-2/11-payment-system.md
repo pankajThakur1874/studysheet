@@ -47,10 +47,10 @@ The money moves in two phases. When a buyer pays, money flows into the e-commerc
 ```mermaid
 flowchart LR
     User -->|1. Payment event| PS[Payment service]
-    PS -->|2. store event| DB[(DB)]
+    PS -->|2. store event| DB["(DB)"]
     PS -->|3. per order| PE[Payment executor]
     PE -->|4. store order| DB
-    PE -->|5. process card| PSP[PSP / Card schemes]
+    PE -->|5. process card| PSP["PSP / Card schemes"]
     PS -->|6-7. update balance| W[Wallet] --> DB
     PS -->|8-9. record txn| L[Ledger] --> DB
 ```
@@ -142,8 +142,8 @@ Most payments finish in seconds, but some stall for hours/days — e.g. the PSP 
 flowchart LR
     F[Failure] --> R{Retryable?}
     R -->|yes| RQ[Retry queue] --> PSys[Payment system]
-    R -->|no| DB[(Database)]
-    PSys --> R2{Retry count > threshold?}
+    R -->|no| DB["(Database)"]
+    PSys --> R2{"Retry count > threshold?"}
     R2 -->|no| RQ
     R2 -->|yes| DLQ[Dead letter queue]
 ```

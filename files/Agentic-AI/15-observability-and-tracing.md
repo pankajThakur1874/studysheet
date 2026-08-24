@@ -14,10 +14,10 @@ A normal bug: read a stack trace, find the line. An agent bug is different — "
 
 ```mermaid
 flowchart LR
-    R[Agent run] --> T[Trace: every step recorded]
-    T --> D[Debug: replay & find the bad step]
-    T --> M[Metrics: cost, latency, errors, quality]
-    T --> I[Improve: feed findings into evals - Ch 14]
+    R[Agent run] --> T["Trace: every step recorded"]
+    T --> D["Debug: replay & find the bad step"]
+    T --> M["Metrics: cost, latency, errors, quality"]
+    T --> I["Improve: feed findings into evals - Ch 14"]
 ```
 
 ---
@@ -70,10 +70,10 @@ You can start with plain structured logging (every span as a JSON line) — but 
 ```mermaid
 flowchart LR
     App[Your agent] -->|emit spans| Obs[Observability platform]
-    Obs --> V[Timeline & drill-down]
-    Obs --> C[Cost/latency dashboards]
+    Obs --> V["Timeline & drill-down"]
+    Obs --> C["Cost/latency dashboards"]
     Obs --> E[Run evals on real traces]
-    Obs --> DS[Capture cases -> eval dataset]
+    Obs --> DS["Capture cases -> eval dataset"]
 ```
 
 Many integrate via **OpenTelemetry**, so you can use standard tracing infra. The provider's own `usage` fields (input/output/cache tokens) feed the cost metrics; log them from every call.
@@ -89,11 +89,11 @@ flowchart TD
     P[Bad output reported] --> F[Find the trace]
     F --> W[Walk the spans in order]
     W --> Q{Where did it go wrong?}
-    Q -->|Bad retrieval| RAG[Fix chunking/retrieval - Ch 6]
-    Q -->|Wrong tool / bad args| Tool[Fix tool desc / validation - Ch 4]
+    Q -->|Bad retrieval| RAG["Fix chunking/retrieval - Ch 6"]
+    Q -->|Wrong tool / bad args| Tool["Fix tool desc / validation - Ch 4"]
     Q -->|Model misread prompt| Prompt[Fix system prompt - Ch 8]
     Q -->|Tool errored silently| Err[Surface errors as results - Ch 4]
-    Q -->|Looping| Loop[Add bound / detect repeats - Ch 3]
+    Q -->|Looping| Loop["Add bound / detect repeats - Ch 3"]
     RAG & Tool & Prompt & Err & Loop --> Case[Add as an eval case - Ch 14]
 ```
 

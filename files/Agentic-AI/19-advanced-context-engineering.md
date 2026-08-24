@@ -16,7 +16,7 @@ By now you know the two hard truths: the model's only knowledge each turn is wha
 flowchart LR
     All[Everything the agent knows] -->|curate per step| CW["Context window<br/>only what THIS step needs"]
     CW --> M[[LLM]]
-    All -.stored outside.-> Ext[(Memory / files / retrieval)]
+    All -.stored outside.-> Ext[("Memory / files / retrieval")]
     Ext -->|pull back when needed| CW
 ```
 
@@ -49,10 +49,10 @@ Lead with the goal and current plan; put the most relevant material near the top
 
 ```mermaid
 flowchart TD
-    G[Context filling up] --> A[Compact: summarize old turns]
-    G --> B[Clear: prune stale tool results/thinking]
-    G --> C[Externalize: write to memory/files, keep pointers]
-    G --> D[Restructure: goal+plan+state pinned; details on demand]
+    G[Context filling up] --> A["Compact: summarize old turns"]
+    G --> B["Clear: prune stale tool results/thinking"]
+    G --> C["Externalize: write to memory/files, keep pointers"]
+    G --> D["Restructure: goal+plan+state pinned; details on demand"]
 ```
 
 ---
@@ -63,9 +63,9 @@ The most powerful context-engineering move: **give a subtask its own fresh conte
 
 ```mermaid
 flowchart TD
-    O["Orchestrator (lean context:<br/>goal + plan + results)"] -->|"delegate: 'research X' (fresh window)"| S1[Sub-agent: full detail in ITS context]
+    O["Orchestrator (lean context:<br/>goal + plan + results)"] -->|"delegate: 'research X' (fresh window)"| S1["Sub-agent: full detail in ITS context"]
     S1 -->|"returns: 3-line summary"| O
-    O -->|delegate: 'analyze Y'| S2[Sub-agent: fresh window]
+    O -->|delegate: 'analyze Y'| S2["Sub-agent: fresh window"]
     S2 -->|compact result| O
 ```
 
@@ -87,8 +87,8 @@ Running for hours/many steps needs more than trimming:
 
 ```mermaid
 flowchart LR
-    Goal[Full goal up front] --> Plan[Explicit plan/todo]
-    Plan --> Exec[Execute + persist state]
+    Goal[Full goal up front] --> Plan["Explicit plan/todo"]
+    Plan --> Exec["Execute + persist state"]
     Exec --> Verify[Periodic self-verify]
     Verify --> Compact[Compact when window fills]
     Compact --> Exec

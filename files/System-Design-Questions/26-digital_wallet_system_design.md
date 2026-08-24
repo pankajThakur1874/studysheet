@@ -134,22 +134,22 @@ The mature design is **event sourcing sharded into Raft groups**, coordinated by
 
 ```mermaid
 flowchart TD
-    U[Client: transfer A→C] --> RP[Reverse proxy<br/>push status back]
-    RP --> CO[Saga / TC-C Coordinator<br/>phase status table]
+    U["Client: transfer A→C"] --> RP["Reverse proxy<br/>push status back"]
+    RP --> CO["Saga / TC-C Coordinator<br/>phase status table"]
 
     CO -->|1. deduct A -$1| P1
     CO -->|2. add C +$1| P2
 
     subgraph P1[Partition 1 = Raft group]
-      L1[Leader<br/>cmd→event→apply] --> F1a[Follower]
+      L1["Leader<br/>cmd→event→apply"] --> F1a[Follower]
       L1 --> F1b[Follower]
     end
     subgraph P2[Partition 2 = Raft group]
-      L2[Leader<br/>cmd→event→apply] --> F2a[Follower]
+      L2["Leader<br/>cmd→event→apply"] --> F2a[Follower]
       L2 --> F2b[Follower]
     end
 
-    L1 -->|events| CQRS1[Read-only state machines<br/>current balance / audit / window view]
+    L1 -->|events| CQRS1["Read-only state machines<br/>current balance / audit / window view"]
     L2 -->|events| CQRS2[Read-only state machines]
     CQRS1 & CQRS2 -.push.-> RP
 ```
@@ -170,10 +170,10 @@ Balances are a `<user, balance>` map. One Redis node can't do 1M TPS, so shard: 
 
 ```mermaid
 flowchart TD
-    C[Transfer A→C] --> WS[Wallet service<br/>stateless]
-    WS -->|deduct $1 from A| R1[(Redis node: A)]
-    WS -->|add $1 to C| R2[(Redis node: C)]
-    ZK[ZooKeeper<br/>partition map] --- WS
+    C["Transfer A→C"] --> WS["Wallet service<br/>stateless"]
+    WS -->|deduct $1 from A| R1[("Redis node: A")]
+    WS -->|add $1 to C| R2[("Redis node: C")]
+    ZK["ZooKeeper<br/>partition map"] --- WS
 ```
 
 **Why it fails:** the two updates are **not atomic**. If the wallet service crashes *after* deducting from A but *before* adding to C, $1 vanishes. Redis is also not durable enough for a ledger. We need both writes in **one atomic transaction** — which means a **distributed transaction**, because the two accounts live on two machines.
@@ -271,10 +271,10 @@ Event sourcing answers the three questions an auditor asks: (1) balance at any p
 
 ```mermaid
 flowchart LR
-    Cmd[Command queue<br/>Kafka, FIFO] --> SM1[State machine<br/>validate: enough funds?]
-    SM1 -->|emit 2 events<br/>A:-$1, C:+$1| Evt[Event queue<br/>FIFO, command order]
-    Evt --> SM2[State machine<br/>apply events]
-    SM2 --> DB[(State = balances)]
+    Cmd["Command queue<br/>Kafka, FIFO"] --> SM1["State machine<br/>validate: enough funds?"]
+    SM1 -->|emit 2 events<br/>A:-$1, C:+$1| Evt["Event queue<br/>FIFO, command order"]
+    Evt --> SM2["State machine<br/>apply events"]
+    SM2 --> DB["(State = balances)"]
 ```
 
 Wallet flow: transfer commands land in a **Kafka** FIFO queue; the state machine reads each command, reads balances, validates (sufficient funds?), and if valid emits **two events** (`A:-$1`, `C:+$1`), then applies each to update the DB. **Double-entry invariant: every transfer's events sum to zero** — that's your built-in correctness check.
@@ -287,9 +287,9 @@ Outside clients need to *read* balances. Instead of publishing state, event sour
 
 ```mermaid
 flowchart LR
-    W[Write state machine<br/>the ledger] -->|event stream| Cur[Read view:<br/>current balance]
-    W -->|event stream| Win[Read view:<br/>time-window]
-    W -->|event stream| Aud[Read view:<br/>audit / reconciliation]
+    W["Write state machine<br/>the ledger"] -->|event stream| Cur["Read view:<br/>current balance"]
+    W -->|event stream| Win["Read view:<br/>time-window"]
+    W -->|event stream| Aud["Read view:<br/>audit / reconciliation"]
     Cur & Win & Aud -.eventually consistent.-> Clients
 ```
 
@@ -314,10 +314,10 @@ Replicate the event list with **Raft** consensus: no data loss, same relative or
 
 ```mermaid
 flowchart LR
-    Cmd[Commands] --> L[Raft Leader<br/>cmd→event→append]
-    L -->|replicate events| F1[Follower<br/>apply → state]
-    L -->|replicate events| F2[Follower<br/>apply → state]
-    L --> Q[Query / Read]
+    Cmd[Commands] --> L["Raft Leader<br/>cmd→event→append"]
+    L -->|replicate events| F1["Follower<br/>apply → state"]
+    L -->|replicate events| F2["Follower<br/>apply → state"]
+    L --> Q["Query / Read"]
 ```
 
 **Failure handling:**

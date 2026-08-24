@@ -145,7 +145,7 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-    SEARCH["Search event\n(session_id, query, timestamp)"] -->|index by session_id| STATE[(State store:\nrecent search events)]
+    SEARCH["Search event\n(session_id, query, timestamp)"] -->|index by session_id| STATE[("State store:\nrecent search events")]
     CLICK["Click event\n(session_id, url, timestamp)"] --> JOIN{Lookup session_id\nin state store}
     STATE --> JOIN
     JOIN -->|found| OUT1["Joined record:\nsearch → click (CTR event)"]

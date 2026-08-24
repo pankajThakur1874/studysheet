@@ -67,15 +67,15 @@ The following is the primary interview flowchart. Draw this first, then explain 
 ```mermaid
 flowchart LR
     DA[Driver App] --> LG[Location Gateway]
-    LG --> GEO[(Redis GEO / Geo Store)]
+    LG --> GEO[("Redis GEO / Geo Store")]
     RA[Rider App] --> RS[Ride Service]
     RS --> MS[Matching Service]
     MS --> GEO
     MS --> AS[Atomic Driver Assignment]
-    AS --> DB[(Ride DB)]
+    AS --> DB["(Ride DB)"]
     DB --> O[Outbox]
     O --> K[Kafka]
-    K --> N[Notifications / Billing / Analytics]
+    K --> N["Notifications / Billing / Analytics"]
 ```
 
 ## 7. Database Selection
@@ -96,7 +96,7 @@ flowchart TD
     F -->|Yes| G[Assign driver]
     F -->|No| H[Try next candidate]
     H --> E
-    G --> I[Notify rider + driver]
+    G --> I["Notify rider + driver"]
     J[Driver location updates] --> K[Update geo store]
     K --> B
 ```
@@ -490,9 +490,9 @@ The geospatial machinery behind ride-matching:
 ```mermaid
 flowchart TD
     D[Driver location update] -->|every ~15s| Ingest[Location service]
-    Ingest --> GEO[(Geo index: geohash / quadtree)]
+    Ingest --> GEO[("Geo index: geohash / quadtree")]
     Rider[Rider requests ride] --> Q[Query nearby drivers by geohash prefix] --> GEO
-    Ingest -->|pub/sub, sharded by consistent hash| Sub[Subscribers/matching]
+    Ingest -->|pub/sub, sharded by consistent hash| Sub["Subscribers/matching"]
 ```
 
 **Interview line:** *"Index driver locations with geohash (or a quadtree), keep it on read replicas since it's small, push live updates through sharded Redis pub/sub, and batch GPS every ~15s to cut ingest QPS; routing is A* over road-graph tiles."*

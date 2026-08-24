@@ -73,10 +73,10 @@ Key conclusions from the numbers (a Google engineer, Colin Scott, built a tool t
 ```mermaid
 flowchart TD
     A[300M monthly active users] --> B[50% daily = 150M DAU]
-    B --> C[x 2 tweets/day]
-    C --> D[/ 24h / 3600s = ~3500 QPS/]
+    B --> C["x 2 tweets/day"]
+    C --> D["/ 24h / 3600s = ~3500 QPS/"]
     D --> E[x 2 = ~7000 Peak QPS]
-    C --> F[x 10% media x 1MB = 30 TB/day]
+    C --> F["x 10% media x 1MB = 30 TB/day"]
     F --> G[x 365 x 5 years = ~55 PB]
 ```
 

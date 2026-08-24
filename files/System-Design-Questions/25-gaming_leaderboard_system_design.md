@@ -76,10 +76,10 @@ Conclusion: at this scale, **one Redis node suffices**. Sharding is a *scale-up*
 flowchart LR
     Client -->|1. win a game| Game[Game service]
     Game -->|2. validate + update| LB[Leaderboard service]
-    LB -->|3. ZINCRBY| Store[(Redis sorted set)]
+    LB -->|3. ZINCRBY| Store["(Redis sorted set)"]
     Client -->|4. get top 10 / my rank| LB
     LB --> Store
-    LB -.-> SQL[(MySQL: users + point history)]
+    LB -.-> SQL[("MySQL: users + point history")]
 ```
 
 **Two key design decisions:**
@@ -138,10 +138,10 @@ Split by score band across N shards (e.g. shard for scores 1–100, 101–200, �
 ```mermaid
 flowchart TD
     subgraph Fixed partition by score range
-      S1["Shard [1,100]"]
-      S2["Shard [101,200]"]
-      S3["Shard [201,300]"]
-      S4["Shard [901,1000]<br/>top players"]
+      S1["Shard ["1,100"]"]
+      S2["Shard ["101,200"]"]
+      S3["Shard ["201,300"]"]
+      S4["Shard ["901,1000"]<br/>top players"]
     end
 ```
 

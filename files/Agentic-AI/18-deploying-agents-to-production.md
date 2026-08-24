@@ -31,10 +31,10 @@ The LLM API is stateless — it holds no memory between calls (Chapter 2/5). Bui
 
 ```mermaid
 flowchart TD
-    U[Request + session_id] --> LB[Load balancer]
+    U["Request + session_id"] --> LB[Load balancer]
     LB --> W1[Stateless worker]
     LB --> W2[Stateless worker]
-    W1 <-->|load/save state| St[(Session store)]
+    W1 <-->|load/save state| St["(Session store)"]
     W1 --> API[[LLM API]]
 ```
 
@@ -50,7 +50,7 @@ Agent tasks can run seconds to minutes (many steps, big reasoning). Holding an H
 ```mermaid
 flowchart LR
     Req[Task] --> Q[[Queue]] --> Wk[Agent worker]
-    Wk --> Store[(Result store)]
+    Wk --> Store["(Result store)"]
     Client[Client] -->|poll / webhook / stream| Store
 ```
 
@@ -70,11 +70,11 @@ The LLM API will occasionally rate-limit (429) or error (5xx). Treat it like any
 
 ```mermaid
 flowchart TD
-    Call[Model / tool call] --> R{Error?}
-    R -->|429/5xx/network| BO[Backoff + jitter, retry ≤ N]
+    Call["Model / tool call"] --> R{Error?}
+    R -->|429/5xx/network| BO["Backoff + jitter, retry ≤ N"]
     R -->|4xx| Fail[Fail fast]
-    BO -->|exhausted| Deg[Degrade / surface error]
-    Side[Side-effecting tool] --> Idem[Idempotency key → safe re-run]
+    BO -->|exhausted| Deg["Degrade / surface error"]
+    Side[Side-effecting tool] --> Idem["Idempotency key → safe re-run"]
 ```
 
 ---
@@ -100,10 +100,10 @@ Prompts and models are part of your deployable surface — treat them like code:
 
 ```mermaid
 flowchart LR
-    Change[Prompt/model/tool change] --> CI[Evals in CI] --> Canary[Canary %]
+    Change["Prompt/model/tool change"] --> CI[Evals in CI] --> Canary[Canary %]
     Canary --> Watch[Watch metrics] --> Ramp{OK?}
     Ramp -->|yes| Full[Full rollout]
-    Ramp -->|no| RB[Rollback / flag off]
+    Ramp -->|no| RB["Rollback / flag off"]
 ```
 
 ---

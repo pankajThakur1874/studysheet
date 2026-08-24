@@ -152,7 +152,7 @@ PUT  /v1/topics/{topic}   { "partitions": 32, "replicationFactor": 3, "retention
 ```mermaid
 flowchart LR
     subgraph Producers
-      P1[Producer<br/>buffer + routing lib]
+      P1["Producer<br/>buffer + routing lib"]
     end
     subgraph Brokers
       direction TB
@@ -168,7 +168,7 @@ flowchart LR
     B1 -->|pull| CG1
     B2 -->|pull| CG1
     B1 -->|pull| CG2
-    ZK[(ZooKeeper / etcd<br/>metadata · state · leader election)] --- B1
+    ZK[("ZooKeeper / etcd<br/>metadata · state · leader election")] --- B1
     ZK --- B2
 ```
 
@@ -204,10 +204,10 @@ The access pattern is unusual: **write-heavy AND read-heavy, no updates, no dele
 ```mermaid
 flowchart LR
     New[New message] -->|append to tail| Active["Active Segment<br/>(writable)"]
-    Active -->|reaches size limit| Seal[Seal → read-only]
+    Active -->|reaches size limit| Seal["Seal → read-only"]
     Seal --> S2["Segment N-1 (RO)"]
     S2 --> S1["Segment N-2 (RO)"]
-    S1 -->|past 2-week retention| Trunc[Truncate / delete]
+    S1 -->|past 2-week retention| Trunc["Truncate / delete"]
 ```
 
 **The disk myth, debunked (say this):** rotational disks are slow only for *random* access. For *sequential* access, disks in **RAID** hit **several hundred MB/sec**, and the OS **caches disk pages aggressively in memory**. An append-only log is *all* sequential — that's why a "disk-based" queue outruns many "in-memory" designs.
@@ -253,9 +253,9 @@ A **coordinator** tracks group members via **heartbeats**. When a consumer **joi
 
 ```mermaid
 flowchart TD
-    E["Trigger: consumer joins / leaves / crashes<br/>(missed heartbeat)"] --> R1[Coordinator: all consumers rejoin group]
+    E["Trigger: consumer joins / leaves / crashes<br/>(missed heartbeat)"] --> R1["Coordinator: all consumers rejoin group"]
     R1 --> R2[Elect a group LEADER]
-    R2 --> R3[Leader builds partition→consumer dispatch plan]
+    R2 --> R3["Leader builds partition→consumer dispatch plan"]
     R3 --> R4[Plan distributed to all consumers]
     R4 --> R5[Consumers begin consuming NEW partition assignments]
 ```
@@ -299,16 +299,16 @@ Consumers usually read from the **leader** (simpler; connection count bounded by
 ```mermaid
 flowchart TD
     subgraph AMO["At-most-once (≤1, may lose)"]
-      A1[Producer: ACK=0, no retry] --> A2[Consumer: commit offset BEFORE processing]
-      A2 --> A3[Crash after commit, before work → message LOST]
+      A1["Producer: ACK=0, no retry"] --> A2["Consumer: commit offset BEFORE processing"]
+      A2 --> A3["Crash after commit, before work → message LOST"]
     end
     subgraph ALO["At-least-once (≥1, may dup)"]
-      B1[Producer: ACK=1/all, RETRIES] --> B2[Consumer: commit offset AFTER processing]
-      B2 --> B3[Crash after work, before commit → REPROCESS → duplicate]
+      B1["Producer: ACK=1/all, RETRIES"] --> B2["Consumer: commit offset AFTER processing"]
+      B2 --> B3["Crash after work, before commit → REPROCESS → duplicate"]
     end
     subgraph EO["Exactly-once (exactly 1)"]
-      C1[Idempotent producer + transactional commit] --> C2[Dedup / atomic offset+result]
-      C2 --> C3[Hardest + most expensive]
+      C1["Idempotent producer + transactional commit"] --> C2["Dedup / atomic offset+result"]
+      C2 --> C3["Hardest + most expensive"]
     end
 ```
 

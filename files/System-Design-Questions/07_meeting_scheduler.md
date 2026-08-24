@@ -69,7 +69,7 @@ flowchart LR
     C[Client] --> G[API Gateway]
     G --> M[Meeting Service]
     M --> AV[Availability Service]
-    M --> D[(PostgreSQL)]
+    M --> D["(PostgreSQL)"]
     M --> O[Outbox]
     O --> K[Kafka]
     K --> R[Reminder Worker]
@@ -88,12 +88,12 @@ Use this second flowchart when the interviewer asks **"walk me through the compl
 
 ```mermaid
 flowchart TD
-    A[Create meeting] --> B[Normalize time to UTC + retain timezone]
-    B --> C[Check participant/room availability]
+    A[Create meeting] --> B["Normalize time to UTC + retain timezone"]
+    B --> C["Check participant/room availability"]
     C --> D{Conflict?}
-    D -->|Yes| E[Reject / suggest alternatives]
+    D -->|Yes| E["Reject / suggest alternatives"]
     D -->|No| F[Transactional booking]
-    F --> G[Write meeting + outbox]
+    F --> G["Write meeting + outbox"]
     G --> H[Kafka]
     H --> I[Reminder scheduling]
     H --> J[External calendar sync]

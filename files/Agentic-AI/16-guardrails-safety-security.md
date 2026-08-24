@@ -20,8 +20,8 @@ flowchart TD
     Threats --> JB[Jailbreaks]
     Threats --> UT[Unsafe tool actions]
     Threats --> DL[Data leakage]
-    Def[Defenses] --> IG[Input/output guardrails]
-    Def --> SB[Tool sandboxing + least privilege]
+    Def[Defenses] --> IG["Input/output guardrails"]
+    Def --> SB["Tool sandboxing + least privilege"]
     Def --> HITL[Human-in-the-loop]
     Def --> MON[Monitoring - Ch 15]
 ```
@@ -47,9 +47,9 @@ The agent reveals secrets or PII — pasting an API key into a response, exfiltr
 
 ```mermaid
 flowchart LR
-    Web[Web page / doc / tool result] -->|hidden 'ignore instructions...'| A[[Agent reads it as data]]
-    A -->|if it obeys| Bad[Harmful tool call / leak]
-    A -->|if defended| Safe[Treats it as data, ignores commands]
+    Web["Web page / doc / tool result"] -->|hidden 'ignore instructions...'| A[[Agent reads it as data]]
+    A -->|if it obeys| Bad["Harmful tool call / leak"]
+    A -->|if defended| Safe["Treats it as data, ignores commands"]
 ```
 
 ---
@@ -64,9 +64,9 @@ Checks that run *around* the model, not just in the prompt:
 ```mermaid
 flowchart LR
     In[Input] --> IG{Input guardrail} -->|ok| M[[Agent]]
-    IG -->|blocked| R1[Reject/flag]
-    M --> OG{Output guardrail} -->|ok| Out[Return / act]
-    OG -->|blocked| R2[Block/redact]
+    IG -->|blocked| R1["Reject/flag"]
+    M --> OG{Output guardrail} -->|ok| Out["Return / act"]
+    OG -->|blocked| R2["Block/redact"]
 ```
 
 Implement with rules (regex/denylists for secrets), classifiers (a small model detecting injection/toxicity), or a dedicated moderation model. **Prompt-based guardrails alone are not enough** — a determined injection can override prompt instructions, so pair them with these external checks.
@@ -86,8 +86,8 @@ The most robust defense: **limit what the agent *can* do**, so even a hijacked a
 ```mermaid
 flowchart TD
     A[[Agent]] -->|only needed tools| T[Scoped tools]
-    T --> SB[Sandboxed execution<br/>no prod, no secrets, limits]
-    V[(Vault)] -.token injected at egress, not in context.-> T
+    T --> SB["Sandboxed execution<br/>no prod, no secrets, limits"]
+    V["(Vault)"] -.token injected at egress, not in context.-> T
 ```
 
 ---
@@ -98,9 +98,9 @@ For **high-stakes or irreversible** actions, require a human to approve before t
 
 ```mermaid
 flowchart TD
-    A[[Agent decides: send_payment]] --> Risk{High-stakes / irreversible?}
+    A[["Agent decides: send_payment"]] --> Risk{"High-stakes / irreversible?"}
     Risk -->|No| Exec[Execute automatically]
-    Risk -->|Yes| Ask[Pause → human approves/denies]
+    Risk -->|Yes| Ask["Pause → human approves/denies"]
     Ask -->|approve| Exec
     Ask -->|deny + reason| Back[Agent adjusts]
 ```
@@ -115,10 +115,10 @@ No single control is enough — layer them, so a failure in one is caught by ano
 
 ```mermaid
 flowchart LR
-    L1[Prompt guardrails] --> L2[Input/output filters]
-    L2 --> L3[Least privilege + sandbox]
+    L1[Prompt guardrails] --> L2["Input/output filters"]
+    L2 --> L3["Least privilege + sandbox"]
     L3 --> L4[Human-in-the-loop on risky acts]
-    L4 --> L5[Monitoring & alerts - Ch 15]
+    L4 --> L5["Monitoring & alerts - Ch 15"]
 ```
 
 1. **Prompt** — tell the model to treat external text as data, refuse out-of-scope, escalate risky things (necessary, not sufficient — Ch 8).

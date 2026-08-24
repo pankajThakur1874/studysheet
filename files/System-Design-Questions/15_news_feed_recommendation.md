@@ -85,11 +85,11 @@ flowchart LR
     F2 --> R
     F3 --> R
     F4 --> R
-    R --> C[(Feed Cache)]
+    R --> C["(Feed Cache)"]
     C --> U
     U --> EV[Behavior Events]
     EV --> K[Kafka]
-    K --> FS[(Feature Store)]
+    K --> FS["(Feature Store)"]
 ```
 
 ## 7. Database Selection
@@ -104,12 +104,12 @@ Use this second flowchart when the interviewer asks **"walk me through the compl
 flowchart TD
     A[Feed request] --> B[Read cached candidates if available]
     B --> C{Cache usable?}
-    C -->|Yes| D[Return / refresh asynchronously]
+    C -->|Yes| D["Return / refresh asynchronously"]
     C -->|No| E[Candidate generation]
-    E --> F[Hundreds/thousands of candidates]
+    E --> F["Hundreds/thousands of candidates"]
     F --> G[Feature retrieval]
     G --> H[Ranking model]
-    H --> I[Business rules + diversity]
+    H --> I["Business rules + diversity"]
     I --> J[Cursor pagination]
     J --> K[Return feed]
     L[User behavior] --> M[Kafka]
@@ -508,7 +508,7 @@ The book's core mechanics to weave in:
 ```mermaid
 flowchart LR
     Post[New post] --> FO[Fanout service]
-    FO -->|normal user| FC[(Per-follower feed cache: post IDs)]
+    FO -->|normal user| FC[("Per-follower feed cache: post IDs")]
     FO -->|celebrity| Skip[Skip fanout - pull at read]
     Read[Feed request] --> FC
     Read --> Cele[Merge celebrity posts]

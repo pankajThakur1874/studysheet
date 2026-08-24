@@ -49,13 +49,13 @@ The **context window** is the maximum number of tokens the model can consider at
 ```mermaid
 flowchart TD
     subgraph CW["Context Window (e.g. 200k tokens) — everything the model sees THIS call"]
-      SYS[System prompt: role + rules + tools]
-      HIST[Conversation / scratchpad so far]
+      SYS["System prompt: role + rules + tools"]
+      HIST["Conversation / scratchpad so far"]
       RAG[Retrieved documents]
       TR[Tool results from earlier steps]
       Q[Current user message]
     end
-    CW --> M[[LLM]] --> OUT[Response<br/>also counts toward the window]
+    CW --> M[[LLM]] --> OUT["Response<br/>also counts toward the window"]
 ```
 
 Consequences that shape every agent:
@@ -103,10 +103,10 @@ Reliable arithmetic, precise counting, up-to-the-second data, exact long-documen
 
 ```mermaid
 flowchart LR
-    F1[Hallucination] --> S1[Ground with tools/RAG + verify]
-    F2[Knowledge cutoff] --> S2[Fetch current/private data via tools]
-    F3[Non-determinism] --> S3[Low temp + evals + validation]
-    F4[Weak at math/exactness] --> S4[Offload to deterministic tools]
+    F1[Hallucination] --> S1["Ground with tools/RAG + verify"]
+    F2[Knowledge cutoff] --> S2["Fetch current/private data via tools"]
+    F3[Non-determinism] --> S3["Low temp + evals + validation"]
+    F4["Weak at math/exactness"] --> S4[Offload to deterministic tools]
 ```
 
 ---

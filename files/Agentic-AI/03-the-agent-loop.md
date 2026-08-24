@@ -18,10 +18,10 @@ That's the whole thing. It's called the **agent loop** (or the ReAct loop — §
 
 ```mermaid
 flowchart TD
-    START([Goal from user]) --> THINK[🧠 Reason:<br/>what should I do next?]
-    THINK --> DECIDE{Tool call<br/>or final answer?}
-    DECIDE -->|Tool call| ACT[🔧 Act: your code runs the tool]
-    ACT --> OBS[👀 Observe: append tool result to context]
+    START([Goal from user]) --> THINK["🧠 Reason:<br/>what should I do next?"]
+    THINK --> DECIDE{"Tool call<br/>or final answer?"}
+    DECIDE -->|Tool call| ACT["🔧 Act: your code runs the tool"]
+    ACT --> OBS["👀 Observe: append tool result to context"]
     OBS --> THINK
     DECIDE -->|Final answer| DONE([Return answer to user])
 ```
@@ -128,8 +128,8 @@ Modern tool-calling APIs bake this in: the model's "thought" is its reasoning te
 
 ```mermaid
 flowchart LR
-    T[Thought<br/>reason about state] --> A[Action<br/>tool call]
-    A --> O[Observation<br/>tool result]
+    T["Thought<br/>reason about state"] --> A["Action<br/>tool call"]
+    A --> O["Observation<br/>tool result"]
     O --> T
     T -.enough info.-> F[Final Answer]
 ```

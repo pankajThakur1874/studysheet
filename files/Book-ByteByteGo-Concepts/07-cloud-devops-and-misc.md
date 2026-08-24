@@ -11,7 +11,7 @@ If you own and manage all the hardware and software yourself, that's **on-premis
 
 ```mermaid
 flowchart LR
-    On[On-premises<br/>you manage everything] --> Iaas[IaaS<br/>vendor: infra] --> Paas[PaaS<br/>vendor: infra + platform] --> Saas[SaaS<br/>vendor: everything]
+    On["On-premises<br/>you manage everything"] --> Iaas["IaaS<br/>vendor: infra"] --> Paas["PaaS<br/>vendor: infra + platform"] --> Saas["SaaS<br/>vendor: everything"]
 ```
 
 ## Virtualization (VMware) vs Containerization (Docker)
@@ -23,13 +23,13 @@ flowchart LR
 ```mermaid
 flowchart TD
     subgraph Virtualization
-        H[Hardware] --> HV[Hypervisor] --> VM1[Guest OS + App] 
-        HV --> VM2[Guest OS + App]
+        H[Hardware] --> HV[Hypervisor] --> VM1["Guest OS + App"] 
+        HV --> VM2["Guest OS + App"]
     end
     subgraph Containerization
         H2[Hardware] --> OS[Host OS] --> CE[Container Engine]
-        CE --> C1[App + deps]
-        CE --> C2[App + deps]
+        CE --> C1["App + deps"]
+        CE --> C2["App + deps"]
     end
 ```
 
@@ -43,10 +43,10 @@ Deploying or upgrading services is risky. Common strategies to reduce that risk:
 
 ```mermaid
 flowchart TD
-    M[Multi-Service<br/>all at once] 
-    BG[Blue-Green<br/>two full environments, switch traffic]
-    CN[Canary<br/>gradual, subset of users]
-    AB[A/B Test<br/>versions run side by side]
+    M["Multi-Service<br/>all at once"] 
+    BG["Blue-Green<br/>two full environments, switch traffic"]
+    CN["Canary<br/>gradual, subset of users"]
+    AB["A/B Test<br/>versions run side by side"]
 ```
 
 ## AWS Lambda Behind the Scenes
@@ -60,14 +60,14 @@ There are two ways functions get invoked:
 ```mermaid
 flowchart TD
     subgraph Synchronous
-        WM[Worker Manager] --> PS[Placement Service<br/>provisions sandbox]
-        WM --> Init[Init: download package from S3]
-        Init --> Inv[Frontend Worker: Invoke]
+        WM[Worker Manager] --> PS["Placement Service<br/>provisions sandbox"]
+        WM --> Init["Init: download package from S3"]
+        Init --> Inv["Frontend Worker: Invoke"]
     end
     subgraph Asynchronous
         ALB[App Load Balancer] --> FE[Frontend]
         FE --> Q[Internal queue - SQS]
-        Q --> Poll[Pollers] --> FE2[Frontend<br/>then sync pattern]
+        Q --> Poll[Pollers] --> FE2["Frontend<br/>then sync pattern"]
     end
 ```
 
@@ -104,7 +104,7 @@ Main differences:
 
 ```mermaid
 flowchart TD
-    Prog[Program<br/>file on disk] --> Proc[Process<br/>program in execution, own memory]
-    Proc --> T1[Thread 1<br/>shares process memory]
-    Proc --> T2[Thread 2<br/>shares process memory]
+    Prog["Program<br/>file on disk"] --> Proc["Process<br/>program in execution, own memory"]
+    Proc --> T1["Thread 1<br/>shares process memory"]
+    Proc --> T2["Thread 2<br/>shares process memory"]
 ```

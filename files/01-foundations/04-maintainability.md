@@ -107,8 +107,8 @@ The key insight is that **the ease of modifying a data system is closely linked 
 flowchart TD
     A[Good abstractions] --> S[Simplicity]
     S --> E[Evolvability]
-    M[Monitoring & visibility] --> O[Operability]
-    D[Documentation & operational model] --> O
+    M["Monitoring & visibility"] --> O[Operability]
+    D["Documentation & operational model"] --> O
     AU[Automation-friendly design] --> O
     ND[No dependency on individual machines] --> O
     O --> MT[Maintainability]

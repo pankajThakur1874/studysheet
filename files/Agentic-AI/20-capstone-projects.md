@@ -12,8 +12,8 @@ Pick a project at your level and **build it with the raw SDK first** (Chapter 13
 
 ```mermaid
 flowchart LR
-    B[Beginner:<br/>loop + tools] --> I[Intermediate:<br/>RAG, memory, workflows]
-    I --> A[Advanced:<br/>multi-agent, long-horizon, prod]
+    B["Beginner:<br/>loop + tools"] --> I["Intermediate:<br/>RAG, memory, workflows"]
+    I --> A["Advanced:<br/>multi-agent, long-horizon, prod"]
 ```
 
 ---
@@ -90,13 +90,13 @@ Extend Chapter 13's agent into something you'd actually use.
 
 ```mermaid
 flowchart TD
-    P1[P1 File agent] --> F1[loop, tools, safety]
-    P2[P2 Notes Q&A] --> F2[RAG, grounding]
-    P4[P4 Research] --> F3[agentic RAG, reflection]
-    P5[P5 Memory asst] --> F4[long-term memory, context mgmt]
-    P8[P8 Multi-agent] --> F5[orchestration, context isolation]
-    P9[P9 Long-horizon] --> F6[context engineering, HITL]
-    P10[P10 Prod service] --> F7[reliability, evals-in-CI, obs]
+    P1[P1 File agent] --> F1["loop, tools, safety"]
+    P2["P2 Notes Q&A"] --> F2["RAG, grounding"]
+    P4[P4 Research] --> F3["agentic RAG, reflection"]
+    P5[P5 Memory asst] --> F4["long-term memory, context mgmt"]
+    P8[P8 Multi-agent] --> F5["orchestration, context isolation"]
+    P9[P9 Long-horizon] --> F6["context engineering, HITL"]
+    P10[P10 Prod service] --> F7["reliability, evals-in-CI, obs"]
 ```
 
 ---

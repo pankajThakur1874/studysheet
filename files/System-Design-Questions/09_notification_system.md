@@ -100,8 +100,8 @@ flowchart TD
     B --> C[Kafka]
     C --> D[Notification consumer]
     D --> E[Idempotency check]
-    E --> F[Load preferences + template]
-    F --> G[Choose channel/provider]
+    E --> F["Load preferences + template"]
+    F --> G["Choose channel/provider"]
     G --> H[Send]
     H --> I{Provider result}
     I -->|Success| J[Record delivered]
@@ -512,7 +512,7 @@ flowchart LR
     NS --> Q1[[Push queue]] --> W1[Workers] --> APNs/FCM
     NS --> Q2[[SMS queue]] --> W2[Workers] --> Twilio
     NS --> Q3[[Email queue]] --> W3[Workers] --> SendGrid
-    W1 & W2 & W3 -.log + retry.-> LOG[(Notification log DB)]
+    W1 & W2 & W3 -.log + retry.-> LOG["(Notification log DB)"]
 ```
 
 **Interview line:** *"Fan out through per-channel queues to third-party providers (APNs/FCM/Twilio/SendGrid), log every attempt for retries, and dedup by event ID since delivery is only at-least-once."*

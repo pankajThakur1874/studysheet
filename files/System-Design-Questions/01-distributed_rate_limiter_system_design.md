@@ -151,17 +151,17 @@ Retry-After: 2
 ```mermaid
 flowchart LR
     subgraph Client
-      CL[Client SDK<br/>optional pre-check]
+      CL["Client SDK<br/>optional pre-check"]
     end
     subgraph Edge
-      CDN[CDN / Edge<br/>L3-L4 + coarse L7]
+      CDN["CDN / Edge<br/>L3-L4 + coarse L7"]
     end
     subgraph Server
-      GW[API Gateway<br/>middleware ⭐]
+      GW["API Gateway<br/>middleware ⭐"]
       SVC[Service SDK]
     end
     CL --> CDN --> GW --> SVC
-    GW -. reads/writes .-> R[(Redis Cluster)]
+    GW -. reads/writes .-> R["(Redis Cluster)"]
     SVC -. reads/writes .-> R
 ```
 
@@ -242,10 +242,10 @@ A bucket of `capacity` tokens, refilled at `refill_rate`/sec. Each request spend
 ```mermaid
 flowchart TD
     T["Refill: +rate tokens/sec<br/>(capped at capacity)"] --> B(("🪣 Bucket<br/>tokens"))
-    Rq[Request needs 'cost' tokens] --> Q{tokens >= cost?}
+    Rq[Request needs 'cost' tokens] --> Q{"tokens >= cost?"}
     B --> Q
-    Q -->|Yes| A[Consume tokens → ALLOW]
-    Q -->|No| D[DENY → 429]
+    Q -->|Yes| A["Consume tokens → ALLOW"]
+    Q -->|No| D["DENY → 429"]
 ```
 
 **State (tiny):** `tokens`, `last_refill_timestamp`. On each request, lazily refill based on elapsed time — no background thread needed:
@@ -263,8 +263,8 @@ A **FIFO queue** drained at a **fixed** rate. Requests join the queue; if the qu
 
 ```mermaid
 flowchart LR
-    In[Incoming bursty traffic] --> Q[[FIFO queue<br/>capacity N]]
-    Q -->|leak at fixed rate| Out[Steady output → backend]
+    In[Incoming bursty traffic] --> Q[["FIFO queue<br/>capacity N"]]
+    Q -->|leak at fixed rate| Out["Steady output → backend"]
     In -. queue full .-> Drop[DROP]
 ```
 
@@ -279,21 +279,21 @@ flowchart LR
 ```mermaid
 flowchart TD
     C[Clients] --> LB[Load Balancer]
-    LB --> G1[Gateway 1<br/>local pre-limit]
-    LB --> G2[Gateway 2<br/>local pre-limit]
-    LB --> GN[Gateway N<br/>local pre-limit]
-    G1 & G2 & GN --> RC[(Redis Cluster<br/>sharded token buckets)]
+    LB --> G1["Gateway 1<br/>local pre-limit"]
+    LB --> G2["Gateway 2<br/>local pre-limit"]
+    LB --> GN["Gateway N<br/>local pre-limit"]
+    G1 & G2 & GN --> RC[("Redis Cluster<br/>sharded token buckets")]
     RC -->|ALLOW| BE[Backend Services]
-    RC -->|DENY| X429[429 + Retry-After]
+    RC -->|DENY| X429["429 + Retry-After"]
 
     subgraph Control Plane
-      AD[Admin] --> CS[Config Service] --> CDB[(Config DB)]
-      CS --> PS[[Pub/Sub]]
+      AD[Admin] --> CS[Config Service] --> CDB["(Config DB)"]
+      CS --> PS[["Pub/Sub"]]
       PS -.push new rules.-> G1 & G2 & GN
     end
 
     subgraph Observability
-      G1 & G2 & GN --> M[Metrics] --> MON[Prometheus / Grafana]
+      G1 & G2 & GN --> M[Metrics] --> MON["Prometheus / Grafana"]
     end
 ```
 
@@ -367,15 +367,15 @@ One request can be subject to **user AND tenant AND API AND global** limits — 
 
 ```mermaid
 flowchart TD
-    R[Request] --> U{User<br/>100/min}
+    R[Request] --> U{"User<br/>100/min"}
     U -->|deny| D[429]
-    U -->|ok| T{Tenant<br/>10K/min}
+    U -->|ok| T{"Tenant<br/>10K/min"}
     T -->|deny| D
-    T -->|ok| A{API<br/>1M/min}
+    T -->|ok| A{"API<br/>1M/min"}
     A -->|deny| D
     A -->|ok| GL{Global}
     GL -->|deny| D
-    GL -->|ok| OK[ALLOW → backend]
+    GL -->|ok| OK["ALLOW → backend"]
 ```
 
 **The subtle bug:** if you consume the user token, *then* the tenant limit denies, you've **leaked** a user token. Options, in order of quality:
@@ -401,9 +401,9 @@ A single **global** key (`rl:global:payments`) takes *all* the traffic → **hot
 
 ```mermaid
 flowchart TD
-    Rq[Request] --> L{Local limiter<br/>in-memory}
+    Rq[Request] --> L{"Local limiter<br/>in-memory"}
     L -->|over local quota| D1[Reject fast - no Redis hop]
-    L -->|within| R{Global limiter<br/>Redis}
+    L -->|within| R{"Global limiter<br/>Redis"}
     R -->|deny| D2[429]
     R -->|allow| BE[Backend]
 ```
@@ -418,10 +418,10 @@ Redis is unavailable. Now what?
 
 ```mermaid
 flowchart LR
-    F[Redis down] --> O[Fail OPEN<br/>allow requests]
-    F --> C[Fail CLOSED<br/>reject requests]
-    O --> O1[✅ API stays up<br/>❌ no abuse protection, backend may drown]
-    C --> C1[✅ backend protected<br/>❌ availability tanks]
+    F[Redis down] --> O["Fail OPEN<br/>allow requests"]
+    F --> C["Fail CLOSED<br/>reject requests"]
+    O --> O1["✅ API stays up<br/>❌ no abuse protection, backend may drown"]
+    C --> C1["✅ backend protected<br/>❌ availability tanks"]
 ```
 
 The mature answer is **not to pick one globally**:
@@ -447,7 +447,7 @@ A naive client that retries a `429` instantly makes the overload *worse*:
 ```mermaid
 flowchart LR
     Rq[Request] --> E[429] --> RT[Instant retry] --> E
-    RT -. correct .-> BJ[Exponential backoff + jitter]
+    RT -. correct .-> BJ["Exponential backoff + jitter"]
     BJ --> OK[Recovers]
 ```
 
@@ -461,8 +461,8 @@ Limits must change **without a restart** (during an incident you may raise/lower
 
 ```mermaid
 flowchart LR
-    AD[Admin: 100 → 200] --> CS[Config Service] --> CDB[(Config DB)]
-    CS --> PS[[Pub/Sub: RateLimitConfigUpdated]]
+    AD["Admin: 100 → 200"] --> CS[Config Service] --> CDB["(Config DB)"]
+    CS --> PS[["Pub/Sub: RateLimitConfigUpdated"]]
     PS --> G1[Gateway local cache]
     PS --> G2[Gateway local cache]
 ```

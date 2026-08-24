@@ -12,10 +12,10 @@ A chatbot prompt is a one-time request ("write me an email"). An **agent** promp
 
 ```mermaid
 flowchart TD
-    SP["System prompt<br/>(the constitution)"] --> R[Role & goal]
-    SP --> Rules[Rules & constraints]
+    SP["System prompt<br/>(the constitution)"] --> R["Role & goal"]
+    SP --> Rules["Rules & constraints"]
     SP --> Tools[When to use each tool]
-    SP --> B[Boundaries / autonomy]
+    SP --> B["Boundaries / autonomy"]
     SP --> Fmt[Output format]
     SP --> Done[Definition of done]
 ```
@@ -74,10 +74,10 @@ The prompt is your first (not only) line of safety and control:
 
 ```mermaid
 flowchart LR
-    P[Prompt guardrails] --> G1[Refuse/escalate rules]
+    P[Prompt guardrails] --> G1["Refuse/escalate rules"]
     P --> G2[Stay grounded]
     P --> G3[Scope limits]
-    P --> G4[Treat tool text as data, not orders]
+    P --> G4["Treat tool text as data, not orders"]
 ```
 
 ---
@@ -103,7 +103,7 @@ Prompting is empirical — you can't reason your way to the perfect prompt; you 
 ```mermaid
 flowchart LR
     W[Write prompt] --> T[Test on real cases] --> O{Behaves right?}
-    O -->|No| D[Diagnose: which instruction failed?] --> W
+    O -->|No| D["Diagnose: which instruction failed?"] --> W
     O -->|Yes| Lock[Lock it; add to eval set]
 ```
 

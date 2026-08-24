@@ -75,10 +75,10 @@ The following is the primary interview flowchart. Draw this first, then explain 
 flowchart LR
     U[User] --> WS[WebSocket Gateway]
     WS --> C[Chat Service]
-    C --> D[(Message Store)]
+    C --> D["(Message Store)"]
     C --> K[Kafka]
     K --> DL[Delivery Service]
-    DL --> R[(Redis Presence / Connection Registry)]
+    DL --> R[("Redis Presence / Connection Registry")]
     R --> G2[Recipient Gateway]
     G2 --> U2[Recipient]
     U2 --> D
@@ -95,7 +95,7 @@ Use this second flowchart when the interviewer asks **"walk me through the compl
 ```mermaid
 flowchart TD
     A[Client sends message] --> B[Chat Gateway]
-    B --> C[Validate + idempotency]
+    B --> C["Validate + idempotency"]
     C --> D[Persist message]
     D --> E[Publish event]
     E --> F[Kafka partitioned by conversationId]

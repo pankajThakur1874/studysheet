@@ -202,18 +202,18 @@ POST /v1/videos/{videoId}/progress
 flowchart LR
     Creator[Creator] --> API[API Gateway]
     API --> VS[Video Service]
-    VS --> DB[(PostgreSQL)]
+    VS --> DB["(PostgreSQL)"]
     VS --> URL[Pre-signed Upload URL]
-    Creator --> OBJ[(Object Storage)]
+    Creator --> OBJ["(Object Storage)"]
 
     OBJ --> EVT[Upload Complete Event]
     EVT --> K[Kafka]
     K --> TR[Transcoding Workers]
-    TR --> PO[(Processed Object Storage)]
+    TR --> PO["(Processed Object Storage)"]
 
     User[Viewer] --> API
-    API --> AUTH[Auth / Entitlement]
-    AUTH --> MAN[Playback / Manifest Service]
+    API --> AUTH["Auth / Entitlement"]
+    AUTH --> MAN["Playback / Manifest Service"]
     MAN --> CDN[CDN]
     CDN --> PO
 
@@ -434,7 +434,7 @@ flowchart TD
     B --> C[Authenticate]
     C --> D[Check entitlement]
     D --> E{Allowed?}
-    E -->|No| F[403 / Subscription Required]
+    E -->|No| F["403 / Subscription Required"]
     E -->|Yes| G[Return signed manifest URL]
     G --> H[Client requests manifest]
     H --> I[CDN]
@@ -633,12 +633,12 @@ flowchart TD
     G --> E
     F -->|Yes| H[Complete object]
     H --> I[Persist UPLOADED state]
-    I --> J[Outbox/Event]
+    I --> J["Outbox/Event"]
     J --> K[Kafka]
     K --> L[Transcoding]
     L --> M{Processing successful?}
     M -->|Yes| N[READY]
-    M -->|No| O[Retry / DLQ]
+    M -->|No| O["Retry / DLQ"]
 ```
 
 # 18. HLD Deep-Dive — Playback
@@ -690,7 +690,7 @@ flowchart LR
     C[Player] --> E[Progress Event]
     E --> K[Kafka]
     K --> P[Progress Processor]
-    P --> S[(Playback Store)]
+    P --> S["(Playback Store)"]
 ```
 
 Send progress periodically, or on pause/seek/close.
@@ -726,10 +726,10 @@ Exact semantics depend on product requirements.
 
 ```mermaid
 flowchart LR
-    DB[(Metadata DB)] --> CDC[CDC / Event]
+    DB["(Metadata DB)"] --> CDC["CDC / Event"]
     CDC --> K[Kafka]
     K --> I[Index Worker]
-    I --> ES[(Elasticsearch)]
+    I --> ES["(Elasticsearch)"]
     U[Viewer] --> API[Search API]
     API --> ES
 ```
@@ -742,10 +742,10 @@ Search should be an eventually consistent read model.
 flowchart LR
     U[User Events] --> K[Kafka]
     K --> F[Feature Processing]
-    F --> FS[(Feature Store)]
+    F --> FS["(Feature Store)"]
     FS --> R[Recommendation Model]
     R --> C[Candidate Ranking]
-    C --> FC[(Feed Cache)]
+    C --> FC["(Feed Cache)"]
     FC --> User[Viewer]
 ```
 
@@ -819,7 +819,7 @@ Use durable outbox:
 
 ```mermaid
 flowchart TD
-    A[Upload complete] --> B[(DB)]
+    A[Upload complete] --> B["(DB)"]
     B --> C[Outbox]
     C --> D{Kafka available?}
     D -->|Yes| E[Publish]

@@ -44,7 +44,7 @@ flowchart LR
     C[Client] --> RL[Rate Limiter Middleware]
     RL -->|allowed| API[API Servers]
     RL -->|blocked: HTTP 429| C
-    RL <-->|counter| R[(Redis)]
+    RL <-->|counter| R["(Redis)"]
 ```
 
 ### High-level architecture
@@ -65,10 +65,10 @@ Two parameters: **bucket size** and **refill rate**. Number of buckets varies: u
 
 ```mermaid
 flowchart TD
-    RF[Refiller adds tokens<br/>at refill rate] --> B[(Token Bucket<br/>capacity = 4)]
+    RF["Refiller adds tokens<br/>at refill rate"] --> B[("Token Bucket<br/>capacity = 4")]
     REQ[Incoming request] --> CHK{Tokens available?}
     B --> CHK
-    CHK -->|yes| PASS[Take 1 token, allow request]
+    CHK -->|yes| PASS["Take 1 token, allow request"]
     CHK -->|no| DROP[Drop request]
 ```
 
@@ -111,7 +111,7 @@ With multiple rate limiter servers, one server won't know another's data. **Stic
 flowchart TD
     C1[Client 1] --> RL1[Rate Limiter 1]
     C2[Client 2] --> RL2[Rate Limiter 2]
-    RL1 --> R[(Centralized Redis)]
+    RL1 --> R["(Centralized Redis)"]
     RL2 --> R
 ```
 

@@ -21,7 +21,7 @@ The foundational trick: ask the model to **reason step by step** before giving t
 ```mermaid
 flowchart LR
     Q[Question] --> R["Reason step by step<br/>(intermediate working)"] --> A[Final answer]
-    Q -.without CoT.-> A2[Rushed, often wrong]
+    Q -.without CoT.-> A2["Rushed, often wrong"]
 ```
 
 - **Prompted CoT:** literally add "Let's think step by step" or "Show your reasoning."
@@ -80,7 +80,7 @@ After producing an answer or completing a step, have the model **critique it** a
 
 ```mermaid
 flowchart LR
-    D[Draft answer] --> Crit[[Critique:<br/>find flaws]] --> Rev[Revise] --> Q{Good enough?}
+    D[Draft answer] --> Crit[["Critique:<br/>find flaws"]] --> Rev[Revise] --> Q{Good enough?}
     Q -->|No| Crit
     Q -->|Yes| Final[Final answer]
 ```
@@ -114,10 +114,10 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    T{Task shape} -->|Single hard question| CoT[Chain-of-thought / thinking]
+    T{Task shape} -->|Single hard question| CoT["Chain-of-thought / thinking"]
     T -->|Needs tools + adaptation| React[ReAct loop]
     T -->|Big, multi-step, known-ish| PE[Plan-and-execute]
-    T -->|Quality-critical output| Refl[Add reflection / evaluator]
+    T -->|Quality-critical output| Refl["Add reflection / evaluator"]
     T -->|Many possible paths, search-like| ToT[Tree-of-thoughts]
 ```
 

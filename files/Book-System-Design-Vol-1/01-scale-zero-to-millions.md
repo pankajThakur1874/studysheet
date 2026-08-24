@@ -45,7 +45,7 @@ Traffic comes from two sources: **web apps** (server-side languages like Java/Py
 
 ```mermaid
 flowchart LR
-    U[User: web or mobile] -->|1. domain name| DNS[DNS 3rd party]
+    U["User: web or mobile"] -->|1. domain name| DNS[DNS 3rd party]
     DNS -->|2. IP address| U
     U -->|3. HTTP request| WS[Web Server]
     WS -->|4. HTML or JSON| U
@@ -80,9 +80,9 @@ flowchart TD
     U[Users] --> LB[Load Balancer]
     LB --> S1[Web Server 1]
     LB --> S2[Web Server 2]
-    S1 -->|reads| SL1[(Slave DB)]
-    S2 -->|reads| SL2[(Slave DB)]
-    S1 -->|writes| M[(Master DB)]
+    S1 -->|reads| SL1["(Slave DB)"]
+    S2 -->|reads| SL2["(Slave DB)"]
+    S1 -->|writes| M["(Master DB)"]
     S2 -->|writes| M
     M -.replicates.-> SL1
     M -.replicates.-> SL2
@@ -120,7 +120,7 @@ A **message queue** is a durable in-memory component for **asynchronous** commun
 
 ```mermaid
 flowchart LR
-    P[Producers / Web Servers] -->|publish jobs| Q[[Message Queue]]
+    P["Producers / Web Servers"] -->|publish jobs| Q[[Message Queue]]
     Q -->|consume jobs| W1[Worker 1]
     Q -->|consume jobs| W2[Worker 2]
 ```
@@ -138,10 +138,10 @@ When the data tier gets overloaded:
 ```mermaid
 flowchart TD
     Q[Query for user_id] --> H{user_id % 4}
-    H -->|0| S0[(Shard 0)]
-    H -->|1| S1[(Shard 1)]
-    H -->|2| S2[(Shard 2)]
-    H -->|3| S3[(Shard 3)]
+    H -->|0| S0["(Shard 0)"]
+    H -->|1| S1["(Shard 1)"]
+    H -->|2| S2["(Shard 2)"]
+    H -->|3| S3["(Shard 3)"]
 ```
 
 ## 6. Scaling, Bottlenecks & Trade-offs

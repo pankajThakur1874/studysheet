@@ -163,15 +163,15 @@ flowchart LR
       A3[Message Queues]
     end
     A1 & A2 & A3 --> MC[Metrics Collector]
-    MC --> K[[Kafka<br/>buffer]]
-    K --> CONS[Consumers /<br/>Stream Processors<br/>Flink / Spark]
-    CONS --> TSDB[(Time-Series DB<br/>InfluxDB / Prometheus)]
-    TSDB --> QS[Query Service<br/>+ cache]
-    QS --> VIZ[Visualization<br/>Grafana]
+    MC --> K[["Kafka<br/>buffer"]]
+    K --> CONS["Consumers /<br/>Stream Processors<br/>Flink / Spark"]
+    CONS --> TSDB[("Time-Series DB<br/>InfluxDB / Prometheus")]
+    TSDB --> QS["Query Service<br/>+ cache"]
+    QS --> VIZ["Visualization<br/>Grafana"]
     QS --> AM[Alert Manager]
     AM --> AK[[Kafka]]
     AK --> ACON[Alert Consumers]
-    ACON --> CH[Email / SMS /<br/>PagerDuty / Webhook]
+    ACON --> CH["Email / SMS /<br/>PagerDuty / Webhook"]
 ```
 
 - **Metrics source** — anything emitting numbers: app servers, DBs, queues.
@@ -216,9 +216,9 @@ The first real design fork. First, a freeing observation: **occasional metric lo
 
 ```mermaid
 flowchart LR
-    SD[Service Discovery<br/>etcd / ZooKeeper] -->|1. discover targets| MC[Metrics Collector]
+    SD["Service Discovery<br/>etcd / ZooKeeper"] -->|1. discover targets| MC[Metrics Collector]
     WS["Web Servers<br/>/metrics endpoint"] -->|2. HTTP pull| MC
-    MC -->|3. write| TSDB[(Time-Series DB)]
+    MC -->|3. write| TSDB["(Time-Series DB)"]
 ```
 
 - The collector must know all endpoints → use **Service Discovery** (etcd/ZooKeeper) so services register and the collector is notified when the fleet changes. **Don't hardcode a target list.**
@@ -250,9 +250,9 @@ The risk: if the TSDB is down, that 1M-points/sec firehose is **lost**. Put a **
 flowchart LR
     MS[Metrics Source] --> MC[Metrics Collector]
     MC --> K[[Kafka]]
-    K --> C1[Consumer: metric A]
-    K --> C2[Consumer: metric B]
-    C1 & C2 --> TSDB[(Time-Series DB)]
+    K --> C1["Consumer: metric A"]
+    K --> C2["Consumer: metric B"]
+    C1 & C2 --> TSDB["(Time-Series DB)"]
     TSDB --> QS[Query Service]
 ```
 
@@ -288,7 +288,7 @@ timestamps: 1610087371, +10, +10, +9, +11   ← store the small differences, not
 flowchart LR
     RAW["Raw @ 10s<br/>keep 7 days"] -->|downsample| M1["1-minute<br/>keep 30 days"]
     M1 -->|downsample| H1["1-hour<br/>keep 1 year"]
-    H1 -->|age out| COLD[(Cold Storage<br/>cheap, rarely read)]
+    H1 -->|age out| COLD[("Cold Storage<br/>cheap, rarely read")]
 ```
 
 **Cold storage.** Move rarely-accessed, inactive data to cheaper storage.
@@ -297,13 +297,13 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    RC[Rule config<br/>YAML files] --> Cache[(Rule Cache)]
+    RC["Rule config<br/>YAML files"] --> Cache["(Rule Cache)"]
     Cache --> AM[Alert Manager]
     QS[Query Service] -->|scheduled query| AM
-    AM --> AS[(Alert Store<br/>Cassandra)]
+    AM --> AS[("Alert Store<br/>Cassandra")]
     AM -->|eligible alerts| K[[Kafka]]
     K --> AC[Alert Consumers]
-    AC --> CH[Email / SMS /<br/>PagerDuty / Webhook]
+    AC --> CH["Email / SMS /<br/>PagerDuty / Webhook"]
 ```
 
 The flow:

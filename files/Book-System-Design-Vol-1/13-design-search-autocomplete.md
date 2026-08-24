@@ -44,7 +44,7 @@ Two parts:
 ```mermaid
 flowchart LR
     U[User types prefix] --> QS[Query Service]
-    QS --> FT[(Frequency Table / Trie)]
+    QS --> FT[("Frequency Table / Trie")]
     FT --> QS
     QS --> U2[Top 5 suggestions]
     U3[User searches] --> DG[Data Gathering Service]
@@ -82,7 +82,7 @@ So retrieval becomes **O(1)** overall. This **trades space for time** (more memo
 flowchart TD
     Root(( )) --> t[t]
     Root --> w[w]
-    t --> tr[tr top: true 35, try 29]
+    t --> tr["tr top: true 35, try 29"]
     tr --> tree[tree 10]
     tr --> true[true 35]
     tr --> try[try 29]

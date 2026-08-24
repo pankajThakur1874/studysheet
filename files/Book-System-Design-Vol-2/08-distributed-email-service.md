@@ -57,10 +57,10 @@ flowchart TD
     WS --> SL[Storage Layer]
     RTS --> SL
     subgraph SL[Storage Layer]
-      MDB[(Metadata DB)]
-      ATT[(Attachment Store / S3)]
-      DC[(Distributed Cache / Redis)]
-      SS[(Search Store)]
+      MDB["(Metadata DB)"]
+      ATT[("Attachment Store / S3")]
+      DC[("Distributed Cache / Redis")]
+      SS["(Search Store)"]
     end
 ```
 

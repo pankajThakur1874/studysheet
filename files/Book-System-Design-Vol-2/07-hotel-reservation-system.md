@@ -50,16 +50,16 @@ A new reservation POST includes `startDate`, `endDate`, `hotelID`, `roomTypeID`,
 flowchart TD
     User --> CDN
     Admin --> IAPI[Internal API]
-    CDN --> PGW[Public API Gateway<br/>rate limit + auth]
+    CDN --> PGW["Public API Gateway<br/>rate limit + auth"]
     PGW --> HS[Hotel Service]
     PGW --> RS[Reservation Service]
     IAPI --> PS[Payment Service]
     IAPI --> HMS[Hotel Management Service]
-    HS --> HC[(Hotel Cache)]
-    HS --> HDB[(Hotel DB)]
-    RS --> RateS[Rate Service] --> RateDB[(Rate DB)]
-    RS --> RDB[(Reservation DB)]
-    PS --> PDB[(Payment DB)]
+    HS --> HC["(Hotel Cache)"]
+    HS --> HDB["(Hotel DB)"]
+    RS --> RateS[Rate Service] --> RateDB["(Rate DB)"]
+    RS --> RDB["(Reservation DB)"]
+    PS --> PDB["(Payment DB)"]
 ```
 
 - **CDN** caches static assets. **Public API Gateway** does rate limiting, auth, routing. **Internal APIs** (staff-only, protected by VPN).
@@ -114,8 +114,8 @@ Servers are stateless → scale by adding servers. The **database** holds all st
 
 ```mermaid
 flowchart LR
-    RS[Reservation Service] -->|query inventory| IC[(Inventory Cache / Redis)]
-    RS -->|update inventory| IDB[(Inventory DB)]
+    RS[Reservation Service] -->|query inventory| IC[("Inventory Cache / Redis")]
+    RS -->|update inventory| IDB["(Inventory DB)"]
     IDB -.async update cache.-> IC
 ```
 

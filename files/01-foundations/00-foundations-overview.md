@@ -60,10 +60,10 @@ None. This is the entry point. Some familiarity with SQL and with having operate
 flowchart TD
     R[1. Reliability] --> S[2. Scalability]
     S --> M[3. Maintainability]
-    RD[4. Relational vs Document] --> G[5. Graph Models & Query Languages]
-    RD --> E[9. Encoding & Evolution]
-    L[6. Log-Structured Storage / LSM] --> B[7. B-Trees & Comparison]
-    B --> O[8. OLTP vs OLAP / Column Storage]
+    RD[4. Relational vs Document] --> G["5. Graph Models & Query Languages"]
+    RD --> E["9. Encoding & Evolution"]
+    L["6. Log-Structured Storage / LSM"] --> B["7. B-Trees & Comparison"]
+    B --> O["8. OLTP vs OLAP / Column Storage"]
     RD -.query shapes drive storage choice.-> L
     S -.percentiles are how you evaluate storage.-> L
 ```

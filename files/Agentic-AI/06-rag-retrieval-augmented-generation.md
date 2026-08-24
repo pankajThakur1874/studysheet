@@ -15,10 +15,10 @@ The model only knows what was in its training data, up to its cutoff (Chapter 2 
 ```mermaid
 flowchart LR
     Q[User question] --> R["Retrieve<br/>find relevant passages"]
-    KB[(Knowledge base)] --> R
+    KB["(Knowledge base)"] --> R
     R --> A["Augment<br/>question + passages → prompt"]
-    A --> G[[LLM: Generate answer<br/>grounded in passages]]
-    G --> Ans[Answer + citations]
+    A --> G[["LLM: Generate answer<br/>grounded in passages"]]
+    G --> Ans["Answer + citations"]
 ```
 
 ---
@@ -35,7 +35,7 @@ The hard part is "find the *relevant* passages." Keyword search misses paraphras
 flowchart TD
     subgraph "Indexing (once, offline)"
       D[Documents] --> C1[Split into chunks]
-      C1 --> EM1[Embed each chunk] --> VDB[(Vector DB)]
+      C1 --> EM1[Embed each chunk] --> VDB["(Vector DB)"]
     end
     subgraph "Querying (per request)"
       Q[Question] --> EM2[Embed question]
@@ -54,13 +54,13 @@ flowchart TD
 ```mermaid
 flowchart LR
     subgraph Offline["Ingestion (build the index)"]
-      L[Load docs] --> S[Chunk] --> E[Embed] --> St[(Store in vector DB)]
+      L[Load docs] --> S[Chunk] --> E[Embed] --> St["(Store in vector DB)"]
     end
     subgraph Online["Retrieval + Generation (per query)"]
       Q[Query] --> EQ[Embed query] --> Se[Search top-k]
       Se --> Re[Rerank optional]
-      Re --> Pr[Build prompt: question + chunks]
-      Pr --> Gen[[LLM]] --> Out[Grounded answer + citations]
+      Re --> Pr["Build prompt: question + chunks"]
+      Pr --> Gen[[LLM]] --> Out["Grounded answer + citations"]
     end
     St -.-> Se
 ```
@@ -118,11 +118,11 @@ In an agentic system, RAG usually becomes a **tool** (Chapter 4): give the agent
 ```mermaid
 flowchart TD
     U[User question] --> A[[Agent]]
-    A -->|search_kb 'return policy'| KB[(Knowledge base)]
+    A -->|search_kb 'return policy'| KB["(Knowledge base)"]
     KB --> A
     A -->|not enough → search_kb 'refund window electronics'| KB
     KB --> A
-    A --> Ans[Answer, grounded + cited]
+    A --> Ans["Answer, grounded + cited"]
 ```
 
 You can also skip a self-hosted vector DB entirely for public info by giving the agent a **web search tool** (a server-side tool that fetches current results) — retrieval over the open web instead of your corpus.

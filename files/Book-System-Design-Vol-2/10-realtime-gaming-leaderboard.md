@@ -49,7 +49,7 @@ Two services:
 flowchart LR
     Client -->|1. Win a game| Game[Game service]
     Game -->|2. Validate + update score| LB[Leaderboard service]
-    LB -->|3. Update score| Store[(Leaderboard store)]
+    LB -->|3. Update score| Store["(Leaderboard store)"]
     Client -->|4a. Get top 10 / 4b. Get player rank| LB
     LB --> Store
 ```
@@ -106,10 +106,10 @@ At 5M DAU one Redis node is enough. Imagine **500M DAU (100×)**: worst-case siz
 ```mermaid
 flowchart TD
     subgraph Fixed Partition by score range
-      S1["Shard [1,100]"]
-      S2["Shard [101,200]"]
-      S3["Shard [201,300]"]
-      S4["Shard [901,1000] - top players"]
+      S1["Shard ["1,100"]"]
+      S2["Shard ["101,200"]"]
+      S3["Shard ["201,300"]"]
+      S4["Shard ["901,1000"] - top players"]
     end
 ```
 

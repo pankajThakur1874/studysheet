@@ -143,9 +143,9 @@ sequenceDiagram
 flowchart TD
     NR[No response received] --> Q{What happened?}
     Q --> L[Request lost]
-    Q --> QU[Request queued / node overloaded]
+    Q --> QU["Request queued / node overloaded"]
     Q --> C[Node crashed]
-    Q --> P[Node paused, will recover]
+    Q --> P["Node paused, will recover"]
     Q --> RL[Response lost]
     Q --> RD[Response delayed]
     L & QU & C & P & RL & RD --> IND["ALL look identical from the sender<br/>→ failure is UNDETECTABLE<br/>→ timeout is the only recourse (and it's a guess)"]

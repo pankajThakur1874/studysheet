@@ -82,7 +82,7 @@ Agents don't share a mind — they share **messages** (and sometimes a workspace
 flowchart TD
     O[[Orchestrator]] -->|delegated msg WITH needed context| S[Sub-agent]
     S -->|structured result| O
-    O -.writes.-> W[(Shared workspace/files)]
+    O -.writes.-> W[("Shared workspace/files")]
     S -.reads/writes.-> W
 ```
 
@@ -94,10 +94,10 @@ Multi-agent adds real cost: more LLM calls, coordination overhead, more failure 
 
 ```mermaid
 flowchart TD
-    Q1{Single agent's context<br/>overflowing with unrelated detail?} -->|Yes| M[Multi-agent helps]
-    Q1 -->|No| Q2{Independent subtasks<br/>that could run in parallel?}
+    Q1{"Single agent's context<br/>overflowing with unrelated detail?"} -->|Yes| M[Multi-agent helps]
+    Q1 -->|No| Q2{"Independent subtasks<br/>that could run in parallel?"}
     Q2 -->|Yes| M
-    Q2 -->|No| Q3{Genuinely distinct<br/>specializations/tools?}
+    Q2 -->|No| Q3{"Genuinely distinct<br/>specializations/tools?"}
     Q3 -->|Yes| M
     Q3 -->|No| Single[Keep it a single agent]
 ```

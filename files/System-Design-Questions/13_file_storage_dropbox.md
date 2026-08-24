@@ -75,9 +75,9 @@ The following is the primary interview flowchart. Draw this first, then explain 
 ```mermaid
 flowchart LR
     C[Client] --> M[Metadata Service]
-    M --> DB[(PostgreSQL)]
+    M --> DB["(PostgreSQL)"]
     M --> URL[Pre-signed URL]
-    C --> OBJ[(Object Storage)]
+    C --> OBJ["(Object Storage)"]
     OBJ --> EV[Completion Event]
     EV --> K[Kafka]
     K --> V[Virus Scan]
@@ -104,12 +104,12 @@ flowchart TD
     E --> F{All chunks present?}
     F -->|No| G[Retry missing chunks]
     F -->|Yes| H[Complete object]
-    H --> I[Persist metadata/state]
+    H --> I["Persist metadata/state"]
     I --> J[Publish completion event]
-    J --> K[Async virus scan/thumbnail/index]
+    J --> K["Async virus scan/thumbnail/index"]
     L[Download] --> M[Authorize]
     M --> N[Short-lived signed URL]
-    N --> O[CDN/Object Storage]
+    N --> O["CDN/Object Storage"]
 ```
 
 ## 8. HLD Deep Dive — Why Each Decision?
@@ -505,9 +505,9 @@ That sentence alone makes the discussion much more senior.
 
 ```mermaid
 flowchart LR
-    C[Client edits file] --> Blk[Split into blocks, hash each]
-    Blk -->|only changed blocks| BS[Block servers: compress+encrypt] --> OS[(Object storage)]
-    Blk --> Meta[(Metadata DB: relational, strong consistency)]
+    C[Client edits file] --> Blk["Split into blocks, hash each"]
+    Blk -->|only changed blocks| BS["Block servers: compress+encrypt"] --> OS["(Object storage)"]
+    Blk --> Meta[("Metadata DB: relational, strong consistency")]
     Meta --> Notify[Notification service - long polling] --> C2[Other devices sync]
 ```
 

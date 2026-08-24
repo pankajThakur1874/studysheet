@@ -109,7 +109,7 @@ sequenceDiagram
     participant LLM as Claude
     participant Fn as get_weather()
     App->>LLM: user question + tools=[get_weather]
-    LLM-->>App: stop_reason="tool_use"<br/>tool_use{id, name, input}
+    LLM-->>App: stop_reason="tool_use"<br/>tool_use{"id, name, input"}
     App->>Fn: get_weather(location="Paris")
     Fn-->>App: "18°C, cloudy"
     App->>LLM: append assistant(tool_use) + user(tool_result, tool_use_id)
@@ -163,11 +163,11 @@ One model turn can request **multiple** tools at once (e.g. weather in Paris *an
 
 ```mermaid
 flowchart TD
-    L[Model turn] --> T1[tool_use: weather Paris]
-    L --> T2[tool_use: weather London]
+    L[Model turn] --> T1["tool_use: weather Paris"]
+    L --> T2["tool_use: weather London"]
     T1 --> R[ONE user message with BOTH tool_results]
     T2 --> R
-    R --> L2[Model combines both → answer]
+    R --> L2["Model combines both → answer"]
 ```
 
 **Common bug:** splitting the two results across two separate user messages. That silently teaches the model to stop making parallel calls. One turn's tool calls → one results message. Set `tool_choice` with `disable_parallel_tool_use: true` if you *want* at most one tool per turn.

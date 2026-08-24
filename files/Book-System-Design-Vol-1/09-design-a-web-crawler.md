@@ -65,11 +65,11 @@ flowchart TD
     S[Seed URLs] --> F[URL Frontier]
     F --> D[HTML Downloader]
     DNS[DNS Resolver] --> D
-    D --> P[Content Parser<br/>validate HTML]
+    D --> P["Content Parser<br/>validate HTML"]
     P --> CS{Content Seen?}
     CS -->|Already stored| X[Discard page]
     CS -->|New| ST[Content Storage]
-    ST --> LE[URL/Link Extractor]
+    ST --> LE["URL/Link Extractor"]
     LE --> UF[URL Filter]
     UF --> US{URL Seen?}
     US -->|Already seen| Y[Do nothing]
@@ -103,9 +103,9 @@ The URL Frontier fixes both, ensuring **politeness**, **prioritization**, and **
 
 ```mermaid
 flowchart LR
-    QR[Queue Router] --> B1[FIFO b1<br/>host A]
-    QR --> B2[FIFO b2<br/>host B]
-    QR --> Bn[FIFO bn<br/>host N]
+    QR[Queue Router] --> B1["FIFO b1<br/>host A"]
+    QR --> B2["FIFO b2<br/>host B"]
+    QR --> Bn["FIFO bn<br/>host N"]
     B1 --> QS[Queue Selector]
     B2 --> QS
     Bn --> QS

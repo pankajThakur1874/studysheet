@@ -67,13 +67,13 @@ The following is the primary interview flowchart. Draw this first, then explain 
 ```mermaid
 flowchart LR
     O[Order Service] --> I[Inventory Service]
-    I --> D[(PostgreSQL)]
-    I --> R[(Redis Cache)]
+    I --> D["(PostgreSQL)"]
+    I --> R["(Redis Cache)"]
     I --> P[Payment Service]
     I --> X[Reservation Expiry Worker]
     I --> OB[Outbox]
     OB --> K[Kafka]
-    K --> N[Notification / Other Services]
+    K --> N["Notification / Other Services"]
 ```
 
 ## 7. Database Selection
@@ -87,7 +87,7 @@ Use this second flowchart when the interviewer asks **"walk me through the compl
 ```mermaid
 flowchart TD
     A[Order] --> B[Reserve inventory]
-    B --> C[Atomic available > 0 update]
+    B --> C["Atomic available > 0 update"]
     C --> D{Reserved?}
     D -->|No| E[Out of stock]
     D -->|Yes| F[Reservation TTL]
@@ -97,7 +97,7 @@ flowchart TD
     H -->|No/timeout| J[Release inventory]
     F --> K{TTL expired?}
     K -->|Yes| J
-    I --> L[Outbox -> Kafka]
+    I --> L["Outbox -> Kafka"]
     J --> M[Inventory available again]
 ```
 

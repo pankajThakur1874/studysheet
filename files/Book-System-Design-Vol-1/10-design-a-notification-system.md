@@ -73,9 +73,9 @@ Fixes:
 
 ```mermaid
 flowchart LR
-    S[Services 1..N] --> NS[Notification Servers<br/>APIs, validation, auth, rate limit]
-    C[(Cache: user/device/template)] --- NS
-    DB[(DB: user, notification, settings)] --- NS
+    S[Services 1..N] --> NS["Notification Servers<br/>APIs, validation, auth, rate limit"]
+    C[("Cache: user/device/template")] --- NS
+    DB[("DB: user, notification, settings")] --- NS
     NS --> Q1[iOS PN Queue]
     NS --> Q2[Android PN Queue]
     NS --> Q3[SMS Queue]
@@ -86,8 +86,8 @@ flowchart LR
     Q4 --> W4[Workers]
     W1 --> APNS
     W2 --> FCM
-    W3 --> SMS3[Twilio/Nexmo]
-    W4 --> EM[Sendgrid/Mailchimp]
+    W3 --> SMS3["Twilio/Nexmo"]
+    W4 --> EM["Sendgrid/Mailchimp"]
     APNS --> iOS[iOS devices]
     FCM --> AND[Android devices]
     SMS3 --> Ph[Phones]

@@ -48,12 +48,12 @@ The system is asynchronous. A synchronous pipeline is bad: if producers suddenly
 
 ```mermaid
 flowchart LR
-    LW[Log Watcher] --> MQ1[Message Queue 1<br/>raw click events]
-    MQ1 --> AGG[Data Aggregation Service<br/>ad count + top 100 per min]
-    AGG --> MQ2[Message Queue 2<br/>aggregated counts + top N]
-    MQ1 --> DW1[DB Writer] --> RAW[(Raw Data DB)]
-    MQ2 --> DW2[DB Writer] --> AGGDB[(Aggregation DB)]
-    AGGDB --> QS[Query Service / Dashboard]
+    LW[Log Watcher] --> MQ1["Message Queue 1<br/>raw click events"]
+    MQ1 --> AGG["Data Aggregation Service<br/>ad count + top 100 per min"]
+    AGG --> MQ2["Message Queue 2<br/>aggregated counts + top N"]
+    MQ1 --> DW1[DB Writer] --> RAW["(Raw Data DB)"]
+    MQ2 --> DW2[DB Writer] --> AGGDB["(Aggregation DB)"]
+    AGGDB --> QS["Query Service / Dashboard"]
 ```
 
 - **Queue 1** holds `ad_id, click_timestamp, user_id, ip, country`.

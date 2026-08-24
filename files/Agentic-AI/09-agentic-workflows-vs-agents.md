@@ -30,8 +30,8 @@ Break a task into a **fixed sequence** of LLM calls, each using the previous out
 
 ```mermaid
 flowchart LR
-    In[Input] --> C1[LLM: step 1] --> G{gate?} --> C2[LLM: step 2] --> C3[LLM: step 3] --> Out[Output]
-    G -->|fail| Stop[abort/fix]
+    In[Input] --> C1["LLM: step 1"] --> G{gate?} --> C2["LLM: step 2"] --> C3["LLM: step 3"] --> Out[Output]
+    G -->|fail| Stop["abort/fix"]
 ```
 **Use when** the task decomposes into clean, ordered subtasks. *Example:* generate an outline → check it meets criteria → write the doc from the outline. Trades latency for accuracy (each step is simpler).
 
@@ -40,10 +40,10 @@ Classify the input, then send it down one of several **specialized paths**. Sepa
 
 ```mermaid
 flowchart TD
-    In[Input] --> R[LLM router: classify]
+    In[Input] --> R["LLM router: classify"]
     R -->|billing| B[Billing prompt]
     R -->|technical| T[Technical prompt]
-    R -->|refund| F[Refund prompt + tools]
+    R -->|refund| F["Refund prompt + tools"]
 ```
 **Use when** inputs fall into distinct categories that are better handled differently. *Example:* a support system routing to billing vs. technical vs. escalation. Also lets you route easy queries to a cheap model, hard ones to a strong model.
 
@@ -57,7 +57,7 @@ flowchart TD
     In[Input] --> S1[LLM call A]
     In --> S2[LLM call B]
     In --> S3[LLM call C]
-    S1 --> Agg[Aggregate / vote]
+    S1 --> Agg["Aggregate / vote"]
     S2 --> Agg
     S3 --> Agg --> Out[Result]
 ```
@@ -68,11 +68,11 @@ A central **orchestrator** LLM dynamically breaks a task into subtasks, delegate
 
 ```mermaid
 flowchart TD
-    In[Complex task] --> O[[Orchestrator: plan & split]]
+    In[Complex task] --> O[["Orchestrator: plan & split"]]
     O --> W1[Worker 1]
     O --> W2[Worker 2]
     O --> W3[Worker 3]
-    W1 --> Syn[[Orchestrator: synthesize]]
+    W1 --> Syn[["Orchestrator: synthesize"]]
     W2 --> Syn
     W3 --> Syn --> Out[Final result]
 ```
@@ -83,7 +83,7 @@ One LLM **generates**, another **evaluates** against criteria and gives feedback
 
 ```mermaid
 flowchart LR
-    In[Task] --> Gen[LLM: generate] --> Ev{LLM: evaluate}
+    In[Task] --> Gen["LLM: generate"] --> Ev{"LLM: evaluate"}
     Ev -->|needs work + feedback| Gen
     Ev -->|good| Out[Output]
 ```

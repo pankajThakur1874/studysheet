@@ -47,8 +47,8 @@ flowchart LR
     end
     C1 <-->|MCP protocol| S1[GitHub MCP server]
     C2 <-->|MCP protocol| S2[Database MCP server]
-    S1 --> GH[(GitHub API)]
-    S2 --> DB[(Your DB)]
+    S1 --> GH["(GitHub API)"]
+    S2 --> DB["(Your DB)"]
 ```
 
 **Transport:** servers can be **local** (run on your machine, communicate over stdio) or **remote** (run elsewhere, communicate over HTTP/SSE). Remote servers are how hosted integrations (with OAuth) work.
@@ -97,9 +97,9 @@ Two ways an agent consumes MCP servers:
 
 ```mermaid
 flowchart LR
-    A[Your agent] -->|declare: server URL + name| P[Model provider / host]
+    A[Your agent] -->|declare: server URL + name| P["Model provider / host"]
     P <-->|MCP| MS[Remote MCP server]
-    Cred[(Secure vault: OAuth token)] -.injected at call time.-> P
+    Cred[("Secure vault: OAuth token")] -.injected at call time.-> P
     P --> LLM[[Model uses the server's tools]]
 ```
 

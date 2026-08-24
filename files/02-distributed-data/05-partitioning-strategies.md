@@ -113,19 +113,19 @@ flowchart TD
 flowchart TD
     K[key] --> H["hash(key)"]
     H --> P{Which hash range?}
-    P -->|0x0000–0x3FFF| P1[(Partition 1)]
-    P -->|0x4000–0x7FFF| P2[(Partition 2)]
-    P -->|0x8000–0xBFFF| P3[(Partition 3)]
-    P -->|0xC000–0xFFFF| P4[(Partition 4)]
+    P -->|0x0000–0x3FFF| P1["(Partition 1)"]
+    P -->|0x4000–0x7FFF| P2["(Partition 2)"]
+    P -->|0x8000–0xBFFF| P3["(Partition 3)"]
+    P -->|0xC000–0xFFFF| P4["(Partition 4)"]
     note2["✓ even load, no monotonic hot spot<br/>✗ range queries hit ALL partitions"]
 ```
 
 ```mermaid
 flowchart LR
     HOT["Hot key: celebrity_id"] --> SPLIT["celebrity_id + random(00–99)"]
-    SPLIT --> S1[(Partition 1)]
-    SPLIT --> S2[(Partition 2)]
-    SPLIT --> S3[(Partition 3)]
+    SPLIT --> S1["(Partition 1)"]
+    SPLIT --> S2["(Partition 2)"]
+    SPLIT --> S3["(Partition 3)"]
     note3["writes spread across 100 keys<br/>but reads must gather all 100 + bookkeeping<br/>apply ONLY to known-hot keys"]
 ```
 

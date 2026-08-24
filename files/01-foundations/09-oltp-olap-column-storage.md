@@ -169,13 +169,13 @@ The advantage is that certain queries become very fast, because they've effectiv
 ```mermaid
 flowchart LR
     subgraph OLTP[OLTP systems — systems of record]
-        A[(Orders DB)]
-        B[(Inventory DB)]
-        C[(Users DB)]
+        A["(Orders DB)"]
+        B["(Inventory DB)"]
+        C["(Users DB)"]
     end
-    OLTP -->|ETL: extract, transform, load| DW[(Data Warehouse<br/>star schema, column store)]
-    DW --> AN[Analysts / BI tools]
-    DW --> CUBE[Materialized views / OLAP cubes]
+    OLTP -->|ETL: extract, transform, load| DW[("Data Warehouse<br/>star schema, column store")]
+    DW --> AN["Analysts / BI tools"]
+    DW --> CUBE["Materialized views / OLAP cubes"]
     CUBE --> AN
 ```
 
@@ -184,10 +184,10 @@ flowchart TD
     Q["Query: SUM(qty) WHERE date IN range AND product IN set"]
     Q --> C1[Read only the 4 needed column files]
     C1 --> C2[Sort order on date lets us skip most of the file]
-    C2 --> C3[Bitmap AND / OR to filter rows]
+    C2 --> C3["Bitmap AND / OR to filter rows"]
     C3 --> C4[Vectorized loop over compressed chunks in L1 cache]
     C4 --> R[Aggregate result]
-    Q -.-> SKIP[96 other columns: never read from disk]
+    Q -.-> SKIP["96 other columns: never read from disk"]
 ```
 
 ---

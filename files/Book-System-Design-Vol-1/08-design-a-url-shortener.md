@@ -109,11 +109,11 @@ Example: convert `11157` (base 10) to base 62:
 
 ```mermaid
 flowchart TD
-    A[Input: longURL] --> B{longURL already<br/>in database?}
-    B -->|Yes| C[Fetch existing shortURL, return to client]
-    B -->|No| D[Unique ID Generator makes new ID<br/>e.g. 2009215674938]
-    D --> E[Convert ID to shortURL via base-62<br/>2009215674938 -> zn9edcu]
-    E --> F[Save id, shortURL, longURL to DB]
+    A["Input: longURL"] --> B{"longURL already<br/>in database?"}
+    B -->|Yes| C["Fetch existing shortURL, return to client"]
+    B -->|No| D["Unique ID Generator makes new ID<br/>e.g. 2009215674938"]
+    D --> E["Convert ID to shortURL via base-62<br/>2009215674938 -> zn9edcu"]
+    E --> F["Save id, shortURL, longURL to DB"]
     F --> G[Return shortURL to client]
 ```
 
@@ -125,7 +125,7 @@ Because reads far outnumber writes, `<shortURL, longURL>` is stored in a **cache
 
 ```mermaid
 flowchart TD
-    A[User clicks https://tinyurl.com/zn9edcu] --> B[Load balancer forwards to web server]
+    A["User clicks https://tinyurl.com/zn9edcu"] --> B[Load balancer forwards to web server]
     B --> C{shortURL in cache?}
     C -->|Yes| D[Return longURL directly]
     C -->|No| E{Fetch longURL from DB}

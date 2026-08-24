@@ -154,15 +154,15 @@ GET /v1/search?q=subject:invoice from:acme has:attachment
 
 ```mermaid
 flowchart TD
-    WM[Webmail Client] -->|HTTPS| WS[Web Servers<br/>stateless]
-    WM -->|WebSocket| RTS[Real-time Servers<br/>stateful]
+    WM[Webmail Client] -->|HTTPS| WS["Web Servers<br/>stateless"]
+    WM -->|WebSocket| RTS["Real-time Servers<br/>stateful"]
     WS --> SL
     RTS --> SL
     subgraph SL[Storage Layer]
-      MDB[(Metadata DB<br/>custom NoSQL)]
-      ATT[(Attachment Store<br/>Amazon S3)]
-      DC[(Distributed Cache<br/>Redis)]
-      SS[(Search Store<br/>inverted index)]
+      MDB[("Metadata DB<br/>custom NoSQL")]
+      ATT[("Attachment Store<br/>Amazon S3")]
+      DC[("Distributed Cache<br/>Redis")]
+      SS[("Search Store<br/>inverted index")]
     end
 ```
 
@@ -177,14 +177,14 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    U[User sends] --> LB[Load Balancer<br/>rate-limit]
-    LB --> WEB[Web Server<br/>validate size]
-    WEB -->|same domain, clean| DIRECT[Write to sender Sent<br/>+ recipient Inbox]
+    U[User sends] --> LB["Load Balancer<br/>rate-limit"]
+    LB --> WEB["Web Server<br/>validate size"]
+    WEB -->|same domain, clean| DIRECT["Write to sender Sent<br/>+ recipient Inbox"]
     WEB -->|valid, cross-domain| OQ[[Outgoing Queue]]
     WEB -->|invalid| EQ[[Error Queue]]
-    OQ --> SW[SMTP Outgoing Workers<br/>spam/virus check]
+    OQ --> SW["SMTP Outgoing Workers<br/>spam/virus check"]
     SW --> RS[Recipient Mail Server]
-    SW -.attachment.-> S3[(S3)]
+    SW -.attachment.-> S3["(S3)"]
 ```
 
 The web server validates (size limit) and checks whether the recipient's domain equals the sender's. If **same domain** and spam/virus-free, it writes directly to the sender's **Sent** and recipient's **Inbox**. Otherwise valid mail goes to an **outgoing queue** (large attachments to S3, a reference in the message); invalid mail goes to an **error queue**. **SMTP outgoing workers** pull from the queue, re-verify clean, store in Sent, and transmit to the recipient server. **The queue decouples sending from delivery** so SMTP workers scale independently. Watch the queue depth: if it grows, either the recipient server is down (**retry with exponential backoff**) or there aren't enough consumers (add workers).
@@ -194,11 +194,11 @@ The web server validates (size limit) and checks whether the recipient's domain 
 ```mermaid
 flowchart TD
     IN[Incoming email] --> SLB[SMTP Load Balancer]
-    SLB --> SMTP[SMTP Servers<br/>bounce invalid early]
-    SMTP -.large attachment.-> S3[(S3)]
+    SLB --> SMTP["SMTP Servers<br/>bounce invalid early"]
+    SMTP -.large attachment.-> S3["(S3)"]
     SMTP --> IQ[[Incoming Queue]]
-    IQ --> MPW[Mail Processing Workers<br/>spam filter + virus scan]
-    MPW --> STORE[(Metadata DB + Cache + S3)]
+    IQ --> MPW["Mail Processing Workers<br/>spam filter + virus scan"]
+    MPW --> STORE[("Metadata DB + Cache + S3")]
     STORE -->|recipient online| RTS[Real-time WebSocket push]
     STORE -->|recipient offline| PULL[Client pulls via REST on reconnect]
 ```
@@ -232,9 +232,9 @@ The custom DB's needed traits: a single column up to single-digit MB, **strong c
 ```mermaid
 flowchart TD
     subgraph "Partition: user_id = U123"
-      F[folders_by_user<br/>PK: user_id]
+      F["folders_by_user<br/>PK: user_id"]
       E["emails_by_folder<br/>PK: &lt;user_id, folder_id&gt;<br/>CK: email_id (TIMEUUID) → chronological"]
-      G[emails_by_user + attachments<br/>attachment keyed by email_id + filename]
+      G["emails_by_user + attachments<br/>attachment keyed by email_id + filename"]
       R[read_emails table]
       UR[unread_emails table]
     end

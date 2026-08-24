@@ -69,10 +69,10 @@ Example with 3 replicas (n1, n2, n3): if n3 goes down and can't talk to n1/n2:
 
 ```mermaid
 flowchart TD
-    CAP[CAP Theorem: pick 2 of 3]
-    CAP --> CP[CP: Consistency + Partition<br/>sacrifices Availability<br/>e.g. bank systems]
-    CAP --> AP[AP: Availability + Partition<br/>sacrifices Consistency<br/>e.g. Dynamo, Cassandra]
-    CAP --> CA[CA: Consistency + Availability<br/>sacrifices Partition tolerance<br/>NOT possible in real systems]
+    CAP["CAP Theorem: pick 2 of 3"]
+    CAP --> CP["CP: Consistency + Partition<br/>sacrifices Availability<br/>e.g. bank systems"]
+    CAP --> AP["AP: Availability + Partition<br/>sacrifices Consistency<br/>e.g. Dynamo, Cassandra"]
+    CAP --> CA["CA: Consistency + Availability<br/>sacrifices Partition tolerance<br/>NOT possible in real systems"]
 ```
 
 ### Data Partition (Consistent Hashing)
@@ -161,9 +161,9 @@ Downsides: (1) adds complexity — the **client** must implement conflict-resolu
 ```mermaid
 flowchart TD
     W[Write request arrives at node] --> C[1. Persist to commit log file]
-    C --> M[2. Save data in memory cache/memtable]
-    M --> F{Memory full or<br/>threshold reached?}
-    F -->|Yes| S[3. Flush to SSTable on disk<br/>sorted list of key,value pairs]
+    C --> M["2. Save data in memory cache/memtable"]
+    M --> F{"Memory full or<br/>threshold reached?"}
+    F -->|Yes| S["3. Flush to SSTable on disk<br/>sorted list of key,value pairs"]
     F -->|No| K[Keep in memory]
 ```
 
@@ -176,7 +176,7 @@ flowchart TD
     R[Read request arrives at node] --> M{1. Data in memory cache?}
     M -->|Yes| Ret[Return to client]
     M -->|No| BF[2. Check bloom filter]
-    BF --> W[3. Bloom filter says which<br/>SSTables might have the key]
+    BF --> W["3. Bloom filter says which<br/>SSTables might have the key"]
     W --> SS[4. SSTables return the data]
     SS --> Ret2[5. Return result to client]
 ```
