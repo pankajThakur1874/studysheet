@@ -1822,3 +1822,4 @@ EXECUTION → Workers
 RELIABILITY → Retry + Idempotency
 RECOVERY → Lease expiry
 OBSERVABILITY → Scheduler lag + queue lag
+```

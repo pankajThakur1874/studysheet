@@ -381,7 +381,7 @@
             z-index: 10;
         }
 
-        /* Crisp Mermaid Diagram Node & Label Contrast */
+        /* Crisp Mermaid Diagram Node & Label Contrast (Universal Browser Visibility) */
         .mermaid {
             width: 100% !important;
             max-width: 100% !important;
@@ -400,12 +400,26 @@
             margin: 0 auto !important;
             box-sizing: border-box !important;
         }
-        .mermaid .node rect, .mermaid .node circle, .mermaid .node polygon, .mermaid .node path {
+        .mermaid .node rect, 
+        .mermaid .node circle, 
+        .mermaid .node polygon, 
+        .mermaid .node path,
+        .mermaid g.node rect,
+        .mermaid g.node circle,
+        .mermaid g.node polygon,
+        .mermaid g.node path {
             fill: #e0e7ff !important;
             stroke: #4f46e5 !important;
             stroke-width: 2px !important;
         }
-        .dark .mermaid .node rect, .dark .mermaid .node circle, .dark .mermaid .node polygon, .dark .mermaid .node path {
+        .dark .mermaid .node rect, 
+        .dark .mermaid .node circle, 
+        .dark .mermaid .node polygon, 
+        .dark .mermaid .node path,
+        .dark .mermaid g.node rect,
+        .dark .mermaid g.node circle,
+        .dark .mermaid g.node polygon,
+        .dark .mermaid g.node path {
             fill: #1e1b4b !important;
             stroke: #818cf8 !important;
             stroke-width: 2px !important;
@@ -414,30 +428,61 @@
             overflow: visible !important;
             width: auto !important;
         }
-        .mermaid foreignObject div, .mermaid foreignObject span {
+        .mermaid foreignObject div, 
+        .mermaid foreignObject span,
+        .mermaid foreignObject p {
             white-space: nowrap !important;
             overflow: visible !important;
             width: auto !important;
             display: inline-block !important;
         }
-        .mermaid .node .label, .mermaid .node text, .mermaid .node span, .mermaid .node tspan, .mermaid .label text {
-            fill: #1e1b4b !important;
-            color: #1e1b4b !important;
-            font-weight: 500 !important;
+
+        /* Light Mode Text Contrast (Deep Slate on Light Indigo Box) */
+        .mermaid .node .label,
+        .mermaid .node text,
+        .mermaid .node span,
+        .mermaid .node tspan,
+        .mermaid .node p,
+        .mermaid .node div,
+        .mermaid .nodeLabel,
+        .mermaid .label text,
+        .mermaid g.node text,
+        .mermaid g.node tspan,
+        .mermaid g.node foreignObject * {
+            fill: #0f172a !important;
+            color: #0f172a !important;
+            font-weight: 600 !important;
             font-family: inherit !important;
+            opacity: 1 !important;
+            visibility: visible !important;
         }
-        .dark .mermaid .node .label, .dark .mermaid .node text, .dark .mermaid .node span, .dark .mermaid .node tspan, .dark .mermaid .label text {
-            fill: #e0e7ff !important;
-            color: #e0e7ff !important;
-            font-weight: 500 !important;
+
+        /* Dark Mode Text Contrast (Crisp White on Dark Navy Box) */
+        .dark .mermaid .node .label,
+        .dark .mermaid .node text,
+        .dark .mermaid .node span,
+        .dark .mermaid .node tspan,
+        .dark .mermaid .node p,
+        .dark .mermaid .node div,
+        .dark .mermaid .nodeLabel,
+        .dark .mermaid .label text,
+        .dark .mermaid g.node text,
+        .dark .mermaid g.node tspan,
+        .dark .mermaid g.node foreignObject * {
+            fill: #f8fafc !important;
+            color: #f8fafc !important;
+            font-weight: 600 !important;
             font-family: inherit !important;
+            opacity: 1 !important;
+            visibility: visible !important;
         }
+
         .mermaid .edgePath .path, .mermaid .flowchart-link { stroke: #6366f1 !important; stroke-width: 2px !important; }
         .dark .mermaid .edgePath .path, .dark .mermaid .flowchart-link { stroke: #818cf8 !important; stroke-width: 2px !important; }
         .mermaid .marker { fill: #6366f1 !important; stroke: #6366f1 !important; }
         .dark .mermaid .marker { fill: #818cf8 !important; stroke: #818cf8 !important; }
-        .mermaid .edgeLabel, .mermaid .edgeLabel span { background-color: #ffffff !important; color: #374151 !important; font-weight: 500 !important; }
-        .dark .mermaid .edgeLabel, .dark .mermaid .edgeLabel span { background-color: #111827 !important; color: #d1d5db !important; font-weight: 500 !important; }
+        .mermaid .edgeLabel, .mermaid .edgeLabel span, .mermaid .edgeLabel div { background-color: #ffffff !important; color: #1e293b !important; font-weight: 600 !important; }
+        .dark .mermaid .edgeLabel, .dark .mermaid .edgeLabel span, .dark .mermaid .edgeLabel div { background-color: #0f172a !important; color: #f8fafc !important; font-weight: 600 !important; }
     </style>
 </head>
 
