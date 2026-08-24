@@ -88,9 +88,9 @@ When something's wrong:
 flowchart TD
     P[Bad output reported] --> F[Find the trace]
     F --> W[Walk the spans in order]
-    W --> Q{Where did it go wrong?}
+    W --> Q{"Where did it go wrong?"}
     Q -->|Bad retrieval| RAG["Fix chunking/retrieval - Ch 6"]
-    Q -->|Wrong tool / bad args| Tool["Fix tool desc / validation - Ch 4"]
+    Q -->|"Wrong tool / bad args"| Tool["Fix tool desc / validation - Ch 4"]
     Q -->|Model misread prompt| Prompt[Fix system prompt - Ch 8]
     Q -->|Tool errored silently| Err[Surface errors as results - Ch 4]
     Q -->|Looping| Loop["Add bound / detect repeats - Ch 3"]

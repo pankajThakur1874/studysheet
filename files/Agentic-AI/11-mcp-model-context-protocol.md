@@ -70,9 +70,9 @@ The most-used primitive is **tools** — connecting an MCP server is, in practic
 ```mermaid
 flowchart TD
     H[Host] -->|1. list capabilities| S[MCP server]
-    S -->|tools + resources + prompts| H
+    S -->|"tools + resources + prompts"| H
     H -->|2. model requests a tool| S
-    S -->|3. executes, returns result| H
+    S -->|"3. executes, returns result"| H
     H -->|4. result into context| LLM[[LLM]]
 ```
 
@@ -97,7 +97,7 @@ Two ways an agent consumes MCP servers:
 
 ```mermaid
 flowchart LR
-    A[Your agent] -->|declare: server URL + name| P["Model provider / host"]
+    A[Your agent] -->|"declare: server URL + name"| P["Model provider / host"]
     P <-->|MCP| MS[Remote MCP server]
     Cred[("Secure vault: OAuth token")] -.injected at call time.-> P
     P --> LLM[[Model uses the server's tools]]

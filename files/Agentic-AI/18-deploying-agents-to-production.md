@@ -34,7 +34,7 @@ flowchart TD
     U["Request + session_id"] --> LB[Load balancer]
     LB --> W1[Stateless worker]
     LB --> W2[Stateless worker]
-    W1 <-->|load/save state| St["(Session store)"]
+    W1 <-->|"load/save state"| St["(Session store)"]
     W1 --> API[[LLM API]]
 ```
 
@@ -51,7 +51,7 @@ Agent tasks can run seconds to minutes (many steps, big reasoning). Holding an H
 flowchart LR
     Req[Task] --> Q[[Queue]] --> Wk[Agent worker]
     Wk --> Store["(Result store)"]
-    Client[Client] -->|poll / webhook / stream| Store
+    Client[Client] -->|"poll / webhook / stream"| Store
 ```
 
 Managed agent platforms formalize this: you create a **session**, send events, and receive a stream of events (status, messages, tool calls) — the queue/streaming plumbing handled for you.
@@ -70,8 +70,8 @@ The LLM API will occasionally rate-limit (429) or error (5xx). Treat it like any
 
 ```mermaid
 flowchart TD
-    Call["Model / tool call"] --> R{Error?}
-    R -->|429/5xx/network| BO["Backoff + jitter, retry ≤ N"]
+    Call["Model / tool call"] --> R{"Error?"}
+    R -->|"429/5xx/network"| BO["Backoff + jitter, retry ≤ N"]
     R -->|4xx| Fail[Fail fast]
     BO -->|exhausted| Deg["Degrade / surface error"]
     Side[Side-effecting tool] --> Idem["Idempotency key → safe re-run"]
@@ -100,8 +100,8 @@ Prompts and models are part of your deployable surface — treat them like code:
 
 ```mermaid
 flowchart LR
-    Change["Prompt/model/tool change"] --> CI[Evals in CI] --> Canary[Canary %]
-    Canary --> Watch[Watch metrics] --> Ramp{OK?}
+    Change["Prompt/model/tool change"] --> CI[Evals in CI] --> Canary["Canary %"]
+    Canary --> Watch[Watch metrics] --> Ramp{"OK?"}
     Ramp -->|yes| Full[Full rollout]
     Ramp -->|no| RB["Rollback / flag off"]
 ```

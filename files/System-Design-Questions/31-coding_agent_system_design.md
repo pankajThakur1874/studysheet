@@ -23,10 +23,10 @@ Build an agent that, given a task in a repository ("fix this bug," "implement th
 ```mermaid
 flowchart LR
     T["Task / issue"] --> A[[Coding agent]]
-    A -->|grep, read| Repo["(Codebase)"]
+    A -->|"grep, read"| Repo["(Codebase)"]
     A -->|edit| Repo
     A -->|run tests| Sandbox[Sandbox]
-    Sandbox -->|pass/fail| A
+    Sandbox -->|"pass/fail"| A
     A --> D["Diff / PR"]
 ```
 
@@ -106,7 +106,7 @@ flowchart TD
       Setup --> Ctx["Locate relevant code: grep/glob/embeddings"]
       Ctx --> Loop[["Agent loop: read→edit→run tests→fix"]]
       Loop --> Done{"Tests pass / done?"}
-      Done -->|no, bounded| Loop
+      Done -->|"no, bounded"| Loop
       Done -->|yes| Diff["Produce diff / open PR - gated"]
     end
     Loop <-->|tools| SB[("Sandbox: fs + shell, no network/prod")]

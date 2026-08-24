@@ -24,10 +24,10 @@ Build an agent where a non-technical user asks a question in English ("What was 
 flowchart LR
     Q[English question] --> A[[Text-to-SQL agent]]
     A -->|needs schema| S[("Schema / table docs")]
-    A -->|generate + validate SQL| V{"safe & valid?"}
+    A -->|"generate + validate SQL"| V{"safe & valid?"}
     V -->|yes| DB[("Read replica, read-only role")]
     DB --> R["Answer + SQL + chart"]
-    V -->|no / error| A
+    V -->|"no / error"| A
 ```
 
 ---
@@ -102,7 +102,7 @@ flowchart TD
     A --> SR[Schema retriever] --> SD[("Schema + table docs / semantic layer")]
     A --> Gen[Generate SQL for dialect]
     Gen --> Val["validate_sql: parse + read-only + cost check"]
-    Val -->|reject/error| Fix["Feed error back -> regenerate"]
+    Val -->|"reject/error"| Fix["Feed error back -> regenerate"]
     Fix --> Gen
     Val -->|ok| Exec["run_sql on READ REPLICA - read-only role, LIMIT"]
     Exec --> Ans["Answer + SQL shown + chart"]
@@ -123,7 +123,7 @@ The model can't guess your columns. Two grounding sources:
 ```mermaid
 flowchart LR
     Gen[LLM generates SQL] --> P[Parse]
-    P --> RO{Read-only single SELECT?}
+    P --> RO{"Read-only single SELECT?"}
     RO -->|no| Rej[Reject]
     RO -->|yes| Cost{"EXPLAIN: scan/cost under limit?"}
     Cost -->|no| Rej

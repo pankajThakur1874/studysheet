@@ -22,11 +22,11 @@ Build a service that sits between all your internal apps/agents and the LLM prov
 
 ```mermaid
 flowchart LR
-    Apps[Apps / agents] --> GW[[LLM Gateway]]
+    Apps["Apps / agents"] --> GW[[LLM Gateway]]
     GW -->|route| P1[Anthropic]
-    GW -->|route/fallback| P2[OpenAI]
+    GW -->|"route/fallback"| P2[OpenAI]
     GW -->|route| P3[Self-hosted]
-    GW -.-> Obs[Cost + traces]
+    GW -.-> Obs["Cost + traces"]
 ```
 
 ---
@@ -95,23 +95,23 @@ GET  /v1/usage             // cost/usage reports per key/team
 
 ```mermaid
 flowchart TD
-    App[App / agent] -->|virtual key| LB[Load Balancer]
+    App["App / agent"] -->|virtual key| LB[Load Balancer]
     LB --> GW[Gateway worker - stateless]
     subgraph "Request pipeline (each step O(1), in-memory)"
-      GW --> Auth[1. Auth + resolve tenant/quota]
-      Auth --> RL[2. Rate limit + budget check]
+      GW --> Auth["1. Auth + resolve tenant/quota"]
+      Auth --> RL["2. Rate limit + budget check"]
       RL --> IG[3. Input guardrail - optional]
       IG --> Cache[4. Cache lookup]
       Cache -->|hit| Ret[return cached]
-      Cache -->|miss| Route[5. Route: pick provider/model]
+      Cache -->|miss| Route["5. Route: pick provider/model"]
       Route --> Call[6. Call provider - stream]
       Call --> OG[7. Output guardrail - optional]
-      OG --> Meter[8. Record tokens/cost + cache store]
+      OG --> Meter["8. Record tokens/cost + cache store"]
     end
-    Route -.error/429.-> FB[Fallback: next provider]
-    RL <-.-> Redis[(Redis: counters, budgets, cache)]
-    Meter --> Obs[(Cost DB + tracing)]
-    Cfg[(Config: keys, routes, budgets)] -.local cache.-> GW
+    Route -.error/429.-> FB["Fallback: next provider"]
+    RL <-.-> Redis[("Redis: counters, budgets, cache")]
+    Meter --> Obs[("Cost DB + tracing")]
+    Cfg[("Config: keys, routes, budgets")] -.local cache.-> GW
 ```
 
 **The gateway is a pipeline** of cheap, ordered steps. Note the ordering: **auth → rate limit → cache → route → call → meter** (reject/serve-from-cache before spending on a provider).
@@ -137,7 +137,7 @@ Per virtual key: **requests/min** *and* **tokens/min** (LLM limits are token-bas
 flowchart LR
     Req[Request: model="smart"] --> R{Primary provider}
     R -->|ok| Resp[Response]
-    R -->|429/5xx/timeout| F{Fallback provider}
+    R -->|"429/5xx/timeout"| F{Fallback provider}
     F -->|ok| Resp
     F -->|also fails| Err[Return error - degraded]
 ```

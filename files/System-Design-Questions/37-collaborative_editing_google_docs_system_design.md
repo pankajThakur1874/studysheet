@@ -22,10 +22,10 @@ Build a system where many users edit one document simultaneously and each sees t
 
 ```mermaid
 flowchart LR
-    A[User A edits] --> S[Sync engine: OT or CRDT]
+    A[User A edits] --> S["Sync engine: OT or CRDT"]
     B[User B edits] --> S
     S --> Conv[All replicas converge to same doc]
-    S --> P[Presence: cursors, selections]
+    S --> P["Presence: cursors, selections"]
 ```
 
 ---
@@ -120,7 +120,7 @@ sequenceDiagram
 ```mermaid
 flowchart LR
     subgraph "Chars have stable IDs, not indices"
-      C[c: id 1.0] --> A2[a: id 2.0] --> T[t: id 3.0]
+      C["c: id 1.0"] --> A2["a: id 2.0"] --> T["t: id 3.0"]
     end
     Note1["A inserts 'S' before c -> id 0.5 (unique)"]
     Note2["B inserts 's' after t -> id 3.5 (unique)"]
@@ -152,13 +152,13 @@ Both inserts get unique IDs (`0.5`, `3.5`) → every replica orders them identic
 
 ```mermaid
 flowchart TD
-    A[Editor A] <-->|WebSocket, ops| DS[Doc session server - stateful]
-    B[Editor B] <-->|WebSocket, ops| DS
-    C[Editor C] <-->|WebSocket, ops| DS
-    DS --> Eng[Convergence engine: OT transform / CRDT merge]
-    Eng --> OpLog[(Op log - durable)]
-    Eng --> Snap[(Periodic snapshot)]
-    DS --> Pres[Presence: cursors/selections]
+    A[Editor A] <-->|"WebSocket, ops"| DS[Doc session server - stateful]
+    B[Editor B] <-->|"WebSocket, ops"| DS
+    C[Editor C] <-->|"WebSocket, ops"| DS
+    DS --> Eng["Convergence engine: OT transform / CRDT merge"]
+    Eng --> OpLog["(Op log - durable)"]
+    Eng --> Snap["(Periodic snapshot)"]
+    DS --> Pres["Presence: cursors/selections"]
     LB[Connection router] -.consistent hash by doc id.-> DS
 ```
 - **WebSocket** per editor for low-latency bidirectional op exchange (like the chat system).

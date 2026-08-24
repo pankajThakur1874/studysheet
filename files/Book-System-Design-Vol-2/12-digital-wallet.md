@@ -44,8 +44,8 @@ Balances are a `<user, balance>` map. One Redis node can't do 1M TPS, so run a *
 ```mermaid
 flowchart TD
     C[Transfer command] --> WS[Wallet service - stateless]
-    WS -->|deduct $1 from A| R1[("Redis: A")]
-    WS -->|add $1 to B| R2[("Redis: B")]
+    WS -->|"deduct $1 from A"| R1[("Redis: A")]
+    WS -->|"add $1 to B"| R2[("Redis: B")]
     ZK["ZooKeeper: partition info"] --- WS
 ```
 

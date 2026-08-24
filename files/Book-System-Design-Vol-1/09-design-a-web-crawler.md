@@ -66,12 +66,12 @@ flowchart TD
     F --> D[HTML Downloader]
     DNS[DNS Resolver] --> D
     D --> P["Content Parser<br/>validate HTML"]
-    P --> CS{Content Seen?}
+    P --> CS{"Content Seen?"}
     CS -->|Already stored| X[Discard page]
     CS -->|New| ST[Content Storage]
     ST --> LE["URL/Link Extractor"]
     LE --> UF[URL Filter]
-    UF --> US{URL Seen?}
+    UF --> US{"URL Seen?"}
     US -->|Already seen| Y[Do nothing]
     US -->|New| F
 ```

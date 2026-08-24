@@ -509,7 +509,7 @@ Points from the book worth folding into your answer:
 
 ```mermaid
 flowchart TD
-    P[User posts] --> Q{Celebrity?}
+    P[User posts] --> Q{"Celebrity?"}
     Q -->|No| Push[Push post_id into each follower's feed cache]
     Q -->|Yes| Skip[Do NOT fan out]
     R[Follower reads feed] --> Merge["Read own feed cache + pull celebrity posts, merge by time"]

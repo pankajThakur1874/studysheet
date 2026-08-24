@@ -105,10 +105,10 @@ Most relational databases (PostgreSQL since 9.3, MySQL 5.7, IBM DB2 10.5) now su
 
 ```mermaid
 flowchart TD
-    Q{What do your relationships look like?}
-    Q -->|Mostly self-contained trees,<br/>read whole at once| DOC[Document model]
-    Q -->|Many-to-one references,<br/>shared entities| REL[Relational model]
-    Q -->|Anything can relate to anything| GRAPH[Graph model — Topic 5]
+    Q{"What do your relationships look like?"}
+    Q -->|"Mostly self-contained trees,<br/>read whole at once"| DOC[Document model]
+    Q -->|"Many-to-one references,<br/>shared entities"| REL[Relational model]
+    Q -->|Anything can relate to anything| GRAPH["Graph model — Topic 5"]
 
     DOC --> D1[One read gets everything]
     DOC --> D2[Duplication on update]

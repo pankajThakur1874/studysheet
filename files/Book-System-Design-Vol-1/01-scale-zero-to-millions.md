@@ -137,7 +137,7 @@ When the data tier gets overloaded:
 
 ```mermaid
 flowchart TD
-    Q[Query for user_id] --> H{user_id % 4}
+    Q[Query for user_id] --> H{"user_id % 4"}
     H -->|0| S0["(Shard 0)"]
     H -->|1| S1["(Shard 1)"]
     H -->|2| S2["(Shard 2)"]

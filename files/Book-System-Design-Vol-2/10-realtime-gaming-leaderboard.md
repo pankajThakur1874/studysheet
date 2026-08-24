@@ -48,9 +48,9 @@ Two services:
 ```mermaid
 flowchart LR
     Client -->|1. Win a game| Game[Game service]
-    Game -->|2. Validate + update score| LB[Leaderboard service]
+    Game -->|"2. Validate + update score"| LB[Leaderboard service]
     LB -->|3. Update score| Store["(Leaderboard store)"]
-    Client -->|4a. Get top 10 / 4b. Get player rank| LB
+    Client -->|"4a. Get top 10 / 4b. Get player rank"| LB
     LB --> Store
 ```
 

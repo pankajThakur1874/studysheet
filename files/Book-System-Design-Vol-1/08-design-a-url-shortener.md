@@ -126,7 +126,7 @@ Because reads far outnumber writes, `<shortURL, longURL>` is stored in a **cache
 ```mermaid
 flowchart TD
     A["User clicks https://tinyurl.com/zn9edcu"] --> B[Load balancer forwards to web server]
-    B --> C{shortURL in cache?}
+    B --> C{"shortURL in cache?"}
     C -->|Yes| D[Return longURL directly]
     C -->|No| E{Fetch longURL from DB}
     E -->|Found| F[Return longURL]

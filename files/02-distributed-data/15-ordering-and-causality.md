@@ -166,9 +166,9 @@ flowchart TD
 ```mermaid
 flowchart LR
     subgraph "Lamport timestamp rule"
-        N1["Node 1, counter=1"] -->|send request, counter=1| N2["Node 2, counter=5"]
-        N2 -->|update: max(1,5)+1 = 6| N2b["Node 2, counter=6"]
-        N2b -->|reply, counter=6| N1b["Node 1: update counter to 6"]
+        N1["Node 1, counter=1"] -->|"send request, counter=1"| N2["Node 2, counter=5"]
+        N2 -->|"update: max(1,5)+1 = 6"| N2b["Node 2, counter=6"]
+        N2b -->|"reply, counter=6"| N1b["Node 1: update counter to 6"]
     end
     note2["Causality ⟹ higher timestamp\nbut equal/adjacent timestamps may be concurrent OR causal"]
 ```

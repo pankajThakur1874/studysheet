@@ -179,8 +179,8 @@ flowchart TD
 flowchart TD
     U[User sends] --> LB["Load Balancer<br/>rate-limit"]
     LB --> WEB["Web Server<br/>validate size"]
-    WEB -->|same domain, clean| DIRECT["Write to sender Sent<br/>+ recipient Inbox"]
-    WEB -->|valid, cross-domain| OQ[[Outgoing Queue]]
+    WEB -->|"same domain, clean"| DIRECT["Write to sender Sent<br/>+ recipient Inbox"]
+    WEB -->|"valid, cross-domain"| OQ[[Outgoing Queue]]
     WEB -->|invalid| EQ[[Error Queue]]
     OQ --> SW["SMTP Outgoing Workers<br/>spam/virus check"]
     SW --> RS[Recipient Mail Server]

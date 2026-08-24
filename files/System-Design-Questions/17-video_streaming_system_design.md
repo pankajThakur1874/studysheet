@@ -333,7 +333,7 @@ flowchart TD
     C --> D[Create multipart upload]
     D --> E[Generate pre-signed URLs]
     E --> F[Creator uploads directly to Object Storage]
-    F --> G{All chunks uploaded?}
+    F --> G{"All chunks uploaded?"}
     G -->|No| H[Retry missing chunks]
     H --> F
     G -->|Yes| I[Complete object]
@@ -433,12 +433,12 @@ flowchart TD
     A[Viewer opens video] --> B[Playback API]
     B --> C[Authenticate]
     C --> D[Check entitlement]
-    D --> E{Allowed?}
+    D --> E{"Allowed?"}
     E -->|No| F["403 / Subscription Required"]
     E -->|Yes| G[Return signed manifest URL]
     G --> H[Client requests manifest]
     H --> I[CDN]
-    I --> J{Cache hit?}
+    I --> J{"Cache hit?"}
     J -->|Yes| K[Return manifest]
     J -->|No| L[Object Storage Origin]
     L --> M[Populate CDN]
@@ -446,7 +446,7 @@ flowchart TD
     K --> N[Client selects bitrate]
     N --> O[Request segment]
     O --> I
-    I --> P{Segment cached?}
+    I --> P{"Segment cached?"}
     P -->|Yes| Q[Return segment]
     P -->|No| R[Origin]
     R --> S[CDN cache]
@@ -628,7 +628,7 @@ flowchart TD
     B --> C[Create multipart session]
     C --> D[Generate signed URLs]
     D --> E[Client uploads directly]
-    E --> F{All parts present?}
+    E --> F{"All parts present?"}
     F -->|No| G[Retry missing parts]
     G --> E
     F -->|Yes| H[Complete object]
@@ -636,7 +636,7 @@ flowchart TD
     I --> J["Outbox/Event"]
     J --> K[Kafka]
     K --> L[Transcoding]
-    L --> M{Processing successful?}
+    L --> M{"Processing successful?"}
     M -->|Yes| N[READY]
     M -->|No| O["Retry / DLQ"]
 ```
@@ -646,15 +646,15 @@ flowchart TD
 ```mermaid
 flowchart TD
     A[Play button] --> B[Playback API]
-    B --> C{Authenticated?}
+    B --> C{"Authenticated?"}
     C -->|No| D[401]
     C -->|Yes| E[Check entitlement]
-    E --> F{Allowed?}
+    E --> F{"Allowed?"}
     F -->|No| G[403]
     F -->|Yes| H[Create signed playback session]
     H --> I[Client gets manifest]
     I --> J[CDN]
-    J --> K{Manifest cached?}
+    J --> K{"Manifest cached?"}
     K -->|No| L[Origin]
     L --> J
     K -->|Yes| M[Manifest returned]
@@ -662,7 +662,7 @@ flowchart TD
     M --> N[Select bitrate]
     N --> O[Request segment]
     O --> J
-    J --> P{Segment cached?}
+    J --> P{"Segment cached?"}
     P -->|Yes| Q[Return segment]
     P -->|No| R[Origin]
     R --> J
@@ -821,7 +821,7 @@ Use durable outbox:
 flowchart TD
     A[Upload complete] --> B["(DB)"]
     B --> C[Outbox]
-    C --> D{Kafka available?}
+    C --> D{"Kafka available?"}
     D -->|Yes| E[Publish]
     D -->|No| F[Keep Outbox]
     F --> G[Retry Publisher]

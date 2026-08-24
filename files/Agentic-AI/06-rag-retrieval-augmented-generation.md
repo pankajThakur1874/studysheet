@@ -104,9 +104,9 @@ Three ways to get the model to "know" something. They solve *different* problems
 
 ```mermaid
 flowchart TD
-    N{What do you need?} -->|Current/private/large FACTS| RAG
+    N{"What do you need?"} -->|"Current/private/large FACTS"| RAG
     N -->|Consistent STYLE or a narrow skill| FT[Fine-tuning]
-    N -->|Small fixed docs, one-off| LC[Long context]
+    N -->|"Small fixed docs, one-off"| LC[Long context]
 ```
 
 ---
@@ -120,7 +120,7 @@ flowchart TD
     U[User question] --> A[[Agent]]
     A -->|search_kb 'return policy'| KB["(Knowledge base)"]
     KB --> A
-    A -->|not enough → search_kb 'refund window electronics'| KB
+    A -->|"not enough → search_kb 'refund window electronics'"| KB
     KB --> A
     A --> Ans["Answer, grounded + cited"]
 ```

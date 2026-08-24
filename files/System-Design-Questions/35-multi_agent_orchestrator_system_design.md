@@ -106,14 +106,14 @@ flowchart TD
     U[Goal] --> API[API] --> Q[[Queue]] --> W[Orchestrator worker]
     subgraph Run
       W --> Plan[Decompose into sub-tasks]
-      Plan --> Disp[Dispatch: parallel sub-agents]
-      Disp --> SA1[Sub-agent 1 - own context + tools]
-      Disp --> SA2[Sub-agent 2 - own context + tools]
-      Disp --> SA3[Sub-agent 3 - own context + tools]
-      SA1 & SA2 & SA3 --> Coll[Collect + handle failures]
+      Plan --> Disp["Dispatch: parallel sub-agents"]
+      Disp --> SA1["Sub-agent 1 - own context + tools"]
+      Disp --> SA2["Sub-agent 2 - own context + tools"]
+      Disp --> SA3["Sub-agent 3 - own context + tools"]
+      SA1 & SA2 & SA3 --> Coll["Collect + handle failures"]
       Coll --> Syn[Synthesize final result]
     end
-    W -.state (resume) .-> St[(Run store)]
+    W -.state (resume) .-> St["(Run store)"]
     W -.cost/traces per agent.-> Obs[Observability]
 ```
 
@@ -126,12 +126,12 @@ The orchestrator run is an async job (long-running). Each sub-agent is itself a 
 ### 7.1 When to fan out (the judgment the interviewer wants)
 ```mermaid
 flowchart TD
-    Q1{Single agent's context overflows<br/>with unrelated detail?} -->|Yes| M[Multi-agent justified]
-    Q1 -->|No| Q2{Independent sub-tasks<br/>that can run in parallel?}
+    Q1{"Single agent's context overflows<br/>with unrelated detail?"} -->|Yes| M[Multi-agent justified]
+    Q1 -->|No| Q2{"Independent sub-tasks<br/>that can run in parallel?"}
     Q2 -->|Yes| M
-    Q2 -->|No| Q3{Genuinely distinct<br/>specializations/tools?}
+    Q2 -->|No| Q3{"Genuinely distinct<br/>specializations/tools?"}
     Q3 -->|Yes| M
-    Q3 -->|No| Single[Use a SINGLE agent / workflow]
+    Q3 -->|No| Single["Use a SINGLE agent / workflow"]
 ```
 Say this explicitly: **default to a single agent; fan out only for context overflow, parallelism, or distinct specializations.** Naming the *no* branch is what marks seniority.
 
@@ -140,7 +140,7 @@ The deepest reason to fan out isn't parallelism — it's **context isolation**. 
 
 ```mermaid
 flowchart TD
-    O[[Orchestrator: plan + summaries ONLY]] -->|"sub-task (fresh window)"| S[Sub-agent: full messy detail here]
+    O[["Orchestrator: plan + summaries ONLY"]] -->|"sub-task (fresh window)"| S["Sub-agent: full messy detail here"]
     S -->|"compact result"| O
 ```
 This is why deep-research and large-codebase systems scale — isolation, not headcount.

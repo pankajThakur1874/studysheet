@@ -80,7 +80,7 @@ So retrieval becomes **O(1)** overall. This **trades space for time** (more memo
 
 ```mermaid
 flowchart TD
-    Root(( )) --> t[t]
+    Root(()) --> t[t]
     Root --> w[w]
     t --> tr["tr top: true 35, try 29"]
     tr --> tree[tree 10]

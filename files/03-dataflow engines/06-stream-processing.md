@@ -149,7 +149,7 @@ flowchart LR
     CLICK["Click event\n(session_id, url, timestamp)"] --> JOIN{Lookup session_id\nin state store}
     STATE --> JOIN
     JOIN -->|found| OUT1["Joined record:\nsearch → click (CTR event)"]
-    JOIN -->|timeout, not found| OUT2["Search with no click event"]
+    JOIN -->|"timeout, not found"| OUT2["Search with no click event"]
     note["Stream-stream join: stateful, windowed\nBoth sides maintain state; match by key"]
 ```
 

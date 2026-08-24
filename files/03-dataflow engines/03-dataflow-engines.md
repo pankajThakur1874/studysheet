@@ -138,7 +138,7 @@ flowchart TD
     end
     subgraph Dataflow["Dataflow Engine (Spark/Flink)"]
         direction LR
-        I2[Input] --> OP1[Operator 1] -->|memory/local disk| OP2[Operator 2] -->|memory/local disk| OP3[Operator 3] --> OUT2[Output]
+        I2[Input] --> OP1[Operator 1] -->|"memory/local disk"| OP2[Operator 2] -->|"memory/local disk"| OP3[Operator 3] --> OUT2[Output]
     end
     note["MapReduce: HDFS materialization between EVERY stage = N × 3× disk writes\nDataflow: memory/local disk for intermediate, HDFS only for output"]
 ```

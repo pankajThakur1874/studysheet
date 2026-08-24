@@ -193,7 +193,7 @@ flowchart LR
         MSG["Kafka msg\noffset=47, user_id=99"] --> PROC2["Process"]
         PROC2 --> WRITE["INSERT (offset=47, data=...) ON CONFLICT DO NOTHING"]
         WRITE -->|first time| OK["Written"]
-        WRITE -->|retry, same offset| SKIP["Skipped (already exists)"]
+        WRITE -->|"retry, same offset"| SKIP["Skipped (already exists)"]
     end
     note["At-least-once delivery + idempotent write = effectively-once result\nSimplest approach; works for most derived data stores"]
 ```

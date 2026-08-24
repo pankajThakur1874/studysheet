@@ -23,8 +23,8 @@ Build an agent that takes an open-ended question ("What are the trade-offs of ve
 ```mermaid
 flowchart LR
     Q[Open-ended question] --> A[[Research agent]]
-    A -->|search + fetch| Web[("Web / corpus")]
-    A -->|read, decide next search| A
+    A -->|"search + fetch"| Web[("Web / corpus")]
+    A -->|"read, decide next search"| A
     A --> R[Cited report]
 ```
 
@@ -112,7 +112,7 @@ flowchart TD
       Orch --> Syn[Synthesize report from summaries]
       Syn --> Ver["Verify: each claim -> real source?"]
     end
-    Sub <-->|search/fetch tools| Web[("Web / corpus")]
+    Sub <-->|"search/fetch tools"| Web[("Web / corpus")]
     W -.progress (SSE).-> U
     Cache["(Prompt cache prefix)"] -.-> Orch
     W -.trace/cost.-> Obs[Observability]

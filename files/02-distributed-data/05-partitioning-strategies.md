@@ -112,7 +112,7 @@ flowchart TD
 ```mermaid
 flowchart TD
     K[key] --> H["hash(key)"]
-    H --> P{Which hash range?}
+    H --> P{"Which hash range?"}
     P -->|0x0000–0x3FFF| P1["(Partition 1)"]
     P -->|0x4000–0x7FFF| P2["(Partition 2)"]
     P -->|0x8000–0xBFFF| P3["(Partition 3)"]

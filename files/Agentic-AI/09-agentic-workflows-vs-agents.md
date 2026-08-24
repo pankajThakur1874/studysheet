@@ -16,7 +16,7 @@ Chapter 1 put agents on a spectrum from "plain call" to "fully autonomous." The 
 
 ```mermaid
 flowchart LR
-    W["Workflow<br/>YOU wire the steps<br/>predictable, testable"] -->|more flexibility, less control| A["Agent<br/>LLM chooses the steps<br/>flexible, less predictable"]
+    W["Workflow<br/>YOU wire the steps<br/>predictable, testable"] -->|"more flexibility, less control"| A["Agent<br/>LLM chooses the steps<br/>flexible, less predictable"]
 ```
 
 ---
@@ -30,7 +30,7 @@ Break a task into a **fixed sequence** of LLM calls, each using the previous out
 
 ```mermaid
 flowchart LR
-    In[Input] --> C1["LLM: step 1"] --> G{gate?} --> C2["LLM: step 2"] --> C3["LLM: step 3"] --> Out[Output]
+    In[Input] --> C1["LLM: step 1"] --> G{"gate?"} --> C2["LLM: step 2"] --> C3["LLM: step 3"] --> Out[Output]
     G -->|fail| Stop["abort/fix"]
 ```
 **Use when** the task decomposes into clean, ordered subtasks. *Example:* generate an outline → check it meets criteria → write the doc from the outline. Trades latency for accuracy (each step is simpler).
@@ -84,7 +84,7 @@ One LLM **generates**, another **evaluates** against criteria and gives feedback
 ```mermaid
 flowchart LR
     In[Task] --> Gen["LLM: generate"] --> Ev{"LLM: evaluate"}
-    Ev -->|needs work + feedback| Gen
+    Ev -->|"needs work + feedback"| Gen
     Ev -->|good| Out[Output]
 ```
 **Use when** you have clear evaluation criteria and iteration measurably helps. *Example:* draft a translation → evaluate nuance → refine; or write code → run tests → fix. A *separate* evaluator with fresh context is more objective than self-critique.
@@ -95,12 +95,12 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-    Q{What's the shape?} -->|Fixed ordered steps| PC[Prompt chaining]
+    Q{"What's the shape?"} -->|Fixed ordered steps| PC[Prompt chaining]
     Q -->|Distinct input categories| RT[Routing]
-    Q -->|Independent subtasks / want votes| PA[Parallelization]
+    Q -->|"Independent subtasks / want votes"| PA[Parallelization]
     Q -->|Subtasks unknown until runtime| OW[Orchestrator-workers]
-    Q -->|Clear criteria + iteration helps| EO[Evaluator-optimizer]
-    Q -->|Open-ended, needs runtime tool decisions| AG[Full agent - Ch 3]
+    Q -->|"Clear criteria + iteration helps"| EO[Evaluator-optimizer]
+    Q -->|"Open-ended, needs runtime tool decisions"| AG[Full agent - Ch 3]
 ```
 
 | Pattern | Control flow | Best for |

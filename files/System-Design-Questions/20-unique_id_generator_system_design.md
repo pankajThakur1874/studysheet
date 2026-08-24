@@ -64,8 +64,8 @@ flowchart TD
     R --> B[UUID 128-bit]
     R --> C[Ticket server - Flickr]
     R --> D[Twitter Snowflake ⭐]
-    A -->|not time-ordered, hard multi-DC| X1[❌]
-    B -->|128-bit, not numeric, not sortable| X2[❌]
+    A -->|"not time-ordered, hard multi-DC"| X1[❌]
+    B -->|"128-bit, not numeric, not sortable"| X2[❌]
     C -->|single point of failure| X3[❌]
     D -->|meets all requirements| OK[✅]
 ```

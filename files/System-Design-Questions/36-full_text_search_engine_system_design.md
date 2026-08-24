@@ -22,10 +22,10 @@ Build a service where users type a text query ("best noise cancelling headphones
 
 ```mermaid
 flowchart LR
-    Q[Query text] --> P[Parse + analyze]
+    Q[Query text] --> P["Parse + analyze"]
     P --> L[Look up posting lists per term]
-    IDX[(Inverted index)] --> L
-    L --> S[Score with BM25 + rank]
+    IDX["(Inverted index)"] --> L
+    L --> S["Score with BM25 + rank"]
     S --> R[Top-k results]
 ```
 
@@ -88,11 +88,11 @@ A document's text is **analyzed** into terms before indexing (and the same analy
 
 ```mermaid
 flowchart LR
-    D[Raw text] --> T[Tokenize: split into words]
+    D[Raw text] --> T["Tokenize: split into words"]
     T --> LC[Lowercase]
-    LC --> SW[Remove stop-words: the, a, is]
-    SW --> ST[Stem/lemmatize: running -> run]
-    ST --> Post[Emit terms -> posting lists]
+    LC --> SW["Remove stop-words: the, a, is"]
+    SW --> ST["Stem/lemmatize: running -> run"]
+    ST --> Post["Emit terms -> posting lists"]
 ```
 Tokenize → normalize (lowercase, remove punctuation) → drop **stop-words** → **stem/lemmatize** (so "running"/"ran"/"runs" match "run"). *Query and document must use the same analyzer* or they won't match.
 
@@ -139,7 +139,7 @@ Beyond BM25, production systems add a **second ranking stage** (learning-to-rank
 flowchart TD
     Q[Query] --> An[Analyze same as index]
     An --> Fetch[Fetch posting list per term]
-    Fetch --> Merge{AND: intersect / OR: union posting lists}
+    Fetch --> Merge{"AND: intersect / OR: union posting lists"}
     Merge --> Score[BM25 score each candidate]
     Score --> Heap[Keep top-k via a heap]
     Heap --> Res[Return top-k]
@@ -159,10 +159,10 @@ One node can't hold the index, so **partition documents across shards** — each
 ```mermaid
 flowchart TD
     Q[Query] --> C[Coordinator]
-    C -->|scatter| S1[Shard 1: BM25 local top-k]
-    C -->|scatter| S2[Shard 2: BM25 local top-k]
-    C -->|scatter| S3[Shard N: BM25 local top-k]
-    S1 & S2 & S3 -->|gather| M[Merge local top-k -> global top-k]
+    C -->|scatter| S1["Shard 1: BM25 local top-k"]
+    C -->|scatter| S2["Shard 2: BM25 local top-k"]
+    C -->|scatter| S3["Shard N: BM25 local top-k"]
+    S1 & S2 & S3 -->|gather| M["Merge local top-k -> global top-k"]
     M --> R[Results]
 ```
 - **Scatter:** the coordinator sends the query to **every shard** (each holds different docs).
@@ -182,15 +182,15 @@ flowchart TD
 flowchart TD
     subgraph Indexing (write path)
       Docs[Documents] --> IngQ[[Index queue]]
-      IngQ --> IW[Indexer: analyze -> segments]
-      IW --> Shards[(Sharded + replicated index)]
+      IngQ --> IW["Indexer: analyze -> segments"]
+      IW --> Shards[("Sharded + replicated index")]
     end
     subgraph Query (read path)
       U[User query] --> QC[Query coordinator]
-      QC --> Cache{Query cache?}
+      QC --> Cache{"Query cache?"}
       Cache -->|hit| Ret[Return]
       Cache -->|miss| Scatter[Scatter to shards] --> Shards
-      Shards --> Gather[Gather + merge top-k] --> Ret
+      Shards --> Gather["Gather + merge top-k"] --> Ret
     end
 ```
 - **Write path async** via a queue (indexing is heavier; decouple from ingestion).

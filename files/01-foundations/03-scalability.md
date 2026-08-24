@@ -111,15 +111,15 @@ This example is worth memorizing. It appears in interviews constantly, and it de
 
 ```mermaid
 flowchart TD
-    subgraph A1[Approach 1 — fan-out on read]
+    subgraph A1["Approach 1 — fan-out on read"]
         P1["Post: single insert"] --> G["(Global tweet store)"]
         R1["Read timeline: join + merge — EXPENSIVE"] --> G
     end
-    subgraph A2[Approach 2 — fan-out on write]
+    subgraph A2["Approach 2 — fan-out on write"]
         P2["Post: write to N follower caches — EXPENSIVE"] --> C["(Per-user timeline caches)"]
         R2["Read timeline: single lookup — cheap"] --> C
     end
-    subgraph A3[Hybrid — what Twitter actually does]
+    subgraph A3["Hybrid — what Twitter actually does"]
         P3[Normal user posts] --> C2["(Timeline caches)"]
         CEL[Celebrity posts] --> G2["(Global store)"]
         R3["Read: cache lookup + merge celebrity tweets"] --> C2

@@ -168,12 +168,12 @@ The advantage is that certain queries become very fast, because they've effectiv
 
 ```mermaid
 flowchart LR
-    subgraph OLTP[OLTP systems — systems of record]
+    subgraph OLTP["OLTP systems — systems of record"]
         A["(Orders DB)"]
         B["(Inventory DB)"]
         C["(Users DB)"]
     end
-    OLTP -->|ETL: extract, transform, load| DW[("Data Warehouse<br/>star schema, column store")]
+    OLTP -->|"ETL: extract, transform, load"| DW[("Data Warehouse<br/>star schema, column store")]
     DW --> AN["Analysts / BI tools"]
     DW --> CUBE["Materialized views / OLAP cubes"]
     CUBE --> AN

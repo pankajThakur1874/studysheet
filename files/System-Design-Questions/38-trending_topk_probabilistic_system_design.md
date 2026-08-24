@@ -27,10 +27,10 @@ Build a system that, over a massive high-velocity event stream (clicks, views, s
 
 ```mermaid
 flowchart LR
-    E[Event stream] --> Sk[Update sketch - O(1), tiny memory]
+    E[Event stream] --> Sk["Update sketch - O(1), tiny memory"]
     Sk --> Q1[Top-K frequent]
     Sk --> Q2[Distinct count]
-    Sk --> Q3[Seen before? / frequency]
+    Sk --> Q3["Seen before? / frequency"]
 ```
 
 ---
@@ -80,9 +80,9 @@ A bit array + k hash functions. **Add:** set the k bits the item hashes to. **Qu
 
 ```mermaid
 flowchart LR
-    X[item] -->|hash1,hash2,hash3| Bits[bit array]
+    X[item] -->|"hash1,hash2,hash3"| Bits[bit array]
     Q["query: all k bits = 1?"] --> Yes["maybe present (false positives possible)"]
-    Q --> No[any bit 0 -> DEFINITELY absent]
+    Q --> No["any bit 0 -> DEFINITELY absent"]
 ```
 
 ### 5.2 Count-Min Sketch (CMS) — approximate frequency
@@ -128,14 +128,14 @@ Two standard approaches:
 
 ```mermaid
 flowchart TD
-    E[Events] --> K[[Kafka - durable, partitioned]]
-    K --> P1[Processor 1: local sketches]
-    K --> P2[Processor 2: local sketches]
-    K --> P3[Processor N: local sketches]
-    P1 & P2 & P3 -->|periodically emit sketches| Merge[Merger: add CMS / max HLL / OR Bloom]
-    Merge --> Store[(Rolling window results: top-K, distinct, freq)]
+    E[Events] --> K[["Kafka - durable, partitioned"]]
+    K --> P1["Processor 1: local sketches"]
+    K --> P2["Processor 2: local sketches"]
+    K --> P3["Processor N: local sketches"]
+    P1 & P2 & P3 -->|periodically emit sketches| Merge["Merger: add CMS / max HLL / OR Bloom"]
+    Merge --> Store[("Rolling window results: top-K, distinct, freq")]
     Store --> API[Query API - near-real-time]
-    Raw[(Raw events, cheap storage)] -.optional exact recompute.-> Batch[Batch reconciliation]
+    Raw[("Raw events, cheap storage")] -.optional exact recompute.-> Batch[Batch reconciliation]
     Batch --> Store
 ```
 - **Kafka** buffers and partitions the stream (durability + parallelism).
@@ -159,7 +159,7 @@ flowchart LR
       mdd[...] --> mrg
       m60[min-60] --> mrg
     end
-    mrg --> Ans[Top-K / distinct for the hour]
+    mrg --> Ans["Top-K / distinct for the hour"]
 ```
 
 ---

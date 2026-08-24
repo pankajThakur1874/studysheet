@@ -140,7 +140,7 @@ Most payments finish in seconds, but some stall for hours/days — e.g. the PSP 
 
 ```mermaid
 flowchart LR
-    F[Failure] --> R{Retryable?}
+    F[Failure] --> R{"Retryable?"}
     R -->|yes| RQ[Retry queue] --> PSys[Payment system]
     R -->|no| DB["(Database)"]
     PSys --> R2{"Retry count > threshold?"}

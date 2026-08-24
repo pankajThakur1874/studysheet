@@ -54,10 +54,10 @@ Don't send every call to the biggest model. Model tiers trade capability for pri
 
 ```mermaid
 flowchart TD
-    In[Task] --> Cls{How hard?}
-    Cls -->|trivial: classify, extract| Small[Small model]
+    In[Task] --> Cls{"How hard?"}
+    Cls -->|"trivial: classify, extract"| Small[Small model]
     Cls -->|typical| Mid[Mid model]
-    Cls -->|hard reasoning / orchestrate| Big[Top model]
+    Cls -->|"hard reasoning / orchestrate"| Big[Top model]
 ```
 
 In multi-agent systems, put the **orchestrator on a strong model and cheap sub-agents on a small one** (Chapter 10). A router (Chapter 9) can classify difficulty and dispatch accordingly.
@@ -85,7 +85,7 @@ For **non-urgent, high-volume** work (evals, bulk classification, offline proces
 
 ```mermaid
 flowchart LR
-    Many[1000s of requests] --> Bt[Batch API ~50% off] --> Res[Results within the window]
+    Many[1000s of requests] --> Bt["Batch API ~50% off"] --> Res[Results within the window]
 ```
 
 ---

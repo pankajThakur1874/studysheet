@@ -22,10 +22,10 @@ Build a distributed in-memory caching layer (think: designing Redis/Memcached, o
 
 ```mermaid
 flowchart LR
-    App[App] -->|1. read key| C[(Distributed cache)]
-    C -->|hit: µs| App
-    C -.->|miss| DB[(Database)]
-    DB -.->|load + populate| C
+    App[App] -->|1. read key| C["(Distributed cache)"]
+    C -->|"hit: µs"| App
+    C -.->|miss| DB["(Database)"]
+    DB -.->|"load + populate"| C
 ```
 
 ---
@@ -85,7 +85,7 @@ The cache is bounded, so on a full `PUT` something must go. The policy decides *
 ```mermaid
 flowchart LR
     subgraph "O(1) LRU = hashmap + doubly-linked list"
-      H[HashMap key -> node] --> N[Node in DLL]
+      H["HashMap key -> node"] --> N[Node in DLL]
       MRU[head = most recent] --- N --- LRU[tail = evict target]
     end
 ```
@@ -103,7 +103,7 @@ The app manages the cache; only requested data is cached. Simple and resilient (
 
 ```mermaid
 flowchart TD
-    R[Read key] --> H{In cache?}
+    R[Read key] --> H{"In cache?"}
     H -->|hit| Ret[return]
     H -->|miss| DB[read DB] --> Pop[populate cache] --> Ret
 ```
@@ -146,10 +146,10 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    S[Cache Stampede/Thundering Herd] --> S1[Many miss same hot key -> all hit DB at once]
-    P[Cache Penetration] --> P1[Queries for keys that DON'T exist -> always miss -> hammer DB]
-    A[Cache Avalanche] --> A1[Many keys expire at once / cache down -> DB flooded]
-    HK[Hot Key] --> HK1[One key gets huge traffic -> one shard melts]
+    S["Cache Stampede/Thundering Herd"] --> S1["Many miss same hot key -> all hit DB at once"]
+    P[Cache Penetration] --> P1["Queries for keys that DON'T exist -> always miss -> hammer DB"]
+    A[Cache Avalanche] --> A1["Many keys expire at once / cache down -> DB flooded"]
+    HK[Hot Key] --> HK1["One key gets huge traffic -> one shard melts"]
 ```
 
 | Problem | What happens | Defense |
@@ -167,11 +167,11 @@ Also: **hot-key + consistent-hashing** interplay, and **cache warming** (pre-pop
 
 ```mermaid
 flowchart TD
-    App[App servers] -->|hash key| R[Cache client / router]
+    App[App servers] -->|hash key| R["Cache client / router"]
     R --> S1[Shard 1 primary] --> S1r[replica]
     R --> S2[Shard 2 primary] --> S2r[replica]
     R --> S3[Shard N primary] --> S3r[replica]
-    App -.miss / cache down.-> DB[(Database - source of truth)]
+    App -.miss / cache down.-> DB["(Database - source of truth)"]
     subgraph Reliability
       S1 & S2 & S3 -.gossip topology.-> Topo[Cluster membership]
     end

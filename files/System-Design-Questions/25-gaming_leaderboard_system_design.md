@@ -75,9 +75,9 @@ Conclusion: at this scale, **one Redis node suffices**. Sharding is a *scale-up*
 ```mermaid
 flowchart LR
     Client -->|1. win a game| Game[Game service]
-    Game -->|2. validate + update| LB[Leaderboard service]
+    Game -->|"2. validate + update"| LB[Leaderboard service]
     LB -->|3. ZINCRBY| Store["(Redis sorted set)"]
-    Client -->|4. get top 10 / my rank| LB
+    Client -->|"4. get top 10 / my rank"| LB
     LB --> Store
     LB -.-> SQL[("MySQL: users + point history")]
 ```

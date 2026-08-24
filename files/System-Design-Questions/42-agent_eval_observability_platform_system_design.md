@@ -22,11 +22,11 @@ Build the platform that AI teams use to know their agents work: it **records** w
 
 ```mermaid
 flowchart LR
-    Agents[Agents in dev + prod] -->|traces| Obs[Observability: traces/spans/cost]
-    Obs -->|curate| DS[(Eval datasets)]
-    DS --> Eval[Eval runner: scorers + LLM-judge]
-    Eval --> CI[CI gate: block regressions]
-    Obs --> Mon[Online monitoring + drift alerts]
+    Agents["Agents in dev + prod"] -->|traces| Obs["Observability: traces/spans/cost"]
+    Obs -->|curate| DS["(Eval datasets)"]
+    DS --> Eval["Eval runner: scorers + LLM-judge"]
+    Eval --> CI["CI gate: block regressions"]
+    Obs --> Mon["Online monitoring + drift alerts"]
     Mon -.new failures.-> DS
 ```
 
@@ -79,12 +79,12 @@ This is fundamentally a **data pipeline** (ingest → store → query → aggreg
 
 ```mermaid
 flowchart TD
-    A[Agent run] -->|OpenTelemetry spans, async export| Ing[[Trace ingest queue]]
-    Ing --> Proc[Processor: parse, redact PII, aggregate]
-    Proc --> TS[(Trace store: spans, columnar/OLAP)]
-    Proc --> Met[(Metrics: cost, latency, errors)]
-    TS --> UI[Trace explorer: timeline, drill-down]
-    Met --> Dash[Dashboards + alerts]
+    A[Agent run] -->|"OpenTelemetry spans, async export"| Ing[[Trace ingest queue]]
+    Ing --> Proc["Processor: parse, redact PII, aggregate"]
+    Proc --> TS[("Trace store: spans, columnar/OLAP")]
+    Proc --> Met[("Metrics: cost, latency, errors")]
+    TS --> UI["Trace explorer: timeline, drill-down"]
+    Met --> Dash["Dashboards + alerts"]
 ```
 - A **trace** = one agent run; **spans** = each step (LLM call, tool call, retrieval) with inputs/outputs/tokens/latency/model/errors.
 - **Instrumentation is async + low-overhead** (fire-and-forget span export, often via **OpenTelemetry**) so it never slows the agent.
@@ -99,12 +99,12 @@ flowchart TD
 ```mermaid
 flowchart LR
     subgraph Datasets
-      Prod[Prod traces] -->|curate failures + samples| DS[(Versioned dataset: inputs + refs/rubrics)]
+      Prod[Prod traces] -->|"curate failures + samples"| DS[("Versioned dataset: inputs + refs/rubrics")]
       Human[Human annotation] --> DS
     end
     subgraph "Eval run"
-      DS --> Runner[Eval runner: run agent version per case]
-      Runner --> Score[Scorers: programmatic + LLM-judge]
+      DS --> Runner["Eval runner: run agent version per case"]
+      Runner --> Score["Scorers: programmatic + LLM-judge"]
       Score --> Agg[Aggregate metrics]
       Agg --> Cmp[Compare vs baseline]
     end
@@ -127,14 +127,14 @@ The platform's value is that **offline and online reinforce each other**:
 
 ```mermaid
 flowchart TD
-    Change[Prompt/model/agent change] --> CI[CI: run eval suite]
-    CI --> Gate{Metric >= baseline?}
+    Change["Prompt/model/agent change"] --> CI["CI: run eval suite"]
+    CI --> Gate{"Metric >= baseline?"}
     Gate -->|no| Block[Block deploy]
     Gate -->|yes| Deploy[Deploy - canary]
     Deploy --> Prod[Production]
-    Prod --> Traces[Traces + sampled online evals]
-    Traces --> Mon{Quality/cost/drift alert?}
-    Mon -->|regression / new failure| Curate[Add case to dataset]
+    Prod --> Traces["Traces + sampled online evals"]
+    Traces --> Mon{"Quality/cost/drift alert?"}
+    Mon -->|"regression / new failure"| Curate[Add case to dataset]
     Curate --> CI
 ```
 - **CI regression gating:** every prompt/model/agent change runs the eval suite; a metric regression **blocks the deploy** (agents' unit-test equivalent). Because outputs vary, run each case a few times and gate on **rates/thresholds**, not exact strings.
@@ -149,20 +149,20 @@ flowchart TD
 ```mermaid
 flowchart TD
     subgraph Ingest
-      SDK[Agent SDK / OTel exporter] --> Q[[Trace queue]]
-      Q --> P[Processor: redact, aggregate]
-      P --> TStore[(Traces OLAP)]
-      P --> MStore[(Metrics)]
+      SDK["Agent SDK / OTel exporter"] --> Q[[Trace queue]]
+      Q --> P["Processor: redact, aggregate"]
+      P --> TStore["(Traces OLAP)"]
+      P --> MStore["(Metrics)"]
     end
     subgraph Eval
-      DS[(Datasets - versioned)] --> ER[Eval runner - parallel workers]
-      ER --> SC[Scorers: programmatic + judge]
-      SC --> Results[(Eval results)]
+      DS["(Datasets - versioned)"] --> ER[Eval runner - parallel workers]
+      ER --> SC["Scorers: programmatic + judge"]
+      SC --> Results["(Eval results)"]
     end
     subgraph Serve
-      TStore & MStore & Results --> API[API + UI: explorer, dashboards, compare]
-      API --> CI[CI plugin: gate deploys]
-      API --> Alert[Alerting: quality/cost/drift]
+      TStore & MStore & Results --> API["API + UI: explorer, dashboards, compare"]
+      API --> CI["CI plugin: gate deploys"]
+      API --> Alert["Alerting: quality/cost/drift"]
       API --> Annot[Human annotation UI]
     end
     TStore -.curate cases.-> DS

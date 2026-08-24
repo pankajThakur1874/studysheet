@@ -92,7 +92,7 @@ flowchart TD
     B --> C[Filter eligibility]
     C --> D[Rank candidates]
     D --> E[Try atomic driver reservation]
-    E --> F{Won reservation?}
+    E --> F{"Won reservation?"}
     F -->|Yes| G[Assign driver]
     F -->|No| H[Try next candidate]
     H --> E
@@ -492,7 +492,7 @@ flowchart TD
     D[Driver location update] -->|every ~15s| Ingest[Location service]
     Ingest --> GEO[("Geo index: geohash / quadtree")]
     Rider[Rider requests ride] --> Q[Query nearby drivers by geohash prefix] --> GEO
-    Ingest -->|pub/sub, sharded by consistent hash| Sub["Subscribers/matching"]
+    Ingest -->|"pub/sub, sharded by consistent hash"| Sub["Subscribers/matching"]
 ```
 
 **Interview line:** *"Index driver locations with geohash (or a quadtree), keep it on read replicas since it's small, push live updates through sharded Redis pub/sub, and batch GPS every ~15s to cut ingest QPS; routing is A* over road-graph tiles."*

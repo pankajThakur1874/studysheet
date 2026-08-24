@@ -129,8 +129,8 @@ Even though there are many subtleties, **the basic idea is simple and effective:
 
 ```mermaid
 flowchart TD
-    W[Write arrives] --> WAL[Append to write-ahead log — crash recovery only]
-    WAL --> MT[Insert into memtable — in-memory balanced tree]
+    W[Write arrives] --> WAL["Append to write-ahead log — crash recovery only"]
+    WAL --> MT["Insert into memtable — in-memory balanced tree"]
     MT -->|memtable exceeds threshold| FLUSH[Flush to disk as new SSTable]
     FLUSH --> L0["(SSTable — newest)"]
     L0 -.background compaction.-> L1[("SSTable — older, merged")]
@@ -142,11 +142,11 @@ flowchart TD
 flowchart TD
     R[Read key K] --> B{"Bloom filter says<br/>K might exist?"}
     B -->|definitely not| MISS["Return not-found — no disk I/O"]
-    B -->|maybe| M{In memtable?}
+    B -->|maybe| M{"In memtable?"}
     M -->|yes| RET[Return value]
     M -->|no| S1{"In newest SSTable?<br/>sparse index → block → scan"}
     S1 -->|yes| RET
-    S1 -->|no| S2{Next older SSTable?}
+    S1 -->|no| S2{"Next older SSTable?"}
     S2 -->|yes| RET
     S2 -->|no| S3[... continue to oldest ...]
     S3 --> MISS

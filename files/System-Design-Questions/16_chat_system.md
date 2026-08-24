@@ -100,7 +100,7 @@ flowchart TD
     D --> E[Publish event]
     E --> F[Kafka partitioned by conversationId]
     F --> G[Delivery Consumer]
-    G --> H{Recipient online?}
+    G --> H{"Recipient online?"}
     H -->|Yes| I[Route to recipient gateway]
     I --> J[WebSocket delivery]
     H -->|No| K[Keep durable message]

@@ -107,7 +107,7 @@ flowchart TD
     I -->|Success| J[Record delivered]
     I -->|Transient| K[Retry with backoff]
     K --> H
-    I -->|Permanent/max retries| L[DLQ]
+    I -->|"Permanent/max retries"| L[DLQ]
     I -->|429| M[Honor Retry-After]
     M --> K
 ```

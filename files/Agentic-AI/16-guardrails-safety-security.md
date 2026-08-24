@@ -102,7 +102,7 @@ flowchart TD
     Risk -->|No| Exec[Execute automatically]
     Risk -->|Yes| Ask["Pause → human approves/denies"]
     Ask -->|approve| Exec
-    Ask -->|deny + reason| Back[Agent adjusts]
+    Ask -->|"deny + reason"| Back[Agent adjusts]
 ```
 
 This is why you'd promote a risky action to a **dedicated typed tool** (Ch 4) — so your runtime can intercept and gate it. HITL is your backstop when other defenses fail.

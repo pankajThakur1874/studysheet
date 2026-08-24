@@ -129,13 +129,13 @@ consistency = ONE | QUORUM | ALL
 
 ```mermaid
 flowchart TD
-    Client -->|get/put| Coord["Coordinator node<br/>acts as proxy"]
+    Client -->|"get/put"| Coord["Coordinator node<br/>acts as proxy"]
     Coord --> Ring{"Consistent hash ring<br/>locate key's N replicas"}
     Ring --> N1["(Replica n1)"]
     Ring --> N2["(Replica n2)"]
     Ring --> N3["(Replica n3)"]
 
-    subgraph Cluster [Decentralized — every node is identical]
+    subgraph Cluster ["Decentralized — every node is identical"]
       N1 -. gossip .- N2
       N2 -. gossip .- N3
       N3 -. gossip .- N1
@@ -213,7 +213,7 @@ flowchart TD
     Coord --> R3["(n3)"]
     R1 -->|ack| Coord
     R2 -->|ack| Coord
-    Coord -->|W=2 acks received → success| C
+    Coord -->|"W=2 acks received → success"| C
     R3 -. slow/late .-> Coord
 ```
 
@@ -245,7 +245,7 @@ flowchart TD
     D2 -->|update via Sz| D4["D4 ["Sx:2, Sz:1"]"]
     D3 --> CFLICT{"D3 vs D4<br/>CONFLICT — siblings"}
     D4 --> CFLICT
-    CFLICT -->|client merges, write via Sx| D5["D5 ["Sx:3, Sy:1, Sz:1"]"]
+    CFLICT -->|"client merges, write via Sx"| D5["D5 ["Sx:3, Sy:1, Sz:1"]"]
 ```
 
 Rules for comparing versions X and Y:

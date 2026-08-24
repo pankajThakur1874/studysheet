@@ -51,8 +51,8 @@ The system has two parts: **Location-Based Service (LBS)** and **Business Servic
 ```mermaid
 flowchart TD
     Client[Client app] --> LB[Load Balancer]
-    LB -->|/search/nearby| LBS[Location-Based Service - stateless]
-    LB -->|/businesses/:id| BS[Business Service]
+    LB -->|"/search/nearby"| LBS[Location-Based Service - stateless]
+    LB -->|"/businesses/:id"| BS[Business Service]
     LBS -->|Read| Replica["(Read Replicas)"]
     BS -->|Write| Primary["(Primary DB)"]
     Primary -->|Replicate| Replica

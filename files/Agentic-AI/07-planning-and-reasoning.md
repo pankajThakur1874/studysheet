@@ -58,8 +58,8 @@ For big tasks, add an explicit **planning phase**: have the model write a plan (
 flowchart TD
     G[Goal] --> P[["Planner:<br/>break into ordered steps"]]
     P --> S1[Step 1] --> S2[Step 2] --> S3[Step 3]
-    S3 --> C{Plan complete?}
-    C -->|No, replan| P
+    S3 --> C{"Plan complete?"}
+    C -->|"No, replan"| P
     C -->|Yes| Done[Deliver result]
 ```
 
@@ -80,7 +80,7 @@ After producing an answer or completing a step, have the model **critique it** a
 
 ```mermaid
 flowchart LR
-    D[Draft answer] --> Crit[["Critique:<br/>find flaws"]] --> Rev[Revise] --> Q{Good enough?}
+    D[Draft answer] --> Crit[["Critique:<br/>find flaws"]] --> Rev[Revise] --> Q{"Good enough?"}
     Q -->|No| Crit
     Q -->|Yes| Final[Final answer]
 ```
@@ -115,10 +115,10 @@ flowchart TD
 ```mermaid
 flowchart TD
     T{Task shape} -->|Single hard question| CoT["Chain-of-thought / thinking"]
-    T -->|Needs tools + adaptation| React[ReAct loop]
-    T -->|Big, multi-step, known-ish| PE[Plan-and-execute]
+    T -->|"Needs tools + adaptation"| React[ReAct loop]
+    T -->|"Big, multi-step, known-ish"| PE[Plan-and-execute]
     T -->|Quality-critical output| Refl["Add reflection / evaluator"]
-    T -->|Many possible paths, search-like| ToT[Tree-of-thoughts]
+    T -->|"Many possible paths, search-like"| ToT[Tree-of-thoughts]
 ```
 
 | Technique | Adds | Cost | Use when |

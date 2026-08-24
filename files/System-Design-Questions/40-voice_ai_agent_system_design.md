@@ -23,7 +23,7 @@ Build a real-time voice assistant: the user speaks, the system understands, thin
 ```mermaid
 flowchart LR
     Mic[User speech] --> STT[Streaming STT]
-    STT --> LLM[LLM - streaming, tools/RAG]
+    STT --> LLM["LLM - streaming, tools/RAG"]
     LLM --> TTS[Streaming TTS]
     TTS --> Spk[Audio back to user]
     Mic -.barge-in: user talks -> stop TTS.-> TTS
@@ -84,11 +84,11 @@ Key latency techniques:
 
 ```mermaid
 flowchart TD
-    Mic[Audio in] --> VAD[VAD: is user speaking?]
-    VAD --> STT[Streaming STT: partial + final transcripts]
-    STT --> EP[Endpointing: user finished?]
-    EP --> LLM[LLM: streaming response + tools/RAG]
-    LLM --> TTS[Streaming TTS: sentence-by-sentence]
+    Mic[Audio in] --> VAD["VAD: is user speaking?"]
+    VAD --> STT["Streaming STT: partial + final transcripts"]
+    STT --> EP["Endpointing: user finished?"]
+    EP --> LLM["LLM: streaming response + tools/RAG"]
+    LLM --> TTS["Streaming TTS: sentence-by-sentence"]
     TTS --> Out[Audio out]
     VAD -.user speaks during TTS.-> Barge[Barge-in controller]
     Barge -.stop.-> TTS
@@ -128,14 +128,14 @@ sequenceDiagram
 
 ```mermaid
 flowchart TD
-    Client[Client: mic/speaker] <-->|WebRTC / WebSocket audio| GW[Media gateway]
-    GW --> Sess[Voice session - stateful, one per call]
+    Client["Client: mic/speaker"] <-->|"WebRTC / WebSocket audio"| GW[Media gateway]
+    GW --> Sess["Voice session - stateful, one per call"]
     subgraph "Session pipeline (streaming, overlapped)"
       Sess --> VAD --> STT --> EP[Endpoint] --> LLM --> TTS --> Play[Playback]
       VAD -.barge-in.-> TTS
     end
-    LLM <-->|tools / RAG| Backends[APIs / knowledge base]
-    Sess -.-> Obs[Latency + transcript traces]
+    LLM <-->|"tools / RAG"| Backends["APIs / knowledge base"]
+    Sess -.-> Obs["Latency + transcript traces"]
     LB[Router] -.per-call session.-> Sess
 ```
 - **Transport:** **WebRTC** (low-latency, handles jitter/packet loss, echo cancellation) for browser/app; **SIP** for phone lines. WebSocket for simpler cases.

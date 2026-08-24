@@ -102,7 +102,7 @@ Prompting is empirical — you can't reason your way to the perfect prompt; you 
 
 ```mermaid
 flowchart LR
-    W[Write prompt] --> T[Test on real cases] --> O{Behaves right?}
+    W[Write prompt] --> T[Test on real cases] --> O{"Behaves right?"}
     O -->|No| D["Diagnose: which instruction failed?"] --> W
     O -->|Yes| Lock[Lock it; add to eval set]
 ```

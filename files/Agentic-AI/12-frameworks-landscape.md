@@ -77,12 +77,12 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-    Q{What do you need most?} -->|Understand / full control| Raw[Raw SDK]
+    Q{"What do you need most?"} -->|"Understand / full control"| Raw[Raw SDK]
     Q -->|Complex stateful control flow| LG[LangGraph]
     Q -->|Retrieval-heavy| LI[LlamaIndex]
     Q -->|Team of role agents fast| CA["CrewAI / AutoGen"]
-    Q -->|Offload infra, one provider| PS["Provider/managed SDK"]
-    Q -->|Simple/moderate agent, no surprises| Raw
+    Q -->|"Offload infra, one provider"| PS["Provider/managed SDK"]
+    Q -->|"Simple/moderate agent, no surprises"| Raw
 ```
 
 ---

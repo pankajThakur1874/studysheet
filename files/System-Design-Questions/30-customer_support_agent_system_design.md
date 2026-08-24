@@ -24,8 +24,8 @@ Build an agent that handles customer tickets/chats end-to-end: understands the r
 flowchart LR
     C[Customer message] --> A[[Support agent]]
     A -->|policy Q| KB["(Help-center KB via RAG)"]
-    A -->|account/action| CRM[("Orders/CRM tools")]
-    A -->|risky/unknown| H[Human agent]
+    A -->|"account/action"| CRM[("Orders/CRM tools")]
+    A -->|"risky/unknown"| H[Human agent]
     A --> R["Reply / resolution"]
 ```
 
@@ -103,7 +103,7 @@ flowchart TD
     GW --> R["Router: intent + auth"]
     R --> A[[Support agent loop]]
     A -->|policy| RAG[Retriever] --> KB["(Help-center vector DB)"]
-    A -->|context/action| Tools["CRM / Orders / Billing APIs"]
+    A -->|"context/action"| Tools["CRM / Orders / Billing APIs"]
     A -->|risky action| HITL["Approval queue -> human"]
     A -->|can't handle| Esc["Escalate -> human w/ context"]
     A --> Mem[("Session + long-term memory")]
@@ -134,9 +134,9 @@ The reversibility test decides the gate:
 flowchart TD
     A["Agent decides: issue_refund $500"] --> Risk{"Amount > cap OR irreversible?"}
     Risk -->|No| Do["Execute + log"]
-    Risk -->|Yes| Q[Approval queue] --> Hu{Human approves?}
+    Risk -->|Yes| Q[Approval queue] --> Hu{"Human approves?"}
     Hu -->|yes| Do
-    Hu -->|no + reason| Back["Agent explains / offers alternative"]
+    Hu -->|"no + reason"| Back["Agent explains / offers alternative"]
 ```
 - Small refund within policy → auto (logged).
 - Large refund / account deletion → **human approval** before execution.

@@ -103,7 +103,7 @@ Use this second flowchart when the interviewer asks **"walk me through the compl
 ```mermaid
 flowchart TD
     A[Feed request] --> B[Read cached candidates if available]
-    B --> C{Cache usable?}
+    B --> C{"Cache usable?"}
     C -->|Yes| D["Return / refresh asynchronously"]
     C -->|No| E[Candidate generation]
     E --> F["Hundreds/thousands of candidates"]

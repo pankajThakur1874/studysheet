@@ -23,9 +23,9 @@ Build an agent that operates a computer or browser the way a person does: it's g
 ```mermaid
 flowchart LR
     T[Task] --> A[[Agent]]
-    A -->|1. take screenshot| Env[Sandboxed computer/browser]
+    A -->|1. take screenshot| Env["Sandboxed computer/browser"]
     Env -->|screenshot| A
-    A -->|2. decide action: click/type/scroll| Env
+    A -->|"2. decide action: click/type/scroll"| Env
     Env -->|3. new screenshot| A
     A -->|done| R[Result]
 ```
@@ -110,7 +110,7 @@ flowchart TD
     S[Screen] --> V["Vision grounding: model outputs (x,y)"]
     S --> A["Accessibility/DOM grounding: act on element id/text"]
     V --> Pro1[Works on anything; brittle to scaling]
-    A --> Pro2[Reliable/cheap; needs a structured tree]
+    A --> Pro2["Reliable/cheap; needs a structured tree"]
 ```
 **Best practice:** prefer the **accessibility/DOM tree when available** (browsers), fall back to **vision** for pixels-only surfaces — and often give the model *both* (screenshot + element list) so it can cross-reference. State this in an interview; it's the mature answer.
 
@@ -125,11 +125,11 @@ This agent takes **real, often irreversible actions** in a real environment. Saf
 
 ```mermaid
 flowchart TD
-    A[Agent proposes action] --> Risk{Irreversible / sensitive?<br/>buy, delete, send, submit payment}
+    A[Agent proposes action] --> Risk{"Irreversible / sensitive?<br/>buy, delete, send, submit payment"}
     Risk -->|No| Do[Execute in sandbox]
-    Risk -->|Yes| HITL[Pause -> human approval]
+    Risk -->|Yes| HITL["Pause -> human approval"]
     HITL -->|approve| Do
-    Env[(Sandboxed VM/browser: no prod creds, network limits)] --- Do
+    Env[("Sandboxed VM/browser: no prod creds, network limits")] --- Do
 ```
 
 - **Sandboxed environment:** run in an **isolated VM/container/browser profile** with no access to production systems, real payment methods, or real credentials by default; restricted network egress; resettable.
@@ -146,15 +146,15 @@ flowchart TD
 flowchart TD
     T[Task] --> Q[[Queue]] --> W[Agent worker]
     subgraph Worker
-      W --> Prov[Provision sandbox: VM / headless browser]
-      Prov --> Loop[[Perception→action loop]]
-      Loop --> Gate{Sensitive action?}
+      W --> Prov["Provision sandbox: VM / headless browser"]
+      Prov --> Loop[["Perception→action loop"]]
+      Loop --> Gate{"Sensitive action?"}
       Gate -->|yes| HITL[Human approval]
       Gate -->|no| Act[Execute in sandbox]
       Act --> Loop
-      Loop --> Done[Verify + report]
+      Loop --> Done["Verify + report"]
     end
-    Loop <-->|screenshot + element tree| SB[(Sandbox: browser via Playwright / VM)]
+    Loop <-->|"screenshot + element tree"| SB[("Sandbox: browser via Playwright / VM")]
     Loop <-->|vision LLM| Model[Model]
     W -.trace: screenshots + actions.-> Obs[Observability]
 ```

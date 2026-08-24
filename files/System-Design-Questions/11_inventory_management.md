@@ -88,14 +88,14 @@ Use this second flowchart when the interviewer asks **"walk me through the compl
 flowchart TD
     A[Order] --> B[Reserve inventory]
     B --> C["Atomic available > 0 update"]
-    C --> D{Reserved?}
+    C --> D{"Reserved?"}
     D -->|No| E[Out of stock]
     D -->|Yes| F[Reservation TTL]
     F --> G[Payment]
-    G --> H{Payment success?}
+    G --> H{"Payment success?"}
     H -->|Yes| I[Confirm reservation]
-    H -->|No/timeout| J[Release inventory]
-    F --> K{TTL expired?}
+    H -->|"No/timeout"| J[Release inventory]
+    F --> K{"TTL expired?"}
     K -->|Yes| J
     I --> L["Outbox -> Kafka"]
     J --> M[Inventory available again]

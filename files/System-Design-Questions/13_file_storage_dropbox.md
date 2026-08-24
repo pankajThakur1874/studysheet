@@ -101,7 +101,7 @@ flowchart TD
     B --> C[Authorize]
     C --> D[Generate pre-signed multipart URLs]
     D --> E[Client uploads chunks directly]
-    E --> F{All chunks present?}
+    E --> F{"All chunks present?"}
     F -->|No| G[Retry missing chunks]
     F -->|Yes| H[Complete object]
     H --> I["Persist metadata/state"]

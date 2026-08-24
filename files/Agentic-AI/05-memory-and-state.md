@@ -86,7 +86,7 @@ flowchart TD
     Q1{"Needed only for<br/>this task/session?"} -->|Yes| ST["Short-term:<br/>keep in context history"]
     Q1 -->|No| Q2{"Must survive<br/>across sessions?"}
     Q2 -->|Yes| LT["Long-term:<br/>external store + retrieve back"]
-    Q2 -->|Large & occasionally needed| RAG["Retrieve on demand<br/>= RAG - Ch 6"]
+    Q2 -->|"Large & occasionally needed"| RAG["Retrieve on demand<br/>= RAG - Ch 6"]
 ```
 
 | | Short-term (context) | Long-term (external) |

@@ -69,7 +69,7 @@ A cache miss attack happens when someone repeatedly asks for data that exists **
 flowchart TD
     Q[Request for non-existent key] --> BF{"Bloom filter:<br/>key possibly exists?"}
     BF -->|no| Stop["Reject early, DB not touched"]
-    BF -->|yes| C{In cache?}
+    BF -->|yes| C{"In cache?"}
     C -->|yes| Ret[Return value]
     C -->|no| DB["Query DB, cache result<br/>incl. null with short TTL"]
 ```

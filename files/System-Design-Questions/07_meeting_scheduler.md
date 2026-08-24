@@ -90,7 +90,7 @@ Use this second flowchart when the interviewer asks **"walk me through the compl
 flowchart TD
     A[Create meeting] --> B["Normalize time to UTC + retain timezone"]
     B --> C["Check participant/room availability"]
-    C --> D{Conflict?}
+    C --> D{"Conflict?"}
     D -->|Yes| E["Reject / suggest alternatives"]
     D -->|No| F[Transactional booking]
     F --> G["Write meeting + outbox"]
@@ -98,7 +98,7 @@ flowchart TD
     H --> I[Reminder scheduling]
     H --> J[External calendar sync]
     H --> K[Notification]
-    J --> L{Provider available?}
+    J --> L{"Provider available?"}
     L -->|No| M[Retry sync]
     L -->|Yes| N[Sync successful]
 ```

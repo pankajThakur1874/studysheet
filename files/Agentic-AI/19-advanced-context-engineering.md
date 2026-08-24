@@ -65,7 +65,7 @@ The most powerful context-engineering move: **give a subtask its own fresh conte
 flowchart TD
     O["Orchestrator (lean context:<br/>goal + plan + results)"] -->|"delegate: 'research X' (fresh window)"| S1["Sub-agent: full detail in ITS context"]
     S1 -->|"returns: 3-line summary"| O
-    O -->|delegate: 'analyze Y'| S2["Sub-agent: fresh window"]
+    O -->|"delegate: 'analyze Y'"| S2["Sub-agent: fresh window"]
     S2 -->|compact result| O
 ```
 

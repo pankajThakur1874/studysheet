@@ -34,7 +34,7 @@ flowchart LR
     D[("Dataset: inputs + expected/rubric")] --> R[Run agent on each]
     R --> S[Score each output]
     S --> M["Aggregate metric: pass rate / avg score"]
-    M --> Cmp{Better or worse than baseline?}
+    M --> Cmp{"Better or worse than baseline?"}
 ```
 
 Run the eval whenever you change the prompt, tools, model, or logic — and compare to the previous baseline. That comparison is the whole point.

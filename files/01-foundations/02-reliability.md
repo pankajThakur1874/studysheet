@@ -114,12 +114,12 @@ The word "blameless" isn't in the book, but the posture is: if a human error too
 
 ```mermaid
 flowchart TD
-    F[Fault occurs] --> D{Detected?}
-    D -->|No| SILENT[Silent corruption — worst case]
-    D -->|Yes| I{Isolated?}
+    F[Fault occurs] --> D{"Detected?"}
+    D -->|No| SILENT["Silent corruption — worst case"]
+    D -->|Yes| I{"Isolated?"}
     I -->|No| CASCADE[Cascading failure]
-    I -->|Yes| H{Handled?}
-    H -->|Yes| DEGRADE[Degraded but serving — SUCCESS]
+    I -->|Yes| H{"Handled?"}
+    H -->|Yes| DEGRADE["Degraded but serving — SUCCESS"]
     H -->|No| FAIL[Failure visible to user]
     SILENT --> LATER[Discovered weeks later in a report]
 ```

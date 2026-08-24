@@ -150,7 +150,7 @@ flowchart TD
     N1["(Node 1)"] -->|register| ZK
     N2["(Node 2)"] -->|register| ZK
     N3["(Node 3)"] -->|register| ZK
-    R[Routing tier] -->|subscribe, notified on change| ZK
+    R[Routing tier] -->|"subscribe, notified on change"| ZK
     C[Client] --> R
     R -->|forward to correct node| N2
     note2["rebalancing updates ZK → routers notified → routing stays correct"]

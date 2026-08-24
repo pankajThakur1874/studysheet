@@ -116,16 +116,16 @@ Use this second flowchart when the interviewer asks **"walk me through the compl
 
 ```mermaid
 flowchart TD
-    A[Payment Request] --> B{Idempotency Key exists?}
+    A[Payment Request] --> B{"Idempotency Key exists?"}
     B -->|Yes| C["Return existing payment/result"]
     B -->|No| D[Create PROCESSING payment]
     D --> E[Call external processor]
-    E --> F{Processor response?}
+    E --> F{"Processor response?"}
     F -->|Success| G[Mark SUCCESS]
     F -->|Failure| H[Mark FAILED]
-    F -->|Timeout/Unknown| I[Keep PROCESSING]
+    F -->|"Timeout/Unknown"| I[Keep PROCESSING]
     I --> J[Webhook or Poller]
-    J --> K{Final processor status?}
+    J --> K{"Final processor status?"}
     K -->|Success| G
     K -->|Failed| H
     G --> L[Write Outbox in same DB transaction]

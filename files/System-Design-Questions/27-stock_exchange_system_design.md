@@ -129,7 +129,7 @@ flowchart LR
     Client --> Broker --> GW["Client gateway<br/>auth, validate, rate-limit, FIX"]
     GW --> OM["Order manager<br/>order state"]
     OM <-->|risk checks| RM[Risk manager]
-    OM <-->|funds / withhold| W[Wallet]
+    OM <-->|"funds / withhold"| W[Wallet]
     OM --> SEQ["Sequencer<br/>single writer"]
     SEQ --> ME["Matching engine<br/>order book per symbol"]
     ME -->|2 executions| SEQ --> OM --> GW --> Broker --> Client

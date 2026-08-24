@@ -236,7 +236,7 @@ flowchart LR
     subgraph After_Download["After download — dedup the BODY"]
       Body[Page HTML] --> H1[hash content]
       H1 --> CSeen{"hash in<br/>Content-Seen set?"}
-      CSeen -->|yes ~29%| Drop1[Discard — don't store]
+      CSeen -->|"yes ~29%"| Drop1["Discard — don't store"]
       CSeen -->|no| Store["Store + record hash"]
     end
     subgraph Before_Enqueue["Before enqueue — dedup the URL"]

@@ -13,8 +13,8 @@ This exercises every concept: the **loop** (Ch 3), **tool use** (Ch 4), **short-
 ```mermaid
 flowchart TD
     U[User goal] --> L[[Agent loop]]
-    L -->|reason| D{tool call or done?}
-    D -->|read_file / list_files / write_file| X[Your code runs the tool]
+    L -->|reason| D{"tool call or done?"}
+    D -->|"read_file / list_files / write_file"| X[Your code runs the tool]
     X -->|result| L
     D -->|final answer| Out[Print answer]
     L -.->|max_steps guard| Stop[Give up safely]

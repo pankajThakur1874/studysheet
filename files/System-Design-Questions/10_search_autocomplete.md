@@ -82,7 +82,7 @@ Use this second flowchart when the interviewer asks **"walk me through the compl
 flowchart TD
     A[User types query] --> B[Debounce client requests]
     B --> C[Search API]
-    C --> D{Cache hit?}
+    C --> D{"Cache hit?"}
     D -->|Yes| E[Return cached suggestions]
     D -->|No| F[Parse query]
     F --> G[Search index]

@@ -22,13 +22,13 @@ Build a system where a product requirement (a **PRD**) flows through the enginee
 
 ```mermaid
 flowchart LR
-    PRD[PRD] --> TAN[Research + TAN]
+    PRD[PRD] --> TAN["Research + TAN"]
     TAN --> Tix[Ticket breakdown - Jira]
-    Tix --> Dev[Coding agent -> PR]
+    Tix --> Dev["Coding agent -> PR"]
     Dev --> Rev[Reviewer agent]
     Rev -->|concerns| Dev
     Rev -->|clean| QA[QA tests]
-    QA --> SQ[Sonar + coverage]
+    QA --> SQ["Sonar + coverage"]
     SQ --> RM[Ready-to-merge]
     RM -->|human approve| Merge[Merge to dev]
 ```
@@ -72,31 +72,31 @@ Each stage is an **agent** (LLM doing open-ended work) or a **tool/CI job** (det
 
 ```mermaid
 flowchart TD
-    PRD["PRD (human-authored)"] --> G0{Human: PRD clear?}
-    G0 --> R[Research + TAN agent<br/>reads repo + docs]
-    R --> G1{Human: approve technical plan?}
-    G1 --> BD[Breakdown agent<br/>-> Jira tickets + acceptance criteria]
-    BD --> G2{Human: tickets sane?}
-    G2 --> Loop[Per ticket:]
+    PRD["PRD (human-authored)"] --> G0{"Human: PRD clear?"}
+    G0 --> R["Research + TAN agent<br/>reads repo + docs"]
+    R --> G1{"Human: approve technical plan?"}
+    G1 --> BD["Breakdown agent<br/>-> Jira tickets + acceptance criteria"]
+    BD --> G2{"Human: tickets sane?"}
+    G2 --> Loop["Per ticket:"]
     subgraph "Per-ticket loop"
-      Loop --> CA[Coding agent: implement on branch]
+      Loop --> CA["Coding agent: implement on branch"]
       CA --> PR[Open PR]
-      PR --> RA[Reviewer agent: raise concerns]
-      RA -->|concerns| Fix[Coding agent: address comments]
+      PR --> RA["Reviewer agent: raise concerns"]
+      RA -->|concerns| Fix["Coding agent: address comments"]
       Fix --> RA2[Reviewer re-reviews]
-      RA2 -->|still concerns, bounded| Fix
+      RA2 -->|"still concerns, bounded"| Fix
       RA2 -->|clean| Gate1
       RA -->|clean| Gate1[Automated gates]
     end
-    Gate1 --> QA[QA: unit/integration/E2E tests in CI]
+    Gate1 --> QA["QA: unit/integration/E2E tests in CI"]
     QA -->|fail| CA
-    QA -->|pass| SQ[SonarQube: bugs/smells/security + coverage threshold]
+    QA -->|pass| SQ["SonarQube: bugs/smells/security + coverage threshold"]
     SQ -->|fail| CA
     SQ -->|pass| RM[Ready-to-merge]
-    RM --> G3{Human: final approval}
+    RM --> G3{"Human: final approval"}
     G3 -->|approve| M[Merge to dev branch]
     G3 -->|reject| CA
-    M --> Deploy[CI/CD to dev env]
+    M --> Deploy["CI/CD to dev env"]
 ```
 
 ### Stage details + tech
@@ -163,17 +163,17 @@ Link **PRD → TAN → ticket → branch → PR → review → merge** as one tr
 
 ```mermaid
 flowchart TD
-    P[Product: PRD] --> ORCH[[Orchestrator / workflow engine<br/>Temporal / LangGraph — durable state machine]]
+    P["Product: PRD"] --> ORCH[["Orchestrator / workflow engine<br/>Temporal / LangGraph — durable state machine"]]
     ORCH --> Q[[Task queue]]
-    Q --> AR[Research/TAN agent]
-    Q --> AB[Breakdown agent] --> Jira[(Jira)]
-    Q --> AC[Coding agent - sandboxed] --> Git[(GitHub/GitLab)]
+    Q --> AR["Research/TAN agent"]
+    Q --> AB[Breakdown agent] --> Jira["(Jira)"]
+    Q --> AC[Coding agent - sandboxed] --> Git[("GitHub/GitLab")]
     Q --> AV[Reviewer agent] --> Git
-    Git -->|PR events| CI[CI/CD: tests + build]
-    CI --> Sonar[SonarQube + coverage gate]
-    ORCH <--> State[(Pipeline state store)]
-    ORCH --> Human[Human approval UI: plan, tickets, merge]
-    ORCH -.traces/cost.-> Obs[Eval + observability platform]
+    Git -->|PR events| CI["CI/CD: tests + build"]
+    CI --> Sonar["SonarQube + coverage gate"]
+    ORCH <--> State["(Pipeline state store)"]
+    ORCH --> Human["Human approval UI: plan, tickets, merge"]
+    ORCH -.traces/cost.-> Obs["Eval + observability platform"]
     AC & AV -.LLM calls.-> GW[LLM gateway]
 ```
 - **Orchestrator** owns the state machine, gates, retries, and durability (survives a crash mid-feature).

@@ -138,8 +138,8 @@ Within a consumer group, partitions are assigned to consumers by a group coordin
 flowchart TD
     subgraph "Traditional broker (RabbitMQ)"
         P1["Producer"] --> Q["Queue"]
-        Q -->|ack → delete| C1["Consumer 1"]
-        Q -->|ack → delete| C2["Consumer 2"]
+        Q -->|"ack → delete"| C1["Consumer 1"]
+        Q -->|"ack → delete"| C2["Consumer 2"]
         note1["Load balanced. No replay. Deleted on ack."]
     end
 ```
@@ -149,10 +149,10 @@ flowchart TD
     subgraph "Log-based broker (Kafka topic: orders)"
         PROD["Producers"] -->|append| T0["Partition 0\noffset 0,1,2,3,4..."]
         PROD -->|append| T1["Partition 1\noffset 0,1,2,3..."]
-        T0 -->|read, own offset| G1C1["Group A, Consumer 1"]
-        T1 -->|read, own offset| G1C2["Group A, Consumer 2"]
-        T0 -->|read, own offset| G2C1["Group B, Consumer 1"]
-        T1 -->|read, own offset| G2C1
+        T0 -->|"read, own offset"| G1C1["Group A, Consumer 1"]
+        T1 -->|"read, own offset"| G1C2["Group A, Consumer 2"]
+        T0 -->|"read, own offset"| G2C1["Group B, Consumer 1"]
+        T1 -->|"read, own offset"| G2C1
         note2["Groups A and B are fully independent.\nReading doesn't delete. Any consumer can replay from any offset."]
     end
 ```

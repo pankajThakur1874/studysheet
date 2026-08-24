@@ -137,8 +137,8 @@ flowchart TD
     U["Client: transfer A→C"] --> RP["Reverse proxy<br/>push status back"]
     RP --> CO["Saga / TC-C Coordinator<br/>phase status table"]
 
-    CO -->|1. deduct A -$1| P1
-    CO -->|2. add C +$1| P2
+    CO -->|"1. deduct A -$1"| P1
+    CO -->|"2. add C +$1"| P2
 
     subgraph P1[Partition 1 = Raft group]
       L1["Leader<br/>cmd→event→apply"] --> F1a[Follower]
@@ -171,8 +171,8 @@ Balances are a `<user, balance>` map. One Redis node can't do 1M TPS, so shard: 
 ```mermaid
 flowchart TD
     C["Transfer A→C"] --> WS["Wallet service<br/>stateless"]
-    WS -->|deduct $1 from A| R1[("Redis node: A")]
-    WS -->|add $1 to C| R2[("Redis node: C")]
+    WS -->|"deduct $1 from A"| R1[("Redis node: A")]
+    WS -->|"add $1 to C"| R2[("Redis node: C")]
     ZK["ZooKeeper<br/>partition map"] --- WS
 ```
 
@@ -272,7 +272,7 @@ Event sourcing answers the three questions an auditor asks: (1) balance at any p
 ```mermaid
 flowchart LR
     Cmd["Command queue<br/>Kafka, FIFO"] --> SM1["State machine<br/>validate: enough funds?"]
-    SM1 -->|emit 2 events<br/>A:-$1, C:+$1| Evt["Event queue<br/>FIFO, command order"]
+    SM1 -->|"emit 2 events<br/>A:-$1, C:+$1"| Evt["Event queue<br/>FIFO, command order"]
     Evt --> SM2["State machine<br/>apply events"]
     SM2 --> DB["(State = balances)"]
 ```

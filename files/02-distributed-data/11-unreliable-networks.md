@@ -141,7 +141,7 @@ sequenceDiagram
 
 ```mermaid
 flowchart TD
-    NR[No response received] --> Q{What happened?}
+    NR[No response received] --> Q{"What happened?"}
     Q --> L[Request lost]
     Q --> QU["Request queued / node overloaded"]
     Q --> C[Node crashed]

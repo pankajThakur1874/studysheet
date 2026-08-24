@@ -188,7 +188,7 @@ Raw LLM review produces plausible-but-wrong findings. For **each** candidate fin
 ```mermaid
 flowchart TD
     Fnd[Candidate findings] --> V{"Verify: real bug with a concrete failure case?"}
-    V -->|no / uncertain| Drop[discard]
+    V -->|"no / uncertain"| Drop[discard]
     V -->|yes| Keep["keep + severity"]
     Keep --> Post["Post inline + summary"]
 ```
@@ -204,7 +204,7 @@ A 100-file PR won't fit one context window. Fan out (orchestrator-workers, Ch 9/
 
 ```mermaid
 flowchart TD
-    O[[Orchestrator]] -->|split by file / dimension| S1["Sub-agent: files 1-10"]
+    O[[Orchestrator]] -->|"split by file / dimension"| S1["Sub-agent: files 1-10"]
     O --> S2["Sub-agent: files 11-20"]
     O --> S3["Sub-agent: security lens"]
     S1 --> Merge[["Merge + dedup findings"]]

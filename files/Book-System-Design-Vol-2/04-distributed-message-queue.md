@@ -148,7 +148,7 @@ flowchart TD
     Prod[Producer] -->|produce| L["Leader replica: committed offset 13"]
     L -->|synced| R2[Replica-2 in ISR]
     L -->|synced| R3[Replica-3 in ISR]
-    L -.->|lagging, not in ISR| R4[Replica-4]
+    L -.->|"lagging, not in ISR"| R4[Replica-4]
 ```
 
 **ACK settings (durability vs latency):**

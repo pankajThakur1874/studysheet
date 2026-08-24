@@ -47,7 +47,7 @@ sequenceDiagram
 flowchart TD
     A[User enters password] --> B[Fetch stored salt]
     B --> C["Compute H1 = hash(password + salt)"]
-    C --> D{H1 == stored H2?}
+    C --> D{"H1 == stored H2?"}
     D -->|yes| E[Password valid]
     D -->|no| F[Reject]
 ```

@@ -141,7 +141,7 @@ flowchart TD
     CA["Cache invalidation\n(consumer group B)"]
     WH["Analytics warehouse\n(consumer group C)"]
     
-    DB -->|WAL / binlog| CDC
+    DB -->|"WAL / binlog"| CDC
     CDC -->|publish in commit order| K
     K --> SI & CA & WH
     note["Single source of truth → single order → no race condition\nEach consumer group is an independent follower"]

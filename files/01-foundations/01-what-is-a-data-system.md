@@ -77,8 +77,8 @@ flowchart TD
     API -->|read| Cache["(Cache — Redis)"]
     Cache -.cache miss.-> DB["(Primary DB — Postgres)"]
     API -->|write| DB
-    DB -->|change log| Q[Event Log — Kafka]
-    Q --> SI[Search Index — Elasticsearch]
+    DB -->|change log| Q["Event Log — Kafka"]
+    Q --> SI["Search Index — Elasticsearch"]
     Q --> W[Async Workers]
     Q --> DW[("Warehouse — batch/analytics")]
     API -->|search query| SI

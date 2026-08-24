@@ -173,7 +173,7 @@ An **SSTable** (Sorted-String Table) is a sorted list of `<key, value>` pairs on
 
 ```mermaid
 flowchart TD
-    R[Read request arrives at node] --> M{1. Data in memory cache?}
+    R[Read request arrives at node] --> M{"1. Data in memory cache?"}
     M -->|Yes| Ret[Return to client]
     M -->|No| BF[2. Check bloom filter]
     BF --> W["3. Bloom filter says which<br/>SSTables might have the key"]

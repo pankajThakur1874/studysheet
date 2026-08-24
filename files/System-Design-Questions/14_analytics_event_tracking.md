@@ -90,7 +90,7 @@ Use this second flowchart when the interviewer asks **"walk me through the compl
 ```mermaid
 flowchart TD
     A[Client event] --> B[Validate schema]
-    B --> C{Valid?}
+    B --> C{"Valid?"}
     C -->|No| D["Reject / dead-letter"]
     C -->|Yes| E[Publish to Kafka]
     E --> F[Partition by chosen key]
@@ -496,7 +496,7 @@ Book specifics for the aggregation pipeline:
 flowchart LR
     Clicks[Click events] --> K[["Kafka: durable log"]]
     K --> F["Flink: window + aggregate<br/>event-time + watermark"]
-    F -->|exactly-once: offset+result in one txn| DB["(Aggregated results)"]
+    F -->|"exactly-once: offset+result in one txn"| DB["(Aggregated results)"]
     K -.replay for reprocessing (Kappa).-> F
     Raw["(Raw events)"] --> Recon[Nightly reconciliation] --> DB
 ```
