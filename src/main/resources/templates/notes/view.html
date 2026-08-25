@@ -559,7 +559,6 @@
                     const enforceFit = () => {
                         document.querySelectorAll(".mermaid foreignObject").forEach(fo => {
                             fo.style.overflow = "visible";
-                            fo.removeAttribute("width");
                             const div = fo.querySelector("div");
                             if (div) {
                                 div.style.overflow = "visible";
@@ -570,7 +569,8 @@
                         document.querySelectorAll(".mermaid-container").forEach(c => {
                             c.style.width = "100%";
                             c.style.maxWidth = "100%";
-                            c.style.overflow = "hidden";
+                            c.style.overflowX = "auto";
+                            c.style.webkitOverflowScrolling = "touch";
                         });
 
                         document.querySelectorAll(".mermaid svg").forEach(svg => {
