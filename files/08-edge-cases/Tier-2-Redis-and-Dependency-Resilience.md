@@ -188,10 +188,9 @@ DB = 1K/sec
 
 Redis fails:
 
-```text
-10K requests/sec
-      ↓
-DB
+```mermaid
+flowchart TD
+    A["10K requests/sec"] --> DB
 ```
 
 DB traffic becomes 10K/sec.
@@ -670,14 +669,13 @@ This isolates failures.
 
 States:
 
-```text
-CLOSED
-  ↓ failures
-OPEN
-  ↓ cooldown
-HALF-OPEN
-  ↓ test
-CLOSED or OPEN
+```mermaid
+stateDiagram-v2
+    [*] --> CLOSED
+    CLOSED --> OPEN: failures exceed threshold
+    OPEN --> HALF_OPEN: cooldown elapsed
+    HALF_OPEN --> CLOSED: test succeeds
+    HALF_OPEN --> OPEN: test fails
 ```
 
 ### CLOSED
@@ -741,14 +739,11 @@ but your service can generate:
 
 protect it:
 
-```text
-Order
- ↓
-Rate limiter
- ↓
-100/sec
- ↓
-Payment
+```mermaid
+flowchart TD
+    Order --> RL["Rate limiter"]
+    RL --> T["100/sec"]
+    T --> Payment
 ```
 
 Excess traffic can be:
@@ -765,16 +760,12 @@ depending on business requirements.
 
 If the caller does not need the result immediately:
 
-```text
-Client
- ↓
-Order API
- ↓
-Kafka
- ↓
-Payment Worker
- ↓
-Payment Service
+```mermaid
+flowchart TD
+    Client --> OA["Order API"]
+    OA --> Kafka
+    Kafka --> PW["Payment Worker"]
+    PW --> PS["Payment Service"]
 ```
 
 The API thread is released quickly.
@@ -819,14 +810,10 @@ Trying to force 50K/sec into the consumer can destroy the downstream system.
 
 Kafka can absorb the difference:
 
-```text
-Producer
-   ↓
-Kafka
-████████████████
-   ↓
-Consumer
-10K/sec
+```mermaid
+flowchart TD
+    Producer --> Kafka["Kafka<br/>(backlog buffer)"]
+    Kafka --> Consumer["Consumer<br/>10K/sec"]
 ```
 
 The backlog is **backpressure** in action.
@@ -863,21 +850,11 @@ Monitoring
 
 Example:
 
-```text
-Order Service
-      │
-      ├── Payment
-      │    timeout 1s
-      │    concurrency 20
-      │    circuit breaker
-      │
-      ├── Recommendation
-      │    timeout 100ms
-      │    concurrency 10
-      │
-      └── Inventory
-           timeout 500ms
-           bounded retries
+```mermaid
+flowchart TD
+    OS["Order Service"] --> P["Payment<br/>timeout 1s<br/>concurrency 20<br/>circuit breaker"]
+    OS --> R["Recommendation<br/>timeout 100ms<br/>concurrency 10"]
+    OS --> I["Inventory<br/>timeout 500ms<br/>bounded retries"]
 ```
 
 Different dependencies get different budgets.

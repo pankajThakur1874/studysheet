@@ -375,10 +375,9 @@ The DB query may be fast, but application requests wait for connections.
 
 ### Long-running queries
 
-```text
-Connection
-   ↓
-query takes 30 seconds
+```mermaid
+flowchart TD
+    A["Connection"] --> B["query takes 30 seconds"]
 ```
 
 ### Long transactions
@@ -500,10 +499,9 @@ does not give 20-way active consumption. At most 10 consumers can have partition
 
 If you have:
 
-```text
-10,000 customers
-       ↓
-10,000 topics
+```mermaid
+flowchart TD
+    A["10,000 customers"] --> B["10,000 topics"]
 ```
 
 challenge the architecture.
@@ -803,12 +801,10 @@ Therefore:
 
 Instead of polling:
 
-```text
-DB WAL
- ↓
-CDC
- ↓
-Kafka
+```mermaid
+flowchart TD
+    A["DB WAL"] --> B["CDC"]
+    B --> C["Kafka"]
 ```
 
 can be used.
@@ -821,16 +817,12 @@ Kafka systems commonly need to tolerate duplicate processing.
 
 ## Classic failure
 
-```text
-Consumer receives event
-      ↓
-DB transaction commits
-      ↓
-Consumer crashes
-      ↓
-Offset not committed
-      ↓
-Kafka redelivers
+```mermaid
+flowchart TD
+    A["Consumer receives event"] --> B["DB transaction commits"]
+    B --> C["Consumer crashes"]
+    C --> D["Offset not committed"]
+    D --> E["Kafka redelivers"]
 ```
 
 ## Idempotency
@@ -865,10 +857,9 @@ COMMIT
 
 If duplicate arrives:
 
-```text
-eventId already exists
-      ↓
-ignore business operation
+```mermaid
+flowchart TD
+    A["eventId already exists"] --> B["ignore business operation"]
 ```
 
 ## Ordering
@@ -893,12 +884,10 @@ Then events for the same payment go to the same partition.
 
 ## Scenario
 
-```text
-Client
- ↓
-Payment Service
- ↓
-Payment Gateway
+```mermaid
+flowchart TD
+    A["Client"] --> B["Payment Service"]
+    B --> C["Payment Gateway"]
 ```
 
 Gateway says:
@@ -929,22 +918,18 @@ Idempotency-Key: abc123
 
 First request:
 
-```text
-abc123
- ↓
-process
- ↓
-store result
+```mermaid
+flowchart TD
+    A["abc123"] --> B["process"]
+    B --> C["store result"]
 ```
 
 Retry:
 
-```text
-abc123
- ↓
-existing result
- ↓
-return previous result
+```mermaid
+flowchart TD
+    A["abc123"] --> B["existing result"]
+    B --> C["return previous result"]
 ```
 
 No second payment.
@@ -962,24 +947,19 @@ you need reconciliation.
 
 For example:
 
-```text
-Gateway webhook
-       ↓
-Payment Service
-       ↓
-DB
+```mermaid
+flowchart TD
+    A["Gateway webhook"] --> B["Payment Service"]
+    B --> C["DB"]
 ```
 
 and:
 
-```text
-Reconciliation job
-       ↓
-find stuck PENDING payments
-       ↓
-query gateway
-       ↓
-repair local state
+```mermaid
+flowchart TD
+    A["Reconciliation job"] --> B["find stuck PENDING payments"]
+    B --> C["query gateway"]
+    C --> D["repair local state"]
 ```
 
 ## Key principle
