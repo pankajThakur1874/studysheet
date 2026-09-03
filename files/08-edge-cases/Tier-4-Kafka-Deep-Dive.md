@@ -33,24 +33,21 @@ Topics:
 
 Kafka is a distributed append-only log.
 
-```text
-Producer
-   ↓
-Topic
-   ↓
-Partitions
-   ↓
-Consumer Group
+```mermaid
+flowchart TD
+    Producer --> Topic
+    Topic --> Partitions
+    Partitions --> CG["Consumer Group"]
 ```
 
 A topic is divided into partitions:
 
-```text
-orders
- ├── P0
- ├── P1
- ├── P2
- └── P3
+```mermaid
+flowchart TD
+    Orders["orders"] --> P0
+    Orders --> P1
+    Orders --> P2
+    Orders --> P3
 ```
 
 Each partition is ordered.
@@ -79,15 +76,12 @@ An offset is a position in the partition, not a globally unique message ID.
 
 A consumer group allows parallel processing.
 
-```text
-4 partitions
-+
-4 consumers
-
-P0 → C1
-P1 → C2
-P2 → C3
-P3 → C4
+```mermaid
+flowchart LR
+    P0["Partition 0"] --> C1["Consumer 1"]
+    P1["Partition 1"] --> C2["Consumer 2"]
+    P2["Partition 2"] --> C3["Consumer 3"]
+    P3["Partition 3"] --> C4["Consumer 4"]
 ```
 
 If:
@@ -159,21 +153,20 @@ For critical data, stronger durability settings are usually preferred.
 
 Example:
 
-```text
-P0
- ├── Broker 1 leader
- ├── Broker 2 replica
- └── Broker 3 replica
+```mermaid
+flowchart TD
+    P0["Partition 0"] --> B1["Broker 1 (leader)"]
+    P0 --> B2["Broker 2 (replica)"]
+    P0 --> B3["Broker 3 (replica)"]
 ```
 
 Replication factor = 3.
 
 If Broker 1 fails:
 
-```text
-Broker 2/3
-   ↓
-one becomes leader
+```mermaid
+flowchart TD
+    B["Broker 2 / Broker 3"] --> L["One becomes leader"]
 ```
 
 ---
@@ -186,10 +179,9 @@ Replicas sufficiently caught up with the leader belong to ISR.
 
 Why it matters:
 
-```text
-Leader failure
-    ↓
-choose appropriate in-sync replica
+```mermaid
+flowchart TD
+    LF["Leader failure"] --> CR["Choose appropriate in-sync replica"]
 ```
 
 Monitor:
@@ -256,10 +248,9 @@ Don't blindly add consumers.
 
 If a consumer joins/leaves:
 
-```text
-consumer group
-      ↓
-partition reassignment
+```mermaid
+flowchart TD
+    CG["Consumer group (join / leave)"] --> PR["Partition reassignment"]
 ```
 
 During rebalancing, processing can pause.
@@ -279,16 +270,12 @@ Investigate:
 
 A message repeatedly fails:
 
-```text
-Message X
- ↓
-fail
- ↓
-retry
- ↓
-fail
- ↓
-retry forever
+```mermaid
+flowchart TD
+    MX["Message X"] --> F1["fail"]
+    F1 --> R1["retry"]
+    R1 --> F2["fail"]
+    F2 --> R2["retry forever"]
 ```
 
 It can block progress.
@@ -309,16 +296,12 @@ DLQ
 
 A retry architecture can use:
 
-```text
-Main Topic
-    ↓
-Consumer
-    ↓ failure
-Retry Topic
-    ↓
-delayed retry
-    ↓
-Main processing
+```mermaid
+flowchart TD
+    MT["Main Topic"] --> C["Consumer"]
+    C -->|failure| RT["Retry Topic"]
+    RT --> DR["Delayed retry"]
+    DR --> MP["Main processing"]
 ```
 
 Different retry delays can be used.
@@ -409,16 +392,12 @@ key = orderId
 
 Duplicate scenario:
 
-```text
-Consumer receives
- ↓
-DB commits
- ↓
-consumer crashes
- ↓
-offset not committed
- ↓
-event redelivered
+```mermaid
+flowchart TD
+    CR["Consumer receives"] --> DB["DB commits"]
+    DB --> CC["Consumer crashes"]
+    CC --> NC["Offset not committed"]
+    NC --> RD["Event redelivered"]
 ```
 
 Use:
@@ -435,22 +414,19 @@ and an atomic business transaction.
 
 Useful for Kafka-to-Kafka workflows:
 
-```text
-Consume
- ↓
-process
- ↓
-produce
+```mermaid
+flowchart TD
+    Consume --> Process["process"]
+    Process --> Produce["produce"]
 ```
 
 They can provide transactional semantics within Kafka.
 
 But:
 
-```text
-Kafka
- ↓
-external DB
+```mermaid
+flowchart TD
+    Kafka --> DB["External DB"]
 ```
 
 still needs an external consistency mechanism.
@@ -500,30 +476,24 @@ Always account for replication and overhead.
 
 ### Broker failure
 
-```text
-Broker down
- ↓
-leader election
- ↓
-check ISR
- ↓
-under-replicated partitions
- ↓
-offline partitions
- ↓
-consumer lag
+```mermaid
+flowchart TD
+    BD["Broker down"] --> LE["Leader election"]
+    LE --> ISR["Check ISR"]
+    ISR --> URP["Under-replicated partitions"]
+    URP --> OP["Offline partitions"]
+    OP --> CL["Consumer lag"]
 ```
 
 ### Consumer lag
 
-```text
-lag ↑
- ↓
-producer rate?
-consumer processing?
-downstream dependency?
-rebalances?
-partition hotness?
+```mermaid
+flowchart TD
+    Lag["Lag increasing"] --> PR["Producer rate?"]
+    Lag --> CP["Consumer processing?"]
+    Lag --> DD["Downstream dependency?"]
+    Lag --> RB["Rebalances?"]
+    Lag --> PH["Partition hotness?"]
 ```
 
 ### Producer errors

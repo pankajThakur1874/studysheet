@@ -22,40 +22,30 @@ The goal is to understand not only how caching makes a system faster, but also h
 
 Typical architecture:
 
-```text
-Client
-  ↓
-API Service
-  ↓
-Redis
-  ↓ miss
-Database
+```mermaid
+flowchart TD
+    Client --> API["API Service"]
+    API --> Redis
+    Redis -->|miss| DB[Database]
 ```
 
 Normal cache hit:
 
-```text
-Request
-  ↓
-Redis GET
-  ↓
-HIT
-  ↓
-Response
+```mermaid
+flowchart TD
+    Request --> GET["Redis GET"]
+    GET --> HIT
+    HIT --> Response
 ```
 
 Cache miss:
 
-```text
-Request
-  ↓
-Redis MISS
-  ↓
-DB
-  ↓
-Redis SET
-  ↓
-Response
+```mermaid
+flowchart TD
+    Request --> MISS["Redis MISS"]
+    MISS --> DB
+    DB --> SET["Redis SET"]
+    SET --> Response
 ```
 
 This is commonly called **cache-aside**.
@@ -114,18 +104,16 @@ return value;
 
 Often:
 
-```text
-DB update
- ↓
-invalidate cache
+```mermaid
+flowchart TD
+    U["DB update"] --> I["invalidate cache"]
 ```
 
 or:
 
-```text
-DB update
- ↓
-update cache
+```mermaid
+flowchart TD
+    U["DB update"] --> C["update cache"]
 ```
 
 Which one is correct depends on consistency requirements.
@@ -180,12 +168,10 @@ Monitor:
 
 Architecture:
 
-```text
-Application
-    ↓
-Redis 💥
-    ↓
-DB
+```mermaid
+flowchart TD
+    App[Application] --> R["Redis 💥"]
+    R --> DB
 ```
 
 If Redis is only a cache, the application should ideally fall back to DB.
@@ -214,24 +200,16 @@ That's a 10x increase.
 
 ## Failure chain
 
-```text
-Redis down
-   ↓
-cache misses
-   ↓
-DB load ↑
-   ↓
-DB CPU ↑
-   ↓
-DB latency ↑
-   ↓
-API latency ↑
-   ↓
-timeouts
-   ↓
-retries
-   ↓
-DB overload
+```mermaid
+flowchart TD
+    A["Redis down"] --> B["cache misses"]
+    B --> C["DB load ↑"]
+    C --> D["DB CPU ↑"]
+    D --> E["DB latency ↑"]
+    E --> F["API latency ↑"]
+    F --> G[timeouts]
+    G --> H[retries]
+    H --> I["DB overload"]
 ```
 
 So a cache outage can become a DB outage.
@@ -290,14 +268,11 @@ Adding more shards doesn't automatically help because the same key still maps to
 
 ### L1 local cache
 
-```text
-Request
- ↓
-Local cache
- ↓ miss
-Redis
- ↓ miss
-DB
+```mermaid
+flowchart TD
+    Request --> LC["Local cache"]
+    LC -->|miss| Redis
+    Redis -->|miss| DB
 ```
 
 Very effective for popular, slowly changing data.
@@ -336,28 +311,22 @@ Trade-off:
 
 10,000 identical requests:
 
-```text
-10K requests
-     ↓
-single-flight
-     ↓
-1 Redis/DB fetch
-     ↓
-10K responses
+```mermaid
+flowchart TD
+    A["10K requests"] --> SF["single-flight"]
+    SF --> F["1 Redis/DB fetch"]
+    F --> R["10K responses"]
 ```
 
 ### CDN
 
 For public cacheable data:
 
-```text
-Client
- ↓
-CDN
- ↓
-Application
- ↓
-Redis
+```mermaid
+flowchart TD
+    Client --> CDN
+    CDN --> App[Application]
+    App --> Redis
 ```
 
 ---
@@ -373,12 +342,10 @@ TTL = 60 seconds
 
 At expiry:
 
-```text
-50,000 requests
-      ↓
-Redis MISS
-      ↓
-50,000 DB queries
+```mermaid
+flowchart TD
+    A["50,000 requests"] --> M["Redis MISS"]
+    M --> Q["50,000 DB queries"]
 ```
 
 The DB gets overwhelmed.
@@ -387,22 +354,18 @@ The DB gets overwhelmed.
 
 First request:
 
-```text
-MISS
- ↓
-acquire rebuild slot
- ↓
-DB
- ↓
-Redis SET
+```mermaid
+flowchart TD
+    M[MISS] --> S["acquire rebuild slot"]
+    S --> DB
+    DB --> SET["Redis SET"]
 ```
 
 Others:
 
-```text
-MISS
- ↓
-wait for existing rebuild
+```mermaid
+flowchart TD
+    M[MISS] --> W["wait for existing rebuild"]
 ```
 
 Only one backend request rebuilds the value.
@@ -453,12 +416,10 @@ background refresh
 
 For data where staleness is acceptable:
 
-```text
-stale value
- ↓
-return immediately
- +
-refresh asynchronously
+```mermaid
+flowchart TD
+    SV["stale value"] --> RI["return immediately"]
+    SV --> RA["refresh asynchronously"]
 ```
 
 This protects the backend during bursts.
@@ -477,12 +438,10 @@ product:777777
 
 Every request:
 
-```text
-Redis MISS
- ↓
-DB
- ↓
-NOT FOUND
+```mermaid
+flowchart TD
+    M["Redis MISS"] --> DB
+    DB --> NF["NOT FOUND"]
 ```
 
 Nothing is cached, so DB keeps receiving the same invalid lookups.
@@ -523,12 +482,10 @@ TTL = 60 sec
 
 Many expire together:
 
-```text
-Cache
- ↓
-mass misses
- ↓
-DB traffic spike
+```mermaid
+flowchart TD
+    Cache --> MM["mass misses"]
+    MM --> Spike["DB traffic spike"]
 ```
 
 Solutions:
@@ -563,12 +520,10 @@ The appropriate eviction policy depends on workload.
 
 Conceptually:
 
-```text
-Memory full
-   ↓
-eviction policy
-   ↓
-some keys removed
+```mermaid
+flowchart TD
+    MF["Memory full"] --> EP["eviction policy"]
+    EP --> KR["some keys removed"]
 ```
 
 Possible strategies include:
@@ -591,16 +546,12 @@ The important interview question is:
 
 A high-scale read architecture:
 
-```text
-                  Client
-                    ↓
-               Application
-                    ↓
-             L1 Local Cache
-                    ↓ miss
-               Redis L2
-                    ↓ miss
-                  DB
+```mermaid
+flowchart TD
+    Client --> App[Application]
+    App --> L1["L1 Local Cache"]
+    L1 -->|miss| L2["Redis L2"]
+    L2 -->|miss| DB
 ```
 
 Benefits:
@@ -622,12 +573,10 @@ Trade-offs:
 
 Architecture:
 
-```text
-Order Service
-      ↓
-Payment Service
-      ↓
-Payment DB
+```mermaid
+flowchart TD
+    OS["Order Service"] --> PS["Payment Service"]
+    PS --> PDB["Payment DB"]
 ```
 
 Normally:
@@ -646,22 +595,15 @@ Payment is not down, but it is consuming resources for much longer.
 
 ## Failure propagation
 
-```text
-Payment slow
-   ↓
-Order threads wait
-   ↓
-thread pool exhausted
-   ↓
-queue grows
-   ↓
-API latency increases
-   ↓
-client timeout
-   ↓
-retries
-   ↓
-more Payment traffic
+```mermaid
+flowchart TD
+    A["Payment slow"] --> B["Order threads wait"]
+    B --> C["thread pool exhausted"]
+    C --> D["queue grows"]
+    D --> E["API latency increases"]
+    E --> F["client timeout"]
+    F --> G[retries]
+    G --> H["more Payment traffic"]
 ```
 
 This is cascading failure.
@@ -711,15 +653,11 @@ Payment concurrency = 20
 
 Architecture:
 
-```text
-Order Service
-100 threads
-    │
-    ├── Payment bulkhead = 20
-    │
-    ├── other APIs
-    │
-    └── internal work
+```mermaid
+flowchart TD
+    OS["Order Service<br/>100 threads"] --> PB["Payment bulkhead = 20"]
+    OS --> OA["other APIs"]
+    OS --> IW["internal work"]
 ```
 
 Payment cannot consume all 100 slots.

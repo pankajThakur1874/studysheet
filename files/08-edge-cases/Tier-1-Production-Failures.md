@@ -8,20 +8,14 @@ This document is a study guide for senior backend/system-design interviews. The 
 
 Whenever an interviewer gives you a production failure, think:
 
-```text
-1. DETECT
-   ↓
-2. MEASURE
-   ↓
-3. LOCALIZE THE BOTTLENECK
-   ↓
-4. PROTECT THE SYSTEM
-   ↓
-5. MITIGATE
-   ↓
-6. RECOVER
-   ↓
-7. PREVENT RECURRENCE
+```mermaid
+flowchart TD
+    A["1. DETECT"] --> B["2. MEASURE"]
+    B --> C["3. LOCALIZE THE BOTTLENECK"]
+    C --> D["4. PROTECT THE SYSTEM"]
+    D --> E["5. MITIGATE"]
+    E --> F["6. RECOVER"]
+    F --> G["7. PREVENT RECURRENCE"]
 ```
 
 A senior engineer should avoid jumping directly to "scale it." First identify what is actually saturated.
@@ -106,24 +100,15 @@ So "DB query is slow" may actually mean "application waited to obtain a DB conne
 
 ## Debugging sequence
 
-```text
-API latency increased
-        ↓
-Trace request
-        ↓
-DB span increased?
-        ↓
-YES
-        ↓
-Is it connection wait, lock wait, or execution?
-        ↓
-Find query fingerprint
-        ↓
-EXPLAIN / EXPLAIN ANALYZE
-        ↓
-Fix query/index/data-access pattern
-        ↓
-Verify P95/P99
+```mermaid
+flowchart TD
+    A["API latency increased"] --> B["Trace request"]
+    B --> C{"DB span increased?"}
+    C -->|Yes| D["Is it connection wait, lock wait, or execution?"]
+    D --> E["Find query fingerprint"]
+    E --> F["EXPLAIN / EXPLAIN ANALYZE"]
+    F --> G["Fix query / index / data-access pattern"]
+    G --> H["Verify P95 / P99"]
 ```
 
 ## Common causes
@@ -175,10 +160,9 @@ Most requests may wait for a connection even if the SQL itself is fast.
 
 ## Scenario
 
-```text
-Application
-     ↓
-Primary DB 💥
+```mermaid
+flowchart TD
+    A["Application"] --> B["Primary DB 💥"]
 ```
 
 The first question is:
@@ -189,24 +173,18 @@ The first question is:
 
 Typical architecture:
 
-```text
-             DB
-          Primary
-             │
-      replication
-       ┌─────┴─────┐
-       ↓           ↓
-   Replica 1    Replica 2
+```mermaid
+flowchart TD
+    P["DB Primary"] -->|replication| R1["Replica 1"]
+    P -->|replication| R2["Replica 2"]
 ```
 
 If primary fails:
 
-```text
-Primary 💥
-   ↓
-Failover
-   ↓
-Replica becomes primary
+```mermaid
+flowchart TD
+    A["Primary 💥"] --> B["Failover"]
+    B --> C["Replica becomes primary"]
 ```
 
 ## Important distinction
@@ -217,14 +195,11 @@ It is not a complete disaster-recovery strategy.
 
 If bad data is written:
 
-```text
-Application
-   ↓
-bad UPDATE
-   ↓
-Primary
-   ↓
-Replica
+```mermaid
+flowchart TD
+    A["Application"] --> B["bad UPDATE"]
+    B --> C["Primary"]
+    C --> D["Replica"]
 ```
 
 The bad update may replicate too.
@@ -301,14 +276,12 @@ Large portions of the database become unusable.
 
 ## Core protection architecture
 
-```text
-             Database
-                │
-       ┌────────┼─────────┐
-       ↓        ↓         ↓
- Replication  Backups    WAL
-                         /
-                        PITR
+```mermaid
+flowchart TD
+    DB["Database"] --> R["Replication"]
+    DB --> B["Backups"]
+    DB --> W["WAL"]
+    W --> P["PITR"]
 ```
 
 ### Full backups
@@ -362,20 +335,14 @@ The key principle:
 
 ## Recovery procedure
 
-```text
-Detect corruption
-      ↓
-Stop/isolate harmful writes
-      ↓
-Determine corruption window
-      ↓
-Restore to separate recovery DB
-      ↓
-Validate data
-      ↓
-Reconcile missing/new valid data
-      ↓
-Controlled cutover
+```mermaid
+flowchart TD
+    A["Detect corruption"] --> B["Stop / isolate harmful writes"]
+    B --> C["Determine corruption window"]
+    C --> D["Restore to separate recovery DB"]
+    D --> E["Validate data"]
+    E --> F["Reconcile missing / new valid data"]
+    F --> G["Controlled cutover"]
 ```
 
 ## Strong interview answer
@@ -388,12 +355,10 @@ Controlled cutover
 
 ## Scenario
 
-```text
-Application
-   ↓
-DB connection pool
-   ↓
-DB
+```mermaid
+flowchart TD
+    A["Application"] --> B["DB connection pool"]
+    B --> C["DB"]
 ```
 
 Suppose:
@@ -428,14 +393,11 @@ Application obtains a connection and doesn't release it correctly.
 
 Very dangerous:
 
-```text
-BEGIN
- ↓
-get DB connection
- ↓
-call external API for 5 sec
- ↓
-DB connection remains occupied
+```mermaid
+flowchart TD
+    A["BEGIN"] --> B["get DB connection"]
+    B --> C["call external API for 5 sec"]
+    C --> D["DB connection remains occupied"]
 ```
 
 ### Pool too small
@@ -607,20 +569,15 @@ Then:
 
 ## Positive feedback loop
 
-```text
-Dependency slow
-      ↓
-Timeout
-      ↓
-Retry
-      ↓
-More traffic
-      ↓
-Dependency slower
-      ↓
-More timeout
-      ↓
-More retry
+```mermaid
+flowchart TD
+    A["Dependency slow"] --> B["Timeout"]
+    B --> C["Retry"]
+    C --> D["More traffic"]
+    D --> E["Dependency slower"]
+    E --> F["More timeout"]
+    F --> G["More retry"]
+    G --> A
 ```
 
 ## Protection
@@ -654,12 +611,10 @@ This prevents synchronized retry waves.
 
 If dependency is clearly unhealthy:
 
-```text
-CLOSED
- ↓ failures
-OPEN
- ↓
-fail fast
+```mermaid
+stateDiagram-v2
+    CLOSED --> OPEN: failures
+    OPEN --> [*]: fail fast
 ```
 
 ### Idempotency
@@ -672,14 +627,11 @@ Critical for operations such as payment creation.
 
 ## Scenario
 
-```text
-Client
-  ↓
-Order Service
-  ↓
-Payment Service
-  ↓
-Payment DB
+```mermaid
+flowchart TD
+    A["Client"] --> B["Order Service"]
+    B --> C["Payment Service"]
+    C --> D["Payment DB"]
 ```
 
 Payment DB becomes slow:
@@ -690,24 +642,16 @@ Payment DB becomes slow:
 
 Then:
 
-```text
-Payment DB slow
-      ↓
-Payment Service slow
-      ↓
-Order threads wait
-      ↓
-Thread pool exhausted
-      ↓
-Request queue grows
-      ↓
-Order API slow
-      ↓
-Client timeout
-      ↓
-Client retry
-      ↓
-More traffic
+```mermaid
+flowchart TD
+    A["Payment DB slow"] --> B["Payment Service slow"]
+    B --> C["Order threads wait"]
+    C --> D["Thread pool exhausted"]
+    D --> E["Request queue grows"]
+    E --> F["Order API slow"]
+    F --> G["Client timeout"]
+    G --> H["Client retry"]
+    H --> I["More traffic"]
 ```
 
 ## Protection
@@ -742,12 +686,10 @@ Protects downstream capacity.
 
 If business semantics allow:
 
-```text
-Order API
-   ↓
-Kafka
-   ↓
-Payment Worker
+```mermaid
+flowchart TD
+    A["Order API"] --> B["Kafka"]
+    B --> C["Payment Worker"]
 ```
 
 The request thread isn't held while Payment executes.
@@ -775,10 +717,9 @@ Payment success requires:
 
 Naive:
 
-```text
-DB update
-   ↓
-Kafka publish
+```mermaid
+flowchart TD
+    A["DB update"] --> B["Kafka publish"]
 ```
 
 ### Failure A
@@ -805,15 +746,12 @@ This is the **dual-write problem**.
 
 Use:
 
-```text
-                 DB
-              /      \
-             ↓        ↓
-        payments   outbox_events
-                      ↓
-                publisher / CDC
-                      ↓
-                    Kafka
+```mermaid
+flowchart TD
+    DB["DB"] --> P["payments"]
+    DB --> O["outbox_events"]
+    O --> PUB["publisher / CDC"]
+    PUB --> K["Kafka"]
 ```
 
 Within one DB transaction:
@@ -847,12 +785,10 @@ Publisher retries later.
 
 Potential failure:
 
-```text
-Kafka publish SUCCESS
-      ↓
-publisher crashes
-      ↓
-outbox still PENDING
+```mermaid
+flowchart TD
+    A["Kafka publish SUCCESS"] --> B["publisher crashes"]
+    B --> C["outbox still PENDING"]
 ```
 
 Publisher retries.

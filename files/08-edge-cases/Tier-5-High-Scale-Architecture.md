@@ -67,12 +67,12 @@ The exact numbers are estimates, but they expose bottlenecks.
 
 Prefer:
 
-```text
-Load Balancer
- ├── App 1
- ├── App 2
- ├── App 3
- └── App 4
+```mermaid
+flowchart TD
+    LB["Load Balancer"] --> A1["App 1"]
+    LB --> A2["App 2"]
+    LB --> A3["App 3"]
+    LB --> A4["App 4"]
 ```
 
 If application servers are stateless, add/remove instances easily.
@@ -124,12 +124,10 @@ Health checks remove unhealthy instances.
 
 If 90% of reads are repeated:
 
-```text
-Application
- ↓
-Cache
- ↓ miss
-DB
+```mermaid
+flowchart TD
+    App["Application"] --> Cache["Cache"]
+    Cache -->|miss| DB["DB"]
 ```
 
 can dramatically reduce DB load.
@@ -148,12 +146,10 @@ But understand:
 
 If reads dominate:
 
-```text
-Primary
-   ↓ replication
- ┌─┴────────┐
- ↓          ↓
-Replica 1 Replica 2
+```mermaid
+flowchart TD
+    Primary["Primary"] -->|replication| R1["Replica 1"]
+    Primary -->|replication| R2["Replica 2"]
 ```
 
 Route suitable reads to replicas.
@@ -178,13 +174,12 @@ Options:
 
 Sharding distributes data:
 
-```text
-Users
- ↓
-shard(userId)
- ├── DB1
- ├── DB2
- └── DB3
+```mermaid
+flowchart TD
+    Users["Users"] --> Shard["shard(userId)"]
+    Shard --> DB1["DB1"]
+    Shard --> DB2["DB2"]
+    Shard --> DB3["DB3"]
 ```
 
 ---
@@ -348,14 +343,11 @@ An infinite queue only delays failure.
 
 For long-running work:
 
-```text
-API
- ↓
-Queue
- ↓
-Worker
- ↓
-DB/external service
+```mermaid
+flowchart TD
+    API["API"] --> Queue["Queue"]
+    Queue --> Worker["Worker"]
+    Worker --> DB["DB / external service"]
 ```
 
 API returns quickly.
@@ -379,12 +371,10 @@ Trade-off:
 
 For global static/cacheable content:
 
-```text
-User
- ↓
-CDN
- ↓ miss
-Origin
+```mermaid
+flowchart TD
+    User["User"] --> CDN["CDN"]
+    CDN -->|miss| Origin["Origin"]
 ```
 
 Reduces:
@@ -455,19 +445,16 @@ A system should have enough spare capacity to survive expected failures without 
 
 # 18. High-Scale Design Pattern
 
-```text
-                    CDN
-                     ↓
-                Load Balancer
-                     ↓
-             Stateless Services
-              /       |       \
-             ↓        ↓        ↓
-          Cache     Kafka    Rate Limit
-             ↓        ↓
-             DB     Workers
-             ↓
-      Read Replicas / Shards
+```mermaid
+flowchart TD
+    CDN["CDN"] --> LB["Load Balancer"]
+    LB --> SS["Stateless Services"]
+    SS --> Cache["Cache"]
+    SS --> Kafka["Kafka"]
+    SS --> RL["Rate Limit"]
+    Cache --> DB["DB"]
+    Kafka --> Workers["Workers"]
+    DB --> RR["Read Replicas / Shards"]
 ```
 
 Each component solves a different bottleneck.

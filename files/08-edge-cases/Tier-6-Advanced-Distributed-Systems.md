@@ -96,20 +96,21 @@ Quorums help coordinate reads/writes/leadership depending on the system.
 
 Multiple nodes may coordinate around one leader:
 
-```text
-Node A → Leader
-Node B → Follower
-Node C → Follower
+```mermaid
+flowchart TD
+    A["Node A"] -->|is| Leader["Leader"]
+    B["Node B"] -->|is| F1["Follower"]
+    C["Node C"] -->|is| F2["Follower"]
+    Leader -.coordinates.-> F1
+    Leader -.coordinates.-> F2
 ```
 
 If leader fails:
 
-```text
-A 💥
- ↓
-election
- ↓
-B becomes leader
+```mermaid
+flowchart TD
+    A["Node A (leader) 💥 crashes"] --> E["Election"]
+    E --> B["Node B becomes leader"]
 ```
 
 Leader election must avoid two leaders simultaneously.
@@ -120,14 +121,18 @@ Leader election must avoid two leaders simultaneously.
 
 Dangerous scenario:
 
-```text
-Network partition
-
-Group 1:
-A thinks leader
-
-Group 2:
-B thinks leader
+```mermaid
+flowchart TD
+    P["Network partition"] --> G1
+    P --> G2
+    subgraph G1["Group 1"]
+      A["Node A thinks it is leader"]
+    end
+    subgraph G2["Group 2"]
+      B["Node B thinks it is leader"]
+    end
+    A -->|accepts writes| W1["Writes"]
+    B -->|accepts writes| W2["Writes"]
 ```
 
 Both accept writes.
@@ -179,10 +184,12 @@ Only one worker processes job X.
 
 Architecture:
 
-```text
-Worker A ─┐
-Worker B ─┼→ lock
-Worker C ─┘
+```mermaid
+flowchart LR
+    A["Worker A"] --> L["Lock"]
+    B["Worker B"] --> L
+    C["Worker C"] --> L
+    L --> J["Job X (one owner)"]
 ```
 
 A lock needs:
@@ -271,10 +278,9 @@ This is why systems need retries, idempotency, and reconciliation.
 
 Consider:
 
-```text
-Service A
- ↓
-Service B
+```mermaid
+flowchart TD
+    A["Service A"] -->|request| B["Service B"]
 ```
 
 A sends request.
@@ -309,16 +315,20 @@ are critical.
 
 Possible:
 
-```text
-Region A
- ├── App
- ├── DB
- └── Kafka
-
-Region B
- ├── App
- ├── DB
- └── Kafka
+```mermaid
+flowchart TD
+    subgraph RA["Region A"]
+      A1["App"]
+      A2["DB"]
+      A3["Kafka"]
+    end
+    subgraph RB["Region B"]
+      B1["App"]
+      B2["DB"]
+      B3["Kafka"]
+    end
+    A2 -.replication.-> B2
+    A3 -.replication.-> B3
 ```
 
 Questions:
@@ -396,14 +406,10 @@ Replication alone is not a backup.
 
 When a dependency fails:
 
-```text
-Core functionality
-    ↓
-continue
-
-Non-critical feature
-    ↓
-disable
+```mermaid
+flowchart TD
+    Core["Core functionality"] --> Continue["Continue"]
+    NC["Non-critical feature"] --> Disable["Disable"]
 ```
 
 Example:
@@ -472,28 +478,21 @@ That last question is frequently forgotten.
 
 Example:
 
-```text
-Redis down
- ↓
-DB absorbs traffic
- ↓
-Redis recovers
- ↓
-millions of clients refill cache
- ↓
-Redis overloaded
+```mermaid
+flowchart TD
+    A["Redis down"] --> B["DB absorbs traffic"]
+    B --> C["Redis recovers"]
+    C --> D["Millions of clients refill cache"]
+    D --> E["Redis overloaded"]
 ```
 
 Or:
 
-```text
-Kafka recovers
- ↓
-huge consumer backlog
- ↓
-consumers scale aggressively
- ↓
-DB overloaded
+```mermaid
+flowchart TD
+    A["Kafka recovers"] --> B["Huge consumer backlog"]
+    B --> C["Consumers scale aggressively"]
+    C --> D["DB overloaded"]
 ```
 
 Recovery should be gradual and controlled.
@@ -555,14 +554,11 @@ What is the source of truth?
 
 ## 5. Architecture
 
-```text
-Client
- ↓
-Gateway
- ↓
-Services
- ↓
-Cache / DB / Kafka
+```mermaid
+flowchart TD
+    Client["Client"] --> Gateway["Gateway"]
+    Gateway --> Services["Services"]
+    Services --> Backend["Cache / DB / Kafka"]
 ```
 
 ## 6. Bottlenecks
@@ -626,23 +622,20 @@ Monitor:
 
 ## Final mental model
 
-```text
-                    SYSTEM DESIGN
-                         │
-          ┌──────────────┼──────────────┐
-          ↓              ↓              ↓
-        SCALE        CONSISTENCY     RESILIENCE
-          │              │              │
-       Cache          Txns          Timeout
-       Shard          Saga          Retry
-       Queue          Outbox        Circuit
-       Replica        Idempotency   Bulkhead
-          │              │              │
-          └──────────────┼──────────────┘
-                         ↓
-                    OBSERVABILITY
-                         ↓
-                    RECOVERY / DR
+```mermaid
+flowchart TD
+    SD["SYSTEM DESIGN"] --> SCALE["SCALE"]
+    SD --> CONS["CONSISTENCY"]
+    SD --> RES["RESILIENCE"]
+
+    SCALE --> SC["Cache / Shard / Queue / Replica"]
+    CONS --> CC["Txns / Saga / Outbox / Idempotency"]
+    RES --> RR["Timeout / Retry / Circuit / Bulkhead"]
+
+    SC --> OBS["OBSERVABILITY"]
+    CC --> OBS
+    RR --> OBS
+    OBS --> DR["RECOVERY / DR"]
 ```
 
 ## Memorize these principles

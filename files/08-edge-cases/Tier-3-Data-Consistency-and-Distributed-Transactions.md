@@ -138,14 +138,13 @@ Avoid arbitrary state updates.
 
 Example:
 
-```text
-CREATED
-  ↓
-PROCESSING
-  ↓
-SUCCESS
-  ↓
-REFUNDED
+```mermaid
+stateDiagram-v2
+    [*] --> CREATED
+    CREATED --> PROCESSING
+    PROCESSING --> SUCCESS
+    SUCCESS --> REFUNDED
+    REFUNDED --> [*]
 ```
 
 Reject invalid transitions:
@@ -163,14 +162,11 @@ State machines are powerful for payments, orders, shipments, subscriptions, etc.
 
 Suppose:
 
-```text
-Payment Service
-   ↓
-DB = SUCCESS
-   ↓
-Kafka
-   ↓
-Order Service
+```mermaid
+flowchart TD
+    PS["Payment Service"] --> DB["DB = SUCCESS"]
+    DB --> K["Kafka"]
+    K --> OS["Order Service"]
 ```
 
 For a short period:
@@ -253,15 +249,17 @@ Options:
 
 Conceptually:
 
-```text
-Coordinator
-   ↓
-Prepare
- ┌─┴────────┐
-DB1        DB2
- └─┬────────┘
-   ↓
-Commit
+```mermaid
+sequenceDiagram
+    participant C as Coordinator
+    participant DB1
+    participant DB2
+    C->>DB1: Prepare
+    C->>DB2: Prepare
+    DB1-->>C: Ready
+    DB2-->>C: Ready
+    C->>DB1: Commit
+    C->>DB2: Commit
 ```
 
 Advantages:
@@ -285,14 +283,11 @@ Break one distributed transaction into local transactions.
 
 Example:
 
-```text
-Create Order
-    ↓
-Reserve Inventory
-    ↓
-Charge Payment
-    ↓
-Confirm Order
+```mermaid
+flowchart TD
+    A["Create Order"] --> B["Reserve Inventory"]
+    B --> C["Charge Payment"]
+    C --> D["Confirm Order"]
 ```
 
 If Payment fails:
@@ -309,14 +304,11 @@ These are compensating actions.
 
 Services communicate through events:
 
-```text
-OrderCreated
-   ↓
-InventoryReserved
-   ↓
-PaymentCompleted
-   ↓
-OrderConfirmed
+```mermaid
+flowchart TD
+    A["OrderCreated"] --> B["InventoryReserved"]
+    B --> C["PaymentCompleted"]
+    C --> D["OrderConfirmed"]
 ```
 
 No central coordinator.
@@ -325,12 +317,12 @@ No central coordinator.
 
 A Saga orchestrator coordinates:
 
-```text
-Orchestrator
- ├── Create Order
- ├── Reserve Inventory
- ├── Charge Payment
- └── Confirm Order
+```mermaid
+flowchart TD
+    O["Orchestrator"] --> A["Create Order"]
+    O --> B["Reserve Inventory"]
+    O --> C["Charge Payment"]
+    O --> D["Confirm Order"]
 ```
 
 Easier to visualize/control, but adds a coordinator.
@@ -369,14 +361,14 @@ A compensation itself can fail, so compensation needs retries/idempotency too.
 
 When DB state and event publication must stay consistent:
 
-```text
-DB transaction
- ├── update business state
- └── insert outbox event
-             ↓
-        publisher/CDC
-             ↓
-           Kafka
+```mermaid
+flowchart TD
+    subgraph TX["DB transaction"]
+      US["Update business state"]
+      IE["Insert outbox event"]
+    end
+    IE --> P["Publisher / CDC"]
+    P --> K["Kafka"]
 ```
 
 This prevents:
@@ -481,12 +473,10 @@ Local DB = PENDING
 
 A reconciliation job can:
 
-```text
-find stale PENDING payments
-       ↓
-query source of truth
-       ↓
-repair local state
+```mermaid
+flowchart TD
+    A["Find stale PENDING payments"] --> B["Query source of truth"]
+    B --> C["Repair local state"]
 ```
 
 Reconciliation is a key production mechanism for financial systems.

@@ -1,4 +1,4 @@
-# 01 - Meeting Scheduler System Design Interview Guide
+# Meeting Scheduler — Staff/SSE System Design
 
 ## 1. Problem Overview
 
