@@ -10,9 +10,10 @@ The algorithm/data-structure half of interview prep: recognize the **pattern** b
 
 | # | Chapter | Patterns it teaches |
 |---|---------|---------------------|
-| 01 | Graphs | DFS, BFS, multi-source BFS, connected components, cycle detection, topological sort, Union-Find, boundary/reverse traversal, implicit graphs |
+| 01 | Graphs (Part 1) | DFS, BFS, multi-source BFS, connected components, cycle detection, topological sort, Union-Find, boundary/reverse traversal, implicit graphs |
+| 02 | Graphs (Part 2 — Advanced) | Dijkstra, Eulerian path (Hierholzer), MST (Prim/Kruskal), minimax Dijkstra, topological sort from constraints, bounded Bellman-Ford, state-space search |
 
-*(More DSA chapters — arrays & two pointers, sliding window, binary search, trees, heaps, dynamic programming, backtracking, intervals — can follow as `02-…`, `03-…`.)*
+*(More DSA chapters — arrays & two pointers, sliding window, binary search, trees, heaps, dynamic programming, backtracking, intervals — can follow as `03-…`, `04-…`.)*
 
 ---
 
