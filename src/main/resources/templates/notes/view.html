@@ -397,9 +397,13 @@
                 });
             }
 
-            // Transform Mermaid blocks & lazy-load 2.8MB Mermaid JS script only when diagrams exist in the note
+            // Transform Mermaid code blocks into containers, then render each one LAZILY as it
+            // scrolls into view. Rendering all 30-40 diagrams at once froze the main thread on
+            // mobile CPUs ("keeps loading"); this keeps the page interactive immediately and only
+            // downloads the (large) Mermaid script on first demand.
             const mermaidBlocks = article.querySelectorAll("pre code.language-mermaid");
             if (mermaidBlocks.length > 0) {
+                const containers = [];
                 mermaidBlocks.forEach(codeBlock => {
                     const pre = codeBlock.parentElement;
                     const div = document.createElement("div");
@@ -407,19 +411,53 @@
                     div.textContent = codeBlock.textContent;
                     div.onclick = function() { openDiagramModal(div); };
                     pre.replaceWith(div);
+                    containers.push(div);
                 });
-                
-                if (!window.mermaid) {
+
+                // Load the Mermaid script once, on first demand, with a guard against races.
+                let mermaidState = "idle"; // idle | loading | ready
+                const mermaidWaiters = [];
+                function ensureMermaid(cb) {
+                    if (mermaidState === "ready") { cb(); return; }
+                    mermaidWaiters.push(cb);
+                    if (mermaidState === "loading") return;
+                    mermaidState = "loading";
+                    const ready = function() {
+                        try {
+                            mermaid.initialize({ startOnLoad: false, theme: document.documentElement.classList.contains('dark') ? 'dark' : 'default' });
+                        } catch (e) {}
+                        mermaidState = "ready";
+                        mermaidWaiters.splice(0).forEach(fn => fn());
+                    };
+                    if (window.mermaid) { ready(); return; }
                     const mScript = document.createElement("script");
                     mScript.src = "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js";
-                    mScript.onload = function() {
-                        if (window.mermaid) {
-                            mermaid.initialize({ startOnLoad: true, theme: document.documentElement.classList.contains('dark') ? 'dark' : 'default' });
-                        }
-                    };
+                    mScript.onload = ready;
+                    mScript.onerror = function() { mermaidState = "idle"; }; // allow a later retry
                     document.body.appendChild(mScript);
+                }
+
+                function renderDiagram(div) {
+                    if (div.dataset.rendered) return;
+                    div.dataset.rendered = "1";
+                    ensureMermaid(function() {
+                        try { mermaid.run({ nodes: [div] }); }
+                        catch (e) { console.error("Mermaid render failed", e); }
+                    });
+                }
+
+                if ("IntersectionObserver" in window) {
+                    const io = new IntersectionObserver(function(entries) {
+                        entries.forEach(function(entry) {
+                            if (entry.isIntersecting) {
+                                io.unobserve(entry.target);
+                                renderDiagram(entry.target);
+                            }
+                        });
+                    }, { rootMargin: "400px 0px" }); // begin rendering just before it reaches the screen
+                    containers.forEach(div => io.observe(div));
                 } else {
-                    mermaid.initialize({ startOnLoad: true, theme: document.documentElement.classList.contains('dark') ? 'dark' : 'default' });
+                    containers.forEach(renderDiagram); // fallback for very old browsers
                 }
             }
 

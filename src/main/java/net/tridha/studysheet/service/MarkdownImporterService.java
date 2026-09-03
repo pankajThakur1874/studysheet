@@ -27,15 +27,18 @@ public class MarkdownImporterService {
     private final TopicRepository topicRepository;
     private final NoteService noteService;
     private final TagService tagService;
+    private final MarkdownService markdownService;
 
     public MarkdownImporterService(NoteRepository noteRepository,
                                    TopicRepository topicRepository,
                                    NoteService noteService,
-                                   TagService tagService) {
+                                   TagService tagService,
+                                   MarkdownService markdownService) {
         this.noteRepository = noteRepository;
         this.topicRepository = topicRepository;
         this.noteService = noteService;
         this.tagService = tagService;
+        this.markdownService = markdownService;
     }
 
     @Transactional
@@ -69,6 +72,7 @@ public class MarkdownImporterService {
             log.log(Level.SEVERE, "Error reading markdown files from " + baseDirPath, e);
         }
         log.info("Successfully imported/updated " + count + " markdown study guides from " + baseDirPath);
+        markdownService.clearCaches(); // note IDs/titles may have changed — drop stale rendered HTML & link map
         return count;
     }
 

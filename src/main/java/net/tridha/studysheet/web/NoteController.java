@@ -196,6 +196,24 @@ public class NoteController {
         return String.CASE_INSENSITIVE_ORDER.compare(t1, t2);
     };
 
+    public static final java.util.Comparator<net.tridha.studysheet.repo.NoteRepository.NoteSummary> NATURAL_SUMMARY_COMPARATOR = (n1, n2) -> {
+        String t1 = n1.getTitle() != null ? n1.getTitle() : "";
+        String t2 = n2.getTitle() != null ? n2.getTitle() : "";
+
+        Double num1 = extractLeadingNumber(t1);
+        Double num2 = extractLeadingNumber(t2);
+
+        if (num1 != null && num2 != null) {
+            int cmp = Double.compare(num1, num2);
+            if (cmp != 0) return cmp;
+        } else if (num1 != null) {
+            return -1;
+        } else if (num2 != null) {
+            return 1;
+        }
+        return String.CASE_INSENSITIVE_ORDER.compare(t1, t2);
+    };
+
     private static Double extractLeadingNumber(String text) {
         java.util.regex.Matcher m = java.util.regex.Pattern.compile("^(\\d+(?:\\.\\d+)?)").matcher(text.trim());
         if (m.find()) {
@@ -243,12 +261,14 @@ public class NoteController {
                 .sorted(NATURAL_TOPIC_COMPARATOR)
                 .toList();
 
-        List<Note> allNotes = new java.util.ArrayList<>(noteService.all());
-        java.util.Map<Topic, List<Note>> groupedNotes = new java.util.LinkedHashMap<>();
+        // Lightweight summaries (id/title/status/topicId only) — the sidebar never needs note
+        // content, so this avoids loading every guide's full markdown on each page view.
+        List<net.tridha.studysheet.repo.NoteRepository.NoteSummary> allSummaries = noteRepository.findAllSummaries();
+        java.util.Map<Topic, List<net.tridha.studysheet.repo.NoteRepository.NoteSummary>> groupedNotes = new java.util.LinkedHashMap<>();
         for (Topic t : sortedTopics) {
-            List<Note> notesInTopic = allNotes.stream()
-                    .filter(n -> n.getTopic() != null && n.getTopic().getId().equals(t.getId()))
-                    .sorted(NATURAL_NOTE_COMPARATOR)
+            List<net.tridha.studysheet.repo.NoteRepository.NoteSummary> notesInTopic = allSummaries.stream()
+                    .filter(s -> t.getId().equals(s.getTopicId()))
+                    .sorted(NATURAL_SUMMARY_COMPARATOR)
                     .toList();
             if (!notesInTopic.isEmpty()) {
                 groupedNotes.put(t, notesInTopic);

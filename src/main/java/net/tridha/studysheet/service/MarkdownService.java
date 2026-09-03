@@ -10,9 +10,11 @@ import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Converts Markdown source into HTML for display.
@@ -25,6 +27,14 @@ public class MarkdownService {
     private final Parser parser;
     private final HtmlRenderer renderer;
     private final NoteRepository noteRepository;
+
+    // Rendered-HTML cache keyed by a content signature — a note's markdown is parsed and
+    // link-resolved once, not on every page view (the big guides are thousands of lines).
+    // Editing a note changes its signature, so stale entries can never be served.
+    private final Map<String, String> htmlCache = new ConcurrentHashMap<>();
+
+    // The title -> note-id link map, built once and reused instead of a full-table scan per render.
+    private volatile Map<String, Long> linkMapCache;
 
     public MarkdownService(NoteRepository noteRepository) {
         this.noteRepository = noteRepository;
@@ -43,10 +53,27 @@ public class MarkdownService {
         if (markdown == null || markdown.isBlank()) {
             return "";
         }
+        String cacheKey = markdown.length() + ":" + markdown.hashCode();
+        String cached = htmlCache.get(cacheKey);
+        if (cached != null) {
+            return cached;
+        }
         String sanitized = sanitizeMermaid(markdown);
         Node document = parser.parse(sanitized);
         String rawHtml = renderer.render(document);
-        return resolveNoteLinks(rawHtml);
+        String resolved = resolveNoteLinks(rawHtml);
+        htmlCache.put(cacheKey, resolved);
+        return resolved;
+    }
+
+    /**
+     * Clears the rendered-HTML and link-map caches. Must be called whenever notes are
+     * added, removed, or re-imported (a clean sync reassigns note IDs, so previously
+     * cached /notes/{id} links would otherwise go stale).
+     */
+    public void clearCaches() {
+        htmlCache.clear();
+        linkMapCache = null;
     }
 
     /**
@@ -69,20 +96,55 @@ public class MarkdownService {
             return html;
         }
 
-        List<Note> notes;
-        try {
-            notes = noteRepository.findAll();
-        } catch (Exception e) {
+        Map<String, Long> linkMap = getLinkMap();
+        if (linkMap.isEmpty()) {
             return html;
         }
 
+        String result = html;
+        for (Map.Entry<String, Long> entry : linkMap.entrySet()) {
+            String key = entry.getKey();
+            Long noteId = entry.getValue();
+
+            result = result.replace("href=\"" + key + "\"", "href=\"/notes/" + noteId + "\"");
+            result = result.replace("href=\"./" + key + "\"", "href=\"/notes/" + noteId + "\"");
+
+            String codeTarget = "<code>" + key + "</code>";
+            if (result.contains(codeTarget)) {
+                result = result.replace(codeTarget,
+                        "<a href=\"/notes/" + noteId + "\" class=\"text-indigo-600 dark:text-indigo-400 font-semibold underline hover:text-indigo-800 transition\">" + key + " ↗</a>");
+            }
+        }
+
+        return result;
+    }
+
+    /** Returns the cached title/slug -> note-id link map, building it once on first use. */
+    private Map<String, Long> getLinkMap() {
+        Map<String, Long> map = linkMapCache;
+        if (map != null) {
+            return map;
+        }
+        map = buildLinkMap();
+        linkMapCache = map;
+        return map;
+    }
+
+    private Map<String, Long> buildLinkMap() {
+        List<NoteRepository.TitleView> notes;
+        try {
+            notes = noteRepository.findAllTitles();
+        } catch (Exception e) {
+            return Collections.emptyMap();
+        }
+
         if (notes.isEmpty()) {
-            return html;
+            return Collections.emptyMap();
         }
 
         Map<String, Long> linkMap = new HashMap<>();
 
-        for (Note note : notes) {
+        for (NoteRepository.TitleView note : notes) {
             Long id = note.getId();
             String title = note.getTitle().toLowerCase().trim();
 
@@ -133,21 +195,6 @@ public class MarkdownService {
             }
         }
 
-        String result = html;
-        for (Map.Entry<String, Long> entry : linkMap.entrySet()) {
-            String key = entry.getKey();
-            Long noteId = entry.getValue();
-
-            result = result.replace("href=\"" + key + "\"", "href=\"/notes/" + noteId + "\"");
-            result = result.replace("href=\"./" + key + "\"", "href=\"/notes/" + noteId + "\"");
-
-            String codeTarget = "<code>" + key + "</code>";
-            if (result.contains(codeTarget)) {
-                result = result.replace(codeTarget,
-                        "<a href=\"/notes/" + noteId + "\" class=\"text-indigo-600 dark:text-indigo-400 font-semibold underline hover:text-indigo-800 transition\">" + key + " ↗</a>");
-            }
-        }
-
-        return result;
+        return linkMap;
     }
 }

@@ -4,10 +4,11 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0"/>
     <title th:text="${title} + ' · StudySheet'">StudySheet</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Prebuilt Tailwind stylesheet (generated via tailwind.config.js). Replaces the Play CDN,
+         which compiled all CSS in the browser on every load and stalled mobile page loads. -->
+    <link rel="stylesheet" th:href="@{/css/app.tw.css}" href="/css/app.tw.css" />
     <script>
-        tailwind.config = { darkMode: 'class' };
-        // Apply saved theme before paint to avoid flash
+        // Apply saved theme before paint to avoid a flash of the wrong mode
         if (localStorage.getItem('theme') === 'dark' ||
             (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
@@ -16,7 +17,6 @@
     <!-- Preconnect & DNS Prefetch for Fast Mobile Loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
-    <link rel="dns-prefetch" href="https://cdn.tailwindcss.com" />
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
 
     <!-- Google Fonts: Space Grotesk (500,600), IBM Plex Sans (400,500), JetBrains Mono (400,500) -->
@@ -385,6 +385,27 @@
             backdrop-filter: blur(4px);
             pointer-events: none;
             z-index: 10;
+        }
+
+        /* Placeholder shown while a diagram is lazily rendering (keeps the raw Mermaid source
+           hidden and gives the container height so layout doesn't jump on mobile). */
+        .mermaid:not([data-processed="true"]) {
+            min-height: 96px;
+            position: relative;
+            color: transparent !important;
+            overflow: hidden !important;
+        }
+        .mermaid:not([data-processed="true"])::after {
+            content: "⏳ Rendering diagram…";
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #8A9099 !important;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 0.05em;
         }
 
         /* Crisp Mermaid Diagram Node & Label Contrast (Universal Browser Visibility) */

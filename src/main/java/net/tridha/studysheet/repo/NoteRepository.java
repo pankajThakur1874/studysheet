@@ -47,4 +47,24 @@ public interface NoteRepository extends JpaRepository<Note, Long> {
 
     @Query("select distinct n from Note n join n.tags t where t.id = :tagId order by n.updatedAt desc")
     List<Note> findByTagId(@Param("tagId") Long tagId);
+
+    /** id + title only — used to build the markdown cross-link map without loading note content. */
+    @Query("select n.id as id, n.title as title from Note n")
+    List<TitleView> findAllTitles();
+
+    /** Lightweight rows for the navigation sidebar — avoids loading contentMd for all notes per page view. */
+    @Query("select n.id as id, n.title as title, n.status as status, n.topic.id as topicId from Note n")
+    List<NoteSummary> findAllSummaries();
+
+    interface TitleView {
+        Long getId();
+        String getTitle();
+    }
+
+    interface NoteSummary {
+        Long getId();
+        String getTitle();
+        StudyStatus getStatus();
+        Long getTopicId();
+    }
 }

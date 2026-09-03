@@ -15,10 +15,13 @@ public class NoteService {
 
     private final NoteRepository noteRepository;
     private final NoteMirrorService noteMirrorService;
+    private final MarkdownService markdownService;
 
-    public NoteService(NoteRepository noteRepository, NoteMirrorService noteMirrorService) {
+    public NoteService(NoteRepository noteRepository, NoteMirrorService noteMirrorService,
+                       MarkdownService markdownService) {
         this.noteRepository = noteRepository;
         this.noteMirrorService = noteMirrorService;
+        this.markdownService = markdownService;
     }
 
     public List<Note> all() {
@@ -77,6 +80,7 @@ public class NoteService {
     public Note save(Note note) {
         Note saved = noteRepository.save(note);
         noteMirrorService.mirror(saved);   // Option C: portable .md mirror (best-effort)
+        markdownService.clearCaches();     // content/title/id set may have changed
         return saved;
     }
 
@@ -84,6 +88,7 @@ public class NoteService {
     public void delete(Long id) {
         noteRepository.deleteById(id);
         noteMirrorService.remove(id);
+        markdownService.clearCaches();     // a note (and its links) went away
     }
 
     @Transactional
