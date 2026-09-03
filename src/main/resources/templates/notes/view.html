@@ -71,7 +71,7 @@
                     <span class="text-[#B45309]" th:text="${notePositionFormatted}">02 of 18</span>
                 </div>
 
-                <!-- Reader Controls (The 3 controls) -->
+                <!-- Reader Controls -->
                 <div class="flex items-center gap-2.5">
                     <!-- Status Dropdown with Shape Icon -->
                     <form th:action="@{/notes/{id}/status(id=${note.id})}" method="post" class="inline-flex items-center">
@@ -171,6 +171,28 @@
     </div>
 </main>
 
+<!-- Floating Mobile TOC Drawer Button -->
+<button type="button" onclick="toggleMobileToc()" id="mobile-toc-fab"
+        class="lg:hidden fixed bottom-6 right-6 z-40 px-4 py-3 rounded-md bg-[#101828] dark:bg-[#FFB84D] text-[#FAF9F6] dark:text-[#0B0C0E] font-mono font-bold text-xs shadow-xl flex items-center gap-2 hover:opacity-90 active:scale-95 transition cursor-pointer">
+    <span>📑 On This Page</span>
+</button>
+
+<!-- Mobile TOC Drawer Overlay -->
+<div id="mobile-toc-drawer" class="lg:hidden fixed inset-0 z-50 hidden bg-black/75 backdrop-blur-xs flex justify-end">
+    <div class="w-4/5 max-w-xs h-full bg-[#FAF9F6] dark:bg-[#0B0C0E] p-6 overflow-y-auto shadow-2xl flex flex-col justify-between border-l border-[#DDD8CE] dark:border-[#1E2126]">
+        <div>
+            <div class="flex items-center justify-between pb-3 mb-4 border-b border-[#DDD8CE] dark:border-[#1E2126]">
+                <h3 class="font-mono font-bold text-xs uppercase tracking-widest text-[#101828] dark:text-[#EDEDE9]">📑 On This Page</h3>
+                <button type="button" onclick="toggleMobileToc()" class="text-[#8A9099] hover:text-[#101828] dark:hover:text-white text-lg font-bold">✕</button>
+            </div>
+            <nav id="mobile-toc-nav" class="font-sans text-xs space-y-2 text-[#4B5563] dark:text-[#A2A9B1]">
+                <p class="text-[#8A9099] italic font-mono text-xs">No headings in this guide.</p>
+            </nav>
+        </div>
+        <button type="button" onclick="toggleMobileToc()" class="w-full mt-6 py-2.5 rounded bg-[#EFEBE3] dark:bg-[#121418] text-xs font-mono font-semibold text-[#101828] dark:text-[#EDEDE9]">Close</button>
+    </div>
+</div>
+
 <!-- Full-Screen Diagram Lightbox Modal -->
 <div id="diagram-modal" class="fixed inset-0 z-[100] hidden bg-black/85 backdrop-blur-md flex flex-col items-center justify-center p-4 transition-all duration-300">
     <div class="absolute top-4 right-4 flex items-center gap-2 z-10 font-mono text-xs">
@@ -194,7 +216,7 @@
         const progressBar = document.getElementById("reading-progress-bar");
         if (progressBar) progressBar.style.width = scrolled + "%";
 
-        const headings = document.querySelectorAll("#note-article h1, #note-article h2, #note-article h3");
+        const headings = document.querySelectorAll("#note-article h2, #note-article h3");
         let currentHeadingId = "";
         headings.forEach(heading => {
             const top = heading.getBoundingClientRect().top;
@@ -204,11 +226,13 @@
         });
 
         if (currentHeadingId) {
-            document.querySelectorAll("#toc-nav a").forEach(link => {
+            document.querySelectorAll("#toc-nav a, #mobile-toc-nav a").forEach(link => {
                 if (link.getAttribute("href") === "#" + currentHeadingId) {
-                    link.classList.add("border-l-2", "border-[#B45309]", "pl-2", "font-semibold", "text-[#101828]");
+                    link.classList.add("border-[#B45309]", "text-[#101828]", "dark:text-white", "font-semibold");
+                    link.classList.remove("border-transparent", "text-[#6B7280]");
                 } else {
-                    link.classList.remove("border-l-2", "border-[#B45309]", "pl-2", "font-semibold", "text-[#101828]");
+                    link.classList.remove("border-[#B45309]", "text-[#101828]", "dark:text-white", "font-semibold");
+                    link.classList.add("border-transparent", "text-[#6B7280]");
                 }
             });
         }
@@ -230,7 +254,13 @@
         }
     }
 
-    // 3. Focus Mode Toggle
+    // 3. Mobile TOC Toggle
+    function toggleMobileToc() {
+        const drawer = document.getElementById("mobile-toc-drawer");
+        if (drawer) drawer.classList.toggle("hidden");
+    }
+
+    // 4. Focus Mode Toggle
     let focusModeOn = false;
     function toggleFocusMode() {
         focusModeOn = !focusModeOn;
@@ -249,7 +279,7 @@
         }
     }
 
-    // 4. Diagram Lightbox
+    // 5. Diagram Lightbox
     let currentDiagramScale = 1;
     function openDiagramModal(element) {
         const modal = document.getElementById("diagram-modal");
@@ -300,25 +330,60 @@
         if (e.key === "Escape") closeDiagramModal();
     });
 
-    // 5. Build TOC & Code Copy Buttons
+    // 6. Build TOC & Code Copy Buttons
     document.addEventListener("DOMContentLoaded", function() {
         const article = document.getElementById("note-article");
         const tocNav = document.getElementById("toc-nav");
         const tocEmpty = document.getElementById("toc-empty");
 
         if (article) {
-            const headings = article.querySelectorAll("h1, h2, h3");
+            const headings = article.querySelectorAll("h2, h3");
             if (headings.length > 0) {
                 if (tocEmpty) tocEmpty.remove();
+
+                const mobileTocNav = document.getElementById("mobile-toc-nav");
+                if (mobileTocNav) mobileTocNav.innerHTML = "";
+
+                let h2Count = 0;
                 headings.forEach((heading, idx) => {
                     if (!heading.id) {
-                        heading.id = "heading-" + idx;
+                        const slug = heading.textContent.trim().toLowerCase().replace(/[^\w]+/g, "-");
+                        heading.id = "heading-" + idx + "-" + slug;
                     }
+                    heading.style.scrollMarginTop = "90px";
+
+                    const isH2 = heading.tagName.toLowerCase() === "h2";
+                    if (isH2) h2Count++;
+
+                    const numStr = isH2 ? String(h2Count).padStart(2, '0') : "";
+
+                    // Desktop Link
                     const link = document.createElement("a");
                     link.href = "#" + heading.id;
-                    link.textContent = heading.textContent;
-                    link.className = heading.tagName === "H3" ? "block py-1 pl-3 text-[#6B7280] hover:text-[#101828]" : "block py-1 text-[#4B5563] hover:text-[#101828]";
+                    link.className = isH2 
+                        ? "flex items-baseline gap-2.5 py-1.5 pl-3 border-l-2 border-transparent text-[#6B7280] dark:text-[#9CA3AF] hover:text-[#101828] dark:hover:text-white transition font-sans text-xs" 
+                        : "flex items-baseline gap-2 py-1 pl-7 border-l-2 border-transparent text-[#8A9099] dark:text-[#6B7280] hover:text-[#101828] dark:hover:text-white transition font-sans text-[11.5px]";
+
+                    if (isH2) {
+                        const numSpan = document.createElement("span");
+                        numSpan.className = "font-mono text-[10px] text-[#B45309] shrink-0";
+                        numSpan.textContent = numStr;
+                        link.appendChild(numSpan);
+                    }
+
+                    const titleSpan = document.createElement("span");
+                    titleSpan.className = "truncate";
+                    titleSpan.textContent = heading.textContent;
+                    link.appendChild(titleSpan);
+
                     if (tocNav) tocNav.appendChild(link);
+
+                    // Mobile Link
+                    if (mobileTocNav) {
+                        const mLink = link.cloneNode(true);
+                        mLink.onclick = function() { toggleMobileToc(); };
+                        mobileTocNav.appendChild(mLink);
+                    }
                 });
             }
 
