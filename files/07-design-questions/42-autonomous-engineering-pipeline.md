@@ -337,5 +337,5 @@ TECH    = orchestrator (Temporal/LangGraph) + coding agent(31) + reviewer(28) + 
 
 ## 🔗 16. How This Connects
 - **Composes existing designs:** the coding stage is the **Coding Agent** (`31`), the review stage is the **PR Review Agent** (`28`), the fan-out is the **Multi-Agent Orchestrator** (`35`), model calls go through the **LLM Gateway** (`34`), and every stage is traced by the **Eval/Observability Platform** (`42`).
-- **Workflow-with-agentic-steps + evaluator-optimizer + HITL** = `Agentic-AI/` Ch 9, 16; **durable orchestration + idempotency** = `02-task_scheduler`.
+- **Workflow-with-agentic-steps + evaluator-optimizer + HITL** = `09-agentic-ai/` Ch 9, 16; **durable orchestration + idempotency** = `02-task_scheduler`.
 - **Objective gates as verifier** = the same "tests are the built-in evaluator" insight as the coding agent, applied across the whole SDLC.

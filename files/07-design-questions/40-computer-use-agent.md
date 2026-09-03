@@ -263,7 +263,7 @@ DYNAMIC UI: wait-to-settle · handle popups · re-screenshot before acting · ve
 ---
 
 ## 🔗 16. How This Connects
-- Perception-action loop = the **agent loop** (`Agentic-AI/03`) with vision observations and GUI-action tools (`Agentic-AI/04`).
-- Sandbox + least privilege + untrusted input = the **guardrails** chapter (`Agentic-AI/16`) and the sandbox posture of the **coding agent** (`31`).
+- Perception-action loop = the **agent loop** (`09-agentic-ai/03`) with vision observations and GUI-action tools (`09-agentic-ai/04`).
+- Sandbox + least privilege + untrusted input = the **guardrails** chapter (`09-agentic-ai/16`) and the sandbox posture of the **coding agent** (`31`).
 - Per-task isolated environments = the coding agent's worktree/sandbox isolation and multi-agent scaling (`35`).
 - Model calls flow through an **LLM gateway** (`34`); runs are traced by an **eval/observability platform** (`42`).

@@ -294,8 +294,8 @@ CACHE popular queries (Zipfian) · IDF is global (per-shard approx)
 ---
 
 ## 🔗 17. How This Connects
-- **Segments = LSM-trees** (DDIA Ch 3 / `Book-System-Design-Vol-1/07`) — same append-immutable + compaction idea.
+- **Segments = LSM-trees** (DDIA Ch 3 / `04-book-vol-1/07`) — same append-immutable + compaction idea.
 - **Scatter-gather + doc-vs-term partitioning** = the "partitioning secondary indexes" trade-off (DDIA / `02-distributed-data`).
-- **Two-phase retrieve → rerank** mirrors the **RAG reranker** (`33`, `Agentic-AI/06`).
+- **Two-phase retrieve → rerank** mirrors the **RAG reranker** (`33`, `09-agentic-ai/06`).
 - **Query cache + hot keys** reuse the caching lessons from `04-url_shortener` and the distributed-cache design (`39`).
 - Distinct from **autocomplete** (`10`), which is a *prefix/trie* problem, not ranked full-text.

@@ -1549,7 +1549,7 @@ More control and avoids aggressive permanent caching when destination semantics 
 
 # 📚 Book Cross-Reference
 
-**Source:** Alex Xu, *System Design Interview* Vol 1, Ch 8 — *Design a URL Shortener* (companion note `Book-System-Design-Vol-1/08-design-a-url-shortener.md`). This chapter already goes deeper than the book; two book details worth having in your back pocket:
+**Source:** Alex Xu, *System Design Interview* Vol 1, Ch 8 — *Design a URL Shortener* (companion note `04-book-vol-1/08-design-a-url-shortener.md`). This chapter already goes deeper than the book; two book details worth having in your back pocket:
 
 - **Short-code length math:** with 62 characters `[0-9a-zA-Z]`, find the smallest `n` where `62^n ≥ total URLs`. For ~365 billion URLs (100M/day × 10 yr), **`62^7 ≈ 3.5 trillion`**, so **length 7** suffices. Handy to state a concrete number.
 - **The second code-generation approach — hash + collision resolution:** hash the long URL (CRC32/MD5/SHA-1), take the first 7 chars, and **re-hash on collision** (append a fixed string and retry). A **bloom filter** avoids a DB lookup on every write to check existence. Trade-off vs your Base62/ID approach: hashing gives a **fixed length** but needs collision checks and isn't derived from a numeric ID; Base62-on-ID needs a unique-ID generator but **never collides** (at the cost of enumerable codes).

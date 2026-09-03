@@ -2,7 +2,7 @@
 
 **Difficulty:** Advanced (systems + agentic AI)
 **Interview importance:** ⭐ High and rising — "design an AI agent that does X" is now a standard round, and PR review is the canonical example.
-**Type:** LLM-agent system design (blends classic system design with the Agentic AI course — see `Agentic-AI/`)
+**Type:** LLM-agent system design (blends classic system design with the Agentic AI course — see `09-agentic-ai/`)
 
 ---
 
@@ -379,7 +379,7 @@ SCALE    → fan out big PRs to sub-agents by file/dimension, merge+dedup
 
 ## 🔗 19. How This Connects
 
-- **Agent loop / tools / context / guardrails / multi-agent** → the Agentic AI course (`files/Agentic-AI/` chapters 3, 4, 9, 10, 16, 19).
+- **Agent loop / tools / context / guardrails / multi-agent** → the Agentic AI course (`files/09-agentic-ai/` chapters 3, 4, 9, 10, 16, 19).
 - **Async queue + stateless workers + idempotency + retries** → `02-task_scheduler` and the reliability patterns in `05_payment_system`.
 - **Adversarial verification** → the evaluator-optimizer pattern; also how a rigorous human code review works.
 - **Least privilege + untrusted input** → the same security posture as the rate limiter's fail-safe design and any system taking external input.

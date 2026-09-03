@@ -1144,7 +1144,7 @@ Origin Shielding
 
 # 📚 Book Cross-Reference
 
-**Source:** Alex Xu, *System Design Interview* Vol 1, Ch 14 — *Design YouTube* (companion note `Book-System-Design-Vol-1/14-design-youtube.md`). This chapter is already thorough; the book adds detail on two areas:
+**Source:** Alex Xu, *System Design Interview* Vol 1, Ch 14 — *Design YouTube* (companion note `04-book-vol-1/14-design-youtube.md`). This chapter is already thorough; the book adds detail on two areas:
 
 - **Transcoding as a DAG pipeline.** A raw upload is transcoded into many formats/resolutions/bitrates by a pipeline modeled as a **Directed Acyclic Graph** of tasks (inspect → split → encode → thumbnail → merge …), run by a **preprocessor + DAG scheduler + resource manager (task/worker queues) + workers**. This is the "how" behind "app servers manage the video."
 - **Resumable, chunked upload.** Video is uploaded (and transcoded) in **GOP-aligned chunks**, so an interrupted upload **resumes** from the last chunk instead of restarting; clients get **pre-signed URLs** to upload directly to object storage.

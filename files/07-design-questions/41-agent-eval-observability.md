@@ -75,7 +75,7 @@ This is fundamentally a **data pipeline** (ingest → store → query → aggreg
 
 ## 5. Observability Half — Traces & Spans
 
-(Same trace/span model as `Agentic-AI/15`, productized.)
+(Same trace/span model as `09-agentic-ai/15`, productized.)
 
 ```mermaid
 flowchart TD
@@ -268,7 +268,7 @@ COST/PRIVACY:  sample prod traces (all errors, % success) · tiered retention ·
 ---
 
 ## 🔗 16. How This Connects
-- Productizes `Agentic-AI/14` (evaluation) and `15` (observability) into a platform.
+- Productizes `09-agentic-ai/14` (evaluation) and `15` (observability) into a platform.
 - It's the system that **operates every other agent** (28–41): it traces the PR-review/coding/voice/computer-use agents and gates their prompt/model changes.
 - The trace pipeline = a **streaming/OLAP** design like analytics (`14`) and metrics monitoring (`23`); parallel eval = map-reduce/orchestrator-workers (`35`).
 - Naturally co-located with the **LLM gateway** (`34`) — the gateway is where org-wide LLM calls are captured.

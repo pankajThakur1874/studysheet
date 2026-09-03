@@ -2,7 +2,7 @@
 
 **Difficulty:** Advanced (AI infrastructure)
 **Interview importance:** ⭐ High — the *platform* under all the agents; this is classic distributed-systems design (proxy, cache, rate limit, cost, reliability) wearing an AI hat. **Strongly favors a backend/staff engineer.**
-**Companion:** `files/Agentic-AI/` (Ch 17 cost/latency), and `01-distributed_rate_limiter`, `04-url_shortener` (caching), DDIA replication.
+**Companion:** `files/09-agentic-ai/` (Ch 17 cost/latency), and `01-distributed_rate_limiter`, `04-url_shortener` (caching), DDIA replication.
 
 ---
 
@@ -269,5 +269,5 @@ VALUE = cost visibility + caching + per-tenant budgets + provider-outage resilie
 
 ## 🔗 17. How This Connects
 - **This is the platform under every other agent design (28–35)** — they all call models *through* something like this.
-- Reuses your strongest files: rate limiting (`01`), caching/hot-key (`04`), replication/config-propagation (DDIA), and cost/latency (`Agentic-AI/17`).
-- The natural home for org-wide agent **observability** (`Agentic-AI/15`) and shared **guardrails** (`Agentic-AI/16`).
+- Reuses your strongest files: rate limiting (`01`), caching/hot-key (`04`), replication/config-propagation (DDIA), and cost/latency (`09-agentic-ai/17`).
+- The natural home for org-wide agent **observability** (`09-agentic-ai/15`) and shared **guardrails** (`09-agentic-ai/16`).

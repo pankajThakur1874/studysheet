@@ -2,7 +2,7 @@
 
 **Difficulty:** Advanced (agentic AI)
 **Interview importance:** ⭐ High — "design a system of collaborating agents"; tests when multi-agent is justified, orchestration, context isolation, and cost — and whether you know *not* to over-use it.
-**Companion:** `files/Agentic-AI/` (Ch 9 workflow patterns, Ch 10 multi-agent, Ch 19 context engineering)
+**Companion:** `files/09-agentic-ai/` (Ch 9 workflow patterns, Ch 10 multi-agent, Ch 19 context engineering)
 
 ---
 
@@ -280,6 +280,6 @@ BOUND = agent count + depth + budget · MEASURE = did it beat a single agent? (5
 ---
 
 ## 🔗 17. How This Connects
-- Workflow patterns (parallelization, orchestrator-workers, routing) → `Agentic-AI/09`; multi-agent mechanics → `Agentic-AI/10`; context isolation → `Agentic-AI/19`.
+- Workflow patterns (parallelization, orchestrator-workers, routing) → `09-agentic-ai/09`; multi-agent mechanics → `09-agentic-ai/10`; context isolation → `09-agentic-ai/19`.
 - This is the *scaling layer* for the other agent designs: the **Deep Research agent (29)**, **Coding agent (31)**, and **PR-review agent (28)** all fan out to sub-agents by sub-topic/file/dimension using exactly this pattern.
 - Async job + persisted state + idempotent dispatch → `02-task_scheduler` reliability patterns.

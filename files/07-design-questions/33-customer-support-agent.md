@@ -2,7 +2,7 @@
 
 **Difficulty:** Advanced (agentic AI)
 **Interview importance:** ⭐ **Critical** — the most common *enterprise* agent use-case; tests tools + RAG + human-in-the-loop + safety together.
-**Companion:** `files/Agentic-AI/` (Ch 4 tools, Ch 6 RAG, Ch 9 routing, Ch 16 guardrails/HITL)
+**Companion:** `files/09-agentic-ai/` (Ch 4 tools, Ch 6 RAG, Ch 9 routing, Ch 16 guardrails/HITL)
 
 ---
 
@@ -268,6 +268,6 @@ EVALS: resolution rate + escalation appropriateness + safety suite (in CI)
 ---
 
 ## 🔗 17. How This Connects
-- Tools, RAG, routing, guardrails/HITL → `Agentic-AI/` Ch 4, 6, 9, 16.
+- Tools, RAG, routing, guardrails/HITL → `09-agentic-ai/` Ch 4, 6, 9, 16.
 - Least privilege + untrusted input + gated actions → same safety posture as the PR-review agent (`28`) and payment system (`05`).
 - Stateless chat workers + idempotency → the chat system (`16`) and payment (`05`) reliability patterns.

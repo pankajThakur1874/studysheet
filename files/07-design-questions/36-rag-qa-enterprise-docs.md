@@ -2,7 +2,7 @@
 
 **Difficulty:** Advanced (agentic AI)
 **Interview importance:** ⭐ **Critical** — the most-built enterprise LLM system; tests retrieval *quality*, freshness, **access control**, and grounded citation. "Just use a vector DB" is the answer that fails.
-**Companion:** `files/Agentic-AI/` (Ch 6 RAG — the core, Ch 2 context, Ch 16 guardrails)
+**Companion:** `files/09-agentic-ai/` (Ch 6 RAG — the core, Ch 2 context, Ch 16 guardrails)
 
 ---
 
@@ -250,6 +250,6 @@ EVAL = retrieval recall@k + generation faithfulness + access-control gate (in CI
 ---
 
 ## 🔗 17. How This Connects
-- Core RAG mechanics, embeddings, rerankers, chunking → `Agentic-AI/06`; context limits → `Agentic-AI/02`; injection/guardrails → `Agentic-AI/16`.
+- Core RAG mechanics, embeddings, rerankers, chunking → `09-agentic-ai/06`; context limits → `09-agentic-ai/02`; injection/guardrails → `09-agentic-ai/16`.
 - The vector store is a datastore → replication/partitioning from DDIA and `18-consistent_hashing`.
 - The two-pipeline (offline build + online serve) shape mirrors `10-search_autocomplete` (offline trie build + online lookup) and analytics aggregation (`14`).

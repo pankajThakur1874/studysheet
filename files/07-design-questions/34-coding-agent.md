@@ -2,7 +2,7 @@
 
 **Difficulty:** Advanced (agentic AI)
 **Interview importance:** ⭐ High — the "design something like Claude Code / a SWE agent" round; the purest test of the agent loop + context engineering on a large codebase.
-**Companion:** `files/Agentic-AI/` (Ch 3 loop, Ch 4 tools, Ch 13 build-your-first-agent, Ch 16 guardrails, Ch 19 context engineering)
+**Companion:** `files/09-agentic-ai/` (Ch 3 loop, Ch 4 tools, Ch 13 build-your-first-agent, Ch 16 guardrails, Ch 19 context engineering)
 
 ---
 
@@ -278,6 +278,6 @@ EVAL = task success + no-collateral-damage (don't delete tests to pass)
 ---
 
 ## 🔗 17. How This Connects
-- The loop, tools, context engineering, guardrails → `Agentic-AI/` Ch 3, 4, 13, 16, 19. **Ch 13 builds a smaller version of this from scratch.**
+- The loop, tools, context engineering, guardrails → `09-agentic-ai/` Ch 3, 4, 13, 16, 19. **Ch 13 builds a smaller version of this from scratch.**
 - The PR-review agent (`28`) is the read-only sibling — same tools, no edits; this one edits + verifies.
 - Sandbox/least-privilege + untrusted input → the guardrails posture shared with `28`, `30`.

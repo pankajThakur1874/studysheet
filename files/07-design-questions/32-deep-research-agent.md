@@ -2,7 +2,7 @@
 
 **Difficulty:** Advanced (agentic AI)
 **Interview importance:** ⭐ High — the canonical "long-horizon agent" question; tests the agent loop, agentic RAG, context management, and verification all at once.
-**Companion:** the Agentic AI course in `files/Agentic-AI/` (Ch 3 loop, Ch 6 RAG, Ch 9 patterns, Ch 10 multi-agent, Ch 19 context engineering)
+**Companion:** the Agentic AI course in `files/09-agentic-ai/` (Ch 3 loop, Ch 6 RAG, Ch 9 patterns, Ch 10 multi-agent, Ch 19 context engineering)
 
 ---
 
@@ -289,7 +289,7 @@ SAFETY = fetched text is untrusted · COST = bound + cache + summarize
 ---
 
 ## 🔗 17. How This Connects
-- Agent loop, RAG, sub-agents, context engineering → `Agentic-AI/` Ch 3, 6, 10, 19.
+- Agent loop, RAG, sub-agents, context engineering → `09-agentic-ai/` Ch 3, 6, 10, 19.
 - Async job + stateless worker + resume → `02-task_scheduler`.
 - Verification pass → the evaluator pattern, same as the PR-review agent (`28`).
-- Untrusted-input posture → the guardrails chapter (`Agentic-AI/16`).
+- Untrusted-input posture → the guardrails chapter (`09-agentic-ai/16`).

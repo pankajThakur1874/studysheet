@@ -242,7 +242,7 @@ ALT: end-to-end speech-to-speech (lower latency, less tool control)
 ---
 
 ## 🔗 15. How This Connects
-- The **LLM stage is a normal agent** — tools/RAG/guardrails from `Agentic-AI/` Ch 4, 6, 16.
+- The **LLM stage is a normal agent** — tools/RAG/guardrails from `09-agentic-ai/` Ch 4, 6, 16.
 - **Stateful per-connection session + route-by-id** = the chat (`16`) / collaborative-editing (`37`) pattern.
-- **Latency budgeting + streaming** = the cost/latency chapter (`Agentic-AI/17`) taken to the real-time extreme.
+- **Latency budgeting + streaming** = the cost/latency chapter (`09-agentic-ai/17`) taken to the real-time extreme.
 - Under a fleet of calls, model calls go through an **LLM gateway** (`34`).

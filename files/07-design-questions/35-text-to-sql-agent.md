@@ -2,7 +2,7 @@
 
 **Difficulty:** Advanced (agentic AI)
 **Interview importance:** ⭐ High — "let users query the data warehouse in English" is a top enterprise ask; tests schema grounding, safety on a data store, and self-correction.
-**Companion:** `files/Agentic-AI/` (Ch 4 tools, Ch 6 RAG for schema, Ch 7 self-correction, Ch 16 guardrails)
+**Companion:** `files/09-agentic-ai/` (Ch 4 tools, Ch 6 RAG for schema, Ch 7 self-correction, Ch 16 guardrails)
 
 ---
 
@@ -261,6 +261,6 @@ CORRECTNESS = grounding + semantic layer + verification; EVAL = execution accura
 ---
 
 ## 🔗 17. How This Connects
-- Schema-RAG → the RAG chapter (`Agentic-AI/06`); self-correction → planning/reflection (`Agentic-AI/07`); guardrails/authz → (`Agentic-AI/16`).
+- Schema-RAG → the RAG chapter (`09-agentic-ai/06`); self-correction → planning/reflection (`09-agentic-ai/07`); guardrails/authz → (`09-agentic-ai/16`).
 - Read-replica + read-only role + limits → the same "protect the source of truth, scale reads separately" pattern as `04-url_shortener`, `03-ticket_booking`, and DDIA replication.
 - Directly relevant to an **analytics/event platform** background — the safety-on-a-data-store instincts transfer straight from OLAP system design.
