@@ -153,7 +153,7 @@
         <aside id="toc-sidebar" class="hidden lg:block sticky top-20 self-start transition-all duration-300 font-sans text-xs space-y-6">
             <div>
                 <div class="font-mono text-[10.5px] uppercase tracking-widest text-[#8A9099] mb-3 pb-2 border-b border-[#DDD8CE] dark:border-[#1E2126]">On this page</div>
-                <nav id="toc-nav" class="space-y-1">
+                <nav id="toc-nav" class="space-y-1 max-h-[calc(100vh-12rem)] overflow-y-auto scrollbar-thin pr-1">
                     <p id="toc-empty" class="text-[#8A9099] italic font-mono text-xs">No headings in this guide.</p>
                 </nav>
             </div>
@@ -216,7 +216,8 @@
         const progressBar = document.getElementById("reading-progress-bar");
         if (progressBar) progressBar.style.width = scrolled + "%";
 
-        const headings = document.querySelectorAll("#note-article h2, #note-article h3");
+        const allHeadings = Array.from(document.querySelectorAll("#note-article h1, #note-article h2, #note-article h3"));
+        const headings = allHeadings.filter((h, idx) => !(idx === 0 && h.tagName.toLowerCase() === "h1"));
         let currentHeadingId = "";
         headings.forEach(heading => {
             const top = heading.getBoundingClientRect().top;
@@ -228,8 +229,13 @@
         if (currentHeadingId) {
             document.querySelectorAll("#toc-nav a, #mobile-toc-nav a").forEach(link => {
                 if (link.getAttribute("href") === "#" + currentHeadingId) {
-                    link.classList.add("border-[#B45309]", "text-[#101828]", "dark:text-white", "font-semibold");
-                    link.classList.remove("border-transparent", "text-[#6B7280]");
+                    if (!link.classList.contains("border-[#B45309]")) {
+                        link.classList.add("border-[#B45309]", "text-[#101828]", "dark:text-white", "font-semibold");
+                        link.classList.remove("border-transparent", "text-[#6B7280]");
+                        if (link.parentElement && link.parentElement.id === "toc-nav") {
+                            link.scrollIntoView({ block: "nearest", behavior: "smooth" });
+                        }
+                    }
                 } else {
                     link.classList.remove("border-[#B45309]", "text-[#101828]", "dark:text-white", "font-semibold");
                     link.classList.add("border-transparent", "text-[#6B7280]");
@@ -337,14 +343,14 @@
         const tocEmpty = document.getElementById("toc-empty");
 
         if (article) {
-            const headings = article.querySelectorAll("h2, h3");
+            const allHeadings = Array.from(article.querySelectorAll("h1, h2, h3"));
+            const headings = allHeadings.filter((h, idx) => !(idx === 0 && h.tagName.toLowerCase() === "h1"));
             if (headings.length > 0) {
                 if (tocEmpty) tocEmpty.remove();
 
                 const mobileTocNav = document.getElementById("mobile-toc-nav");
                 if (mobileTocNav) mobileTocNav.innerHTML = "";
 
-                let h2Count = 0;
                 headings.forEach((heading, idx) => {
                     if (!heading.id) {
                         const slug = heading.textContent.trim().toLowerCase().replace(/[^\w]+/g, "-");
@@ -352,29 +358,33 @@
                     }
                     heading.style.scrollMarginTop = "90px";
 
-                    const isH2 = heading.tagName.toLowerCase() === "h2";
-                    if (isH2) h2Count++;
+                    const isMainSection = heading.tagName.toLowerCase() === "h1" || heading.tagName.toLowerCase() === "h2";
 
-                    const numStr = isH2 ? String(h2Count).padStart(2, '0') : "";
-
-                    // Desktop Link
                     const link = document.createElement("a");
                     link.href = "#" + heading.id;
-                    link.className = isH2 
-                        ? "flex items-baseline gap-2.5 py-1.5 pl-3 border-l-2 border-transparent text-[#6B7280] dark:text-[#9CA3AF] hover:text-[#101828] dark:hover:text-white transition font-sans text-xs" 
-                        : "flex items-baseline gap-2 py-1 pl-7 border-l-2 border-transparent text-[#8A9099] dark:text-[#6B7280] hover:text-[#101828] dark:hover:text-white transition font-sans text-[11.5px]";
+                    link.className = isMainSection 
+                        ? "flex items-baseline gap-1.5 py-1.5 pl-3 border-l-2 border-transparent text-[#101828] dark:text-[#EDEDE9] hover:text-[#B45309] transition font-sans text-xs min-w-0" 
+                        : "flex items-baseline gap-1.5 py-1 pl-6 border-l-2 border-transparent text-[#6B7280] dark:text-[#9CA3AF] hover:text-[#101828] dark:hover:text-white transition font-sans text-[11.5px] min-w-0";
 
-                    if (isH2) {
+                    const rawText = heading.textContent.trim();
+                    const match = rawText.match(/^(\d+(?:\.\d+)*[\.\s\-]*)(.*)/);
+
+                    if (match && match[1]) {
                         const numSpan = document.createElement("span");
-                        numSpan.className = "font-mono text-[10px] text-[#B45309] shrink-0";
-                        numSpan.textContent = numStr;
+                        numSpan.className = "font-mono font-bold text-[#B45309] shrink-0 mr-1";
+                        numSpan.textContent = match[1];
                         link.appendChild(numSpan);
-                    }
 
-                    const titleSpan = document.createElement("span");
-                    titleSpan.className = "truncate";
-                    titleSpan.textContent = heading.textContent;
-                    link.appendChild(titleSpan);
+                        const textSpan = document.createElement("span");
+                        textSpan.className = "font-bold text-[#101828] dark:text-white truncate";
+                        textSpan.textContent = match[2];
+                        link.appendChild(textSpan);
+                    } else {
+                        const textSpan = document.createElement("span");
+                        textSpan.className = isMainSection ? "font-semibold text-[#101828] dark:text-white truncate" : "truncate";
+                        textSpan.textContent = rawText;
+                        link.appendChild(textSpan);
+                    }
 
                     if (tocNav) tocNav.appendChild(link);
 
