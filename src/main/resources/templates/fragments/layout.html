@@ -333,6 +333,7 @@
         /* Images Fit Screen Container */
         .prose img {
             max-width: 100% !important;
+            max-height: 380px !important;
             height: auto !important;
             object-fit: contain;
             border-radius: 8px;
@@ -359,6 +360,7 @@
             cursor: pointer;
             width: 100% !important;
             max-width: 100% !important;
+            max-height: 380px !important;
             overflow: hidden !important;
             box-sizing: border-box !important;
             display: flex;
@@ -385,6 +387,7 @@
         .mermaid {
             width: 100% !important;
             max-width: 100% !important;
+            max-height: 360px !important;
             box-sizing: border-box !important;
             display: flex !important;
             justify-content: center !important;
@@ -393,12 +396,14 @@
         }
         .mermaid svg {
             max-width: 100% !important;
-            width: 100% !important;
+            max-height: 340px !important;
+            width: auto !important;
             height: auto !important;
             font-family: inherit !important;
             display: block !important;
             margin: 0 auto !important;
             box-sizing: border-box !important;
+            object-fit: contain !important;
         }
         .mermaid .node rect, 
         .mermaid .node circle, 

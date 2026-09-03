@@ -256,6 +256,15 @@
         const container = document.getElementById("modal-diagram-container");
         if (!modal || !container) return;
         container.innerHTML = element.innerHTML;
+
+        const modalSvg = container.querySelector("svg");
+        if (modalSvg) {
+            modalSvg.style.setProperty("max-height", "80vh", "important");
+            modalSvg.style.setProperty("max-width", "90vw", "important");
+            modalSvg.style.setProperty("width", "auto", "important");
+            modalSvg.style.setProperty("height", "auto", "important");
+        }
+
         currentDiagramScale = 1;
         modal.classList.remove("hidden");
         document.body.style.overflow = "hidden";
