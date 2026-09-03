@@ -1,171 +1,140 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/layout :: head('Notes')}"></head>
-<body class="bg-[#faf9f6] dark:bg-[#0B0C0E] text-slate-900 dark:text-[#EDEDE9] min-h-screen">
+<head th:replace="~{fragments/layout :: head('Guides')}"></head>
+<body class="bg-[#FAF9F6] dark:bg-[#0B0C0E] text-[#101828] dark:text-[#EDEDE9] min-h-screen font-sans">
 <nav th:replace="~{fragments/layout :: nav}"></nav>
 
-<main class="w-full max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 space-y-8">
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-stone-200 dark:border-[#1E2126]">
-        <div>
-            <h1 class="text-2xl sm:text-3xl font-medium tracking-tight text-slate-900 dark:text-[#EDEDE9]" th:text="${heading}">All Notes</h1>
-            <p class="font-mono text-xs text-slate-400 dark:text-[#6B7280] mt-1">Organized folder-wise by chapter & architecture topic</p>
+<!-- Resume Reading Strip (Single actionable progress display) -->
+<div th:if="${resumeNote != null}" class="border-b border-[#DDD8CE] dark:border-[#1E2126] bg-[#F5F2EC] dark:bg-[#121418] px-6 sm:px-10 py-7">
+    <div class="w-full max-w-[1800px] mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+        <div class="space-y-1.5 max-w-xl">
+            <div class="font-mono text-[10.5px] uppercase tracking-widest text-[#8A9099]">Pick up where you left off</div>
+            <h2 class="font-heading text-2xl sm:text-3xl font-semibold text-[#101828] dark:text-white leading-tight" th:text="${resumeNote.title}">Single-Leader Replication</h2>
+            <div class="font-mono text-xs text-[#8A9099]" th:text="${(resumeNote.topic != null ? resumeNote.topic.name : 'General') + ' · ' + resumeNote.estimatedReadingTime}">Distributed Data · 14 min</div>
         </div>
 
-        <!-- Resync Button & View Switcher Tabs -->
-        <div class="flex items-center gap-2.5 self-start sm:self-auto font-mono text-xs">
-            <form action="/topics/sync-files" method="post">
-                <button type="submit" title="Clean database notes and freshly import latest local files"
-                        class="px-3.5 py-2 rounded-md border border-stone-300 dark:border-[#2A2E35] bg-stone-100 dark:bg-[#121418] text-slate-800 dark:text-[#EDEDE9] hover:bg-stone-200 dark:hover:bg-[#1A1D23] font-medium transition flex items-center gap-1.5 cursor-pointer shadow-xs">
-                    <span>🔄 Clean & Sync</span>
-                </button>
-            </form>
-
-            <div class="flex items-center p-1 rounded-md bg-stone-200 dark:bg-[#121418] border border-stone-300 dark:border-[#1E2126]">
-                <button type="button" id="btn-folder-view" onclick="switchView('folder')"
-                        class="px-3 py-1.5 rounded-sm bg-white dark:bg-[#0B0C0E] text-amber-600 dark:text-[#FFB84D] font-bold shadow-xs transition cursor-pointer">
-                    📁 Folder View
-                </button>
-                <button type="button" id="btn-list-view" onclick="switchView('list')"
-                        class="px-3 py-1.5 rounded-sm text-slate-600 dark:text-[#6B7280] hover:text-slate-900 dark:hover:text-[#EDEDE9] transition cursor-pointer">
-                    📄 Flat List
-                </button>
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-8 w-full md:w-auto justify-between">
+            <div class="space-y-2 w-full sm:w-72">
+                <div class="flex items-baseline justify-between font-mono text-xs">
+                    <span class="uppercase tracking-widest text-[#8A9099] text-[10.5px]">Course mastery</span>
+                    <span class="font-bold text-[#101828] dark:text-white" th:text="${masteredCount}"><span class="text-[#8A9099] font-normal" th:text="'/' + ${totalCount}">/149</span></span>
+                </div>
+                <div class="flex gap-0.5 h-5">
+                    <div th:each="tickColor : ${masteryTicksColors}"
+                         class="h-full flex-1 rounded-xs"
+                         th:style="'background: ' + ${tickColor} + ';'"></div>
+                </div>
+                <div class="font-mono text-[10px] text-[#B0AAA0]" th:text="'Each mark is ~5 guides · ' + ${masteryPercentage} + '% complete'">Each mark is 5 guides · 8% complete</div>
             </div>
+
+            <a th:href="@{/notes/{id}(id=${resumeNote.id})}"
+               class="px-5 py-3 rounded bg-[#101828] dark:bg-[#FFB84D] text-[#FAF9F6] dark:text-[#0B0C0E] font-heading font-semibold text-sm hover:opacity-90 transition flex items-center gap-2 shrink-0">
+                <span>Resume reading</span>
+                <svg width="14" height="14" viewBox="0 0 12 12" fill="none"><path d="M4.4 2.6L7.8 6l-3.4 3.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
         </div>
     </div>
+</div>
+
+<main class="w-full max-w-[1800px] mx-auto px-6 sm:px-10 py-6 space-y-6">
 
     <!-- Flash Message Notification -->
-    <div th:if="${message != null}" class="p-4 rounded-md bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/60 text-xs font-mono text-amber-800 dark:text-[#FFB84D] flex items-center justify-between shadow-xs">
+    <div th:if="${message != null}" class="p-3.5 rounded border border-[#DDD8CE] bg-white dark:bg-[#121418] text-xs font-mono text-[#B45309] flex items-center justify-between shadow-xs">
         <span>✨ <span th:text="${message}">Message</span></span>
     </div>
 
-    <!-- Top Mastery Progress Tracker Banner -->
-    <div class="p-4 rounded-md border border-stone-200 dark:border-[#1E2126] bg-white dark:bg-[#0B0C0E] shadow-xs font-mono text-xs space-y-2">
-        <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <span class="text-amber-500 font-bold text-sm">📊 Global Course Mastery:</span>
-                <span class="font-bold text-slate-800 dark:text-[#EDEDE9]" th:text="${masteredCount} + ' / ' + ${totalCount} + ' Guides Mastered (' + ${masteryPercentage} + '%)'">0 / 0</span>
-            </div>
-            <span class="text-[11px] text-slate-400 dark:text-[#6B7280] hidden sm:inline">Keep scaling your system design knowledge!</span>
+    <!-- Filter Bar with 18px SVG Status Shapes -->
+    <div class="border-b border-[#DDD8CE] dark:border-[#1E2126] pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="flex items-center gap-1.5 font-sans text-xs overflow-x-auto pb-1 scrollbar-none">
+            <a href="/notes"
+               th:class="'px-3 py-1.5 rounded font-medium transition shrink-0 ' + ${selectedStatus == null and selectedBookmarked == null ? 'bg-[#101828] text-[#FAF9F6] dark:bg-[#FFB84D] dark:text-[#0B0C0E] font-semibold' : 'text-[#4B5563] dark:text-[#A2A9B1] hover:bg-[#EFEBE3] dark:hover:bg-[#1E2126]'}">
+                All <span class="font-mono text-[10.5px] text-[#8A9099] ml-1" th:text="${totalCount}">149</span>
+            </a>
+            <a href="/notes?status=IN_PROGRESS"
+               th:class="'px-3 py-1.5 rounded font-medium flex items-center gap-1.5 transition shrink-0 ' + ${selectedStatus?.name() == 'IN_PROGRESS' ? 'bg-[#101828] text-[#FAF9F6] font-semibold' : 'text-[#4B5563] dark:text-[#A2A9B1] hover:bg-[#EFEBE3] dark:hover:bg-[#1E2126]'}">
+                <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="#B45309" stroke-width="1.5"/><path d="M9 2a7 7 0 010 14z" fill="#B45309"/></svg>
+                <span>In progress</span>
+                <span class="font-mono text-[10.5px] text-[#8A9099]" th:text="${inProgressCount}">4</span>
+            </a>
+            <a href="/notes?status=NEEDS_REVIEW"
+               th:class="'px-3 py-1.5 rounded font-medium flex items-center gap-1.5 transition shrink-0 ' + ${selectedStatus?.name() == 'NEEDS_REVIEW' ? 'bg-[#101828] text-[#FAF9F6] font-semibold' : 'text-[#4B5563] dark:text-[#A2A9B1] hover:bg-[#EFEBE3] dark:hover:bg-[#1E2126]'}">
+                <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="#B45309" stroke-width="1.5"/><path d="M9 5.5v4.2" stroke="#B45309" stroke-width="1.7" stroke-linecap="round"/><circle cx="9" cy="12.4" r="1" fill="#B45309"/></svg>
+                <span>Needs review</span>
+                <span class="font-mono text-[10.5px] text-[#8A9099]" th:text="${needsReviewCount}">2</span>
+            </a>
+            <a href="/notes?status=MASTERED"
+               th:class="'px-3 py-1.5 rounded font-medium flex items-center gap-1.5 transition shrink-0 ' + ${selectedStatus?.name() == 'MASTERED' ? 'bg-[#101828] text-[#FAF9F6] font-semibold' : 'text-[#4B5563] dark:text-[#A2A9B1] hover:bg-[#EFEBE3] dark:hover:bg-[#1E2126]'}">
+                <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" fill="#101828"/><path d="M5.6 9.2l2.3 2.3 4.5-4.6" stroke="#FAF9F6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span>Mastered</span>
+                <span class="font-mono text-[10.5px] text-[#8A9099]" th:text="${masteredCount}">12</span>
+            </a>
+            <a href="/notes?bookmarked=true"
+               th:class="'px-3 py-1.5 rounded font-medium flex items-center gap-1.5 transition shrink-0 ' + ${selectedBookmarked == true ? 'bg-[#101828] text-[#FAF9F6] font-semibold' : 'text-[#4B5563] dark:text-[#A2A9B1] hover:bg-[#EFEBE3] dark:hover:bg-[#1E2126]'}">
+                <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M6 2.8h8a1 1 0 011 1v13.1l-5-3.3-5 3.3V3.8a1 1 0 011-1z" fill="#B45309" stroke="#B45309" stroke-width="1.4" stroke-linejoin="round"/></svg>
+                <span>Saved</span>
+                <span class="font-mono text-[10.5px] text-[#8A9099]" th:text="${bookmarkedCount}">9</span>
+            </a>
         </div>
-        <div class="w-full h-2 bg-stone-100 dark:bg-[#121418] rounded-full overflow-hidden border border-stone-200 dark:border-[#1E2126]">
-            <div class="h-full bg-amber-500 dark:bg-[#FFB84D] transition-all" th:style="'width: ' + ${masteryPercentage} + '%'"></div>
+
+        <div class="flex items-center gap-3 font-mono text-[10.5px] uppercase tracking-wider text-[#8A9099]">
+            <span>Grouped by folder</span>
+            <span class="text-[#CFC8BC]">|</span>
+            <form action="/topics/sync-files" method="post" class="inline">
+                <button type="submit" class="text-[#101828] dark:text-white hover:text-[#B45309] font-medium transition cursor-pointer">Sync files</button>
+            </form>
         </div>
     </div>
 
-    <!-- Status Filters -->
-    <div class="flex items-center gap-2 text-xs font-mono overflow-x-auto pb-1 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-none">
-        <span class="text-slate-400 dark:text-[#6B7280] font-medium uppercase tracking-wider shrink-0">Filter:</span>
-        <a href="/notes"
-           th:class="'px-3 py-1 rounded-sm border transition shrink-0 ' + ${selectedStatus == null and selectedBookmarked == null ? 'bg-slate-900 text-white dark:bg-[#FFB84D] dark:text-[#0B0C0E] border-transparent font-bold' : 'bg-stone-100 dark:bg-[#121418] text-slate-600 dark:text-[#A2A9B1] border-stone-200 dark:border-[#1E2126] hover:border-amber-500'}">All</a>
-        <a href="/notes?bookmarked=true"
-           th:class="'px-3 py-1 rounded-sm border transition shrink-0 ' + ${selectedBookmarked == true ? 'bg-amber-500 text-[#0B0C0E] dark:bg-[#FFB84D] border-transparent font-bold' : 'bg-stone-100 dark:bg-[#121418] text-slate-600 dark:text-[#A2A9B1] border-stone-200 dark:border-[#1E2126] hover:border-amber-500'}">Bookmarked 🔖</a>
-        <a th:each="st : ${statuses}" th:href="@{/notes(status=${st})}"
-           th:class="'px-3 py-1 rounded-sm border transition shrink-0 ' + ${selectedStatus == st ? 'ring-1 ring-[#FFB84D] font-bold ' + st.badgeCssClass : st.badgeCssClass}"
-           th:text="${st.displayName}">Status</a>
+    <!-- Empty State -->
+    <div th:if="${notes.isEmpty()}" class="font-mono text-xs text-[#8A9099] py-12 text-center border border-[#DDD8CE] dark:border-[#1E2126] rounded">
+        No notes found matching criteria. <a href="/notes" class="text-[#B45309] underline font-bold">Reset filters</a>
     </div>
 
-    <div th:if="${notes.isEmpty()}" class="text-slate-400 font-mono text-xs py-12 text-center border rounded-md bg-white dark:bg-[#0B0C0E] border-stone-200 dark:border-[#1E2126]">
-        No notes found matching criteria. Click <a href="/notes" class="text-amber-600 dark:text-[#FFB84D] underline">here</a> to reset filters.
-    </div>
-
-    <!-- 1. FOLDER-WISE VIEW (Default) -->
-    <div id="view-folder" class="space-y-8">
-        <div th:each="entry : ${groupedNotes}"
-             class="rounded-md border border-stone-200 dark:border-[#1E2126] bg-white dark:bg-[#0B0C0E] shadow-xs overflow-hidden transition">
-            
-            <!-- Folder Header Card -->
-            <div class="p-6 border-b border-stone-200 dark:border-[#1E2126] bg-stone-50/60 dark:bg-[#121418]/60 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div class="space-y-1">
-                    <div class="flex items-center gap-2">
-                        <span class="text-xl">📁</span>
-                        <h2 class="text-lg font-medium text-slate-900 dark:text-[#EDEDE9]" th:text="${entry.key.name}">Folder Name</h2>
+    <!-- Grouped Folder Sections -->
+    <div class="space-y-10 pb-12">
+        <div th:each="entry, folderStat : ${groupedNotes}" class="pt-4 space-y-2">
+            <!-- Folder Section Header -->
+            <div class="flex items-baseline justify-between gap-4 pb-2 border-b border-[#101828] dark:border-white">
+                <div class="flex items-baseline gap-3.5 min-w-0">
+                    <span class="font-mono text-xs font-bold text-[#B45309]" th:text="${#numbers.formatInteger(folderStat.index + 1, 2)}">01</span>
+                    <h2 class="font-heading text-xl font-semibold text-[#101828] dark:text-white tracking-tight" th:text="${entry.key.name}">Folder Name</h2>
+                    <span class="font-sans text-xs text-[#8A9099] truncate hidden sm:inline" th:text="${entry.key.description}">Description</span>
+                </div>
+                <div class="flex items-center gap-3 shrink-0">
+                    <div class="w-24 h-1 bg-[#DDD8CE] dark:bg-[#1E2126] overflow-hidden">
+                        <div class="h-full bg-[#B45309]"
+                             th:style="'width: ' + ${(folderPercentages != null and folderPercentages.get(entry.key) != null) ? folderPercentages.get(entry.key) : 0} + '%;'"></div>
                     </div>
-                    <p class="text-xs text-slate-500 dark:text-[#8E959D]" th:text="${entry.key.description != null and !entry.key.description.isBlank()} ? ${entry.key.description} : 'Folder containing study guides'"></p>
-                </div>
-                <div class="flex items-center gap-2 self-start sm:self-auto font-mono">
-                    <span class="px-3 py-1 rounded-sm bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-[#FFB84D] border border-amber-200 dark:border-amber-900/60 text-xs font-bold"
-                          th:text="${entry.value.size()} + ' Guides'">0 Guides</span>
+                    <span class="font-mono text-xs text-[#4B5563] dark:text-[#A2A9B1]"
+                          th:text="${(folderMasteredCounts != null and folderMasteredCounts.get(entry.key) != null) ? folderMasteredCounts.get(entry.key) : 0} + '/' + ${entry.value.size()}">4/18</span>
                 </div>
             </div>
 
-            <!-- Folder Document List -->
-            <div class="p-4 grid gap-3 sm:grid-cols-2">
+            <!-- Notes Table Rows -->
+            <div class="divide-y divide-[#E7E2D8] dark:divide-[#1E2126]">
                 <a th:each="n, stat : ${entry.value}" th:href="@{/notes/{id}(id=${n.id})}"
-                   class="block p-4 rounded-sm border border-stone-200 dark:border-[#1E2126] bg-white dark:bg-[#0B0C0E] hover:border-amber-500 dark:hover:border-[#FFB84D] hover:bg-stone-50/50 dark:hover:bg-[#121418]/50 transition">
-                    <div class="flex items-start justify-between gap-3">
-                        <div class="flex items-center gap-2.5 min-w-0">
-                            <span class="flex items-center justify-center w-5 h-5 rounded-full bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-[#FFB84D] font-mono text-xs font-bold shrink-0"
-                                  th:text="${stat.count}">1</span>
-                            <span class="text-xs font-semibold text-slate-900 dark:text-[#EDEDE9] truncate hover:text-amber-600 dark:hover:text-[#FFB84D] transition flex items-center gap-1">
-                                <span th:text="${n.title}">Note Title</span>
-                                <span th:if="${n.bookmarked}">🔖</span>
-                            </span>
-                        </div>
-                        <span th:class="'text-[0.65rem] px-2 py-0.5 rounded-sm border font-mono font-semibold shrink-0 ' + ${n.status.badgeCssClass}"
-                              th:text="${n.status.displayName}">Status</span>
-                    </div>
-                    <div class="flex items-center justify-between gap-2 mt-3 pt-2.5 border-t border-stone-100 dark:border-[#16191D] font-mono text-[0.7rem] text-slate-400 dark:text-[#6B7280]">
-                        <span th:text="'⏱️ ' + ${n.estimatedReadingTime}">Read time</span>
-                        <span th:text="'Updated ' + ${n.updatedAtDisplay}">date</span>
-                    </div>
+                   class="grid grid-cols-[22px_30px_1fr_100px_70px_20px] sm:grid-cols-[22px_34px_1fr_260px_96px_84px_20px] gap-3 sm:gap-4 items-center py-3 hover:bg-[#F5F2EC]/60 dark:hover:bg-[#121418]/60 transition px-1 rounded">
+                    <!-- Status Icon -->
+                    <span th:utext="${n.status.svgIconHtml}" class="shrink-0 flex items-center"></span>
+                    <!-- Row Index Number -->
+                    <span class="font-mono text-xs text-[#B0AAA0]" th:text="${#numbers.formatInteger(stat.index + 1, 2)}">01</span>
+                    <!-- Title -->
+                    <span class="font-sans text-[14.5px] font-medium text-[#101828] dark:text-[#EDEDE9] truncate tracking-tight hover:text-[#B45309] transition" th:text="${n.title}">Note Title</span>
+                    <!-- Blurb / Summary -->
+                    <span class="font-sans text-xs text-[#8A9099] truncate hidden sm:inline" th:text="${n.tags != null and !n.tags.isEmpty() ? '#' + n.tags[0].name : 'Study guide'}">blurb</span>
+                    <!-- Primary Tag -->
+                    <span class="font-mono text-[10.5px] text-[#8A9099]" th:text="${n.topic != null ? n.topic.name : 'General'}">tag</span>
+                    <!-- Read Time -->
+                    <span class="font-mono text-[10.5px] text-[#B0AAA0] text-right" th:text="${n.estimatedReadingTime}">14 min</span>
+                    <!-- Bookmark Saved Icon -->
+                    <span class="flex justify-end">
+                        <svg th:if="${n.bookmarked}" width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M6 2.8h8a1 1 0 011 1v13.1l-5-3.3-5 3.3V3.8a1 1 0 011-1z" fill="#B45309" stroke="#B45309" stroke-width="1.4" stroke-linejoin="round"/></svg>
+                    </span>
                 </a>
             </div>
         </div>
-    </div>
-
-    <!-- 2. FLAT LIST VIEW (Hidden by default) -->
-    <div id="view-list" class="hidden space-y-3">
-        <ul class="space-y-3">
-            <li th:each="n : ${notes}"
-                class="p-4 rounded-sm border border-stone-200 dark:border-[#1E2126] bg-white dark:bg-[#0B0C0E] hover:border-amber-500 dark:hover:border-[#FFB84D] transition">
-                <a th:href="@{/notes/{id}(id=${n.id})}" class="block">
-                    <div class="flex items-center justify-between gap-3">
-                        <div class="flex items-center gap-2 min-w-0">
-                            <span th:if="${n.pinned}" title="Pinned">📌</span>
-                            <span class="font-medium text-sm text-slate-900 dark:text-[#EDEDE9] truncate" th:text="${n.title}">Title</span>
-                        </div>
-                        <span th:class="'text-xs px-2.5 py-0.5 rounded-sm border font-mono font-semibold shrink-0 ' + ${n.status.badgeCssClass}"
-                              th:text="${n.status.displayName}">Status</span>
-                    </div>
-                    <div class="flex flex-wrap items-center gap-2 mt-2.5 font-mono text-xs text-slate-400 dark:text-[#6B7280]">
-                        <span th:if="${n.topic != null}"
-                              class="px-2 py-0.5 rounded-sm bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-[#FFB84D] font-medium"
-                              th:text="${n.topic.name}">Topic</span>
-                        <span class="px-2 py-0.5 rounded-sm bg-stone-100 dark:bg-[#121418] text-slate-600 dark:text-[#A2A9B1] font-medium"
-                              th:text="'⏱️ ' + ${n.estimatedReadingTime}">⏱️ 2 min read</span>
-                        <span th:each="tag : ${n.tags}"
-                              class="px-2 py-0.5 rounded-sm bg-stone-100 dark:bg-[#121418]"
-                              th:text="'#' + ${tag.name}">#tag</span>
-                        <span th:text="'· updated ' + ${n.updatedAtDisplay}">date</span>
-                    </div>
-                </a>
-            </li>
-        </ul>
     </div>
 </main>
-
-<script>
-    function switchView(mode) {
-        const folderView = document.getElementById('view-folder');
-        const listView = document.getElementById('view-list');
-        const btnFolder = document.getElementById('btn-folder-view');
-        const btnList = document.getElementById('btn-list-view');
-
-        if (mode === 'folder') {
-            folderView.classList.remove('hidden');
-            listView.classList.add('hidden');
-
-            btnFolder.className = 'px-3 py-1.5 rounded-sm bg-white dark:bg-[#0B0C0E] text-amber-600 dark:text-[#FFB84D] font-bold shadow-xs transition cursor-pointer';
-            btnList.className = 'px-3 py-1.5 rounded-sm text-slate-600 dark:text-[#6B7280] hover:text-slate-900 dark:hover:text-[#EDEDE9] transition cursor-pointer';
-        } else {
-            folderView.classList.add('hidden');
-            listView.classList.remove('hidden');
-
-            btnList.className = 'px-3 py-1.5 rounded-sm bg-white dark:bg-[#0B0C0E] text-amber-600 dark:text-[#FFB84D] font-bold shadow-xs transition cursor-pointer';
-            btnFolder.className = 'px-3 py-1.5 rounded-sm text-slate-600 dark:text-[#6B7280] hover:text-slate-900 dark:hover:text-[#EDEDE9] transition cursor-pointer';
-        }
-    }
-</script>
 
 <div th:replace="~{fragments/layout :: scripts}"></div>
 </body>

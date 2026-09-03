@@ -24,6 +24,7 @@ RUN mkdir -p /app/data
 # Default port
 EXPOSE 9990
 ENV PORT=9990
+ENV CLEAN_ON_STARTUP=true
 
 # Launch Spring Boot app
 ENTRYPOINT ["sh", "-c", "java -Dserver.port=${PORT} -Djava.security.egd=file:/dev/./urandom -jar app.jar"]

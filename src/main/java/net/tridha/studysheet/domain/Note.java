@@ -162,13 +162,18 @@ public class Note {
     }
 
     @Transient
-    public String getEstimatedReadingTime() {
+    public int getEstimatedReadingTimeMinutes() {
         int words = getWordCount();
         if (words == 0) {
-            return "< 1 min read";
+            return 1;
         }
-        int minutes = (int) Math.ceil((double) words / 200);
-        return minutes <= 1 ? "1 min read" : minutes + " min read";
+        return Math.max(1, (int) Math.ceil((double) words / 200));
+    }
+
+    @Transient
+    public String getEstimatedReadingTime() {
+        int minutes = getEstimatedReadingTimeMinutes();
+        return minutes <= 1 ? "1 min" : minutes + " min";
     }
 
     @Override

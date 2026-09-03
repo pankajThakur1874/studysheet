@@ -74,27 +74,109 @@ public class NoteController {
                     .toList();
             model.addAttribute("notes", sortedNotes);
 
-            java.util.Map<Topic, java.util.List<Note>> groupedNotes = sortedNotes.stream()
-                    .collect(java.util.stream.Collectors.groupingBy(
-                            n -> n.getTopic() != null ? n.getTopic() : new Topic("General Notes", "Uncategorized study guides"),
-                            java.util.LinkedHashMap::new,
-                            java.util.stream.Collectors.toList()
-                    ));
+            // Group notes by Topic, sorted strictly by NATURAL_TOPIC_COMPARATOR (folder prefix order)
+            java.util.List<Topic> sortedTopics = topicRepository.findAllByOrderByNameAsc().stream()
+                    .sorted(NATURAL_TOPIC_COMPARATOR)
+                    .toList();
+
+            java.util.Map<Topic, java.util.List<Note>> groupedNotes = new java.util.LinkedHashMap<>();
+            for (Topic topic : sortedTopics) {
+                java.util.List<Note> notesInTopic = activeNotes.stream()
+                        .filter(n -> n.getTopic() != null && n.getTopic().getId().equals(topic.getId()))
+                        .sorted(NATURAL_NOTE_COMPARATOR)
+                        .toList();
+                if (!notesInTopic.isEmpty()) {
+                    groupedNotes.put(topic, notesInTopic);
+                }
+            }
+
+            java.util.List<Note> uncategorized = activeNotes.stream()
+                    .filter(n -> n.getTopic() == null)
+                    .sorted(NATURAL_NOTE_COMPARATOR)
+                    .toList();
+            if (!uncategorized.isEmpty()) {
+                groupedNotes.put(new Topic("General Notes", "Uncategorized study guides"), uncategorized);
+            }
+
             model.addAttribute("groupedNotes", groupedNotes);
+
+            java.util.Map<Topic, Long> folderMasteredCounts = new java.util.LinkedHashMap<>();
+            java.util.Map<Topic, Integer> folderPercentages = new java.util.LinkedHashMap<>();
+            for (java.util.Map.Entry<Topic, java.util.List<Note>> entry : groupedNotes.entrySet()) {
+                long mCount = entry.getValue().stream().filter(n -> n.getStatus() == StudyStatus.MASTERED).count();
+                int pct = entry.getValue().size() > 0 ? (int) Math.round(((double) mCount / entry.getValue().size()) * 100) : 0;
+                folderMasteredCounts.put(entry.getKey(), mCount);
+                folderPercentages.put(entry.getKey(), pct);
+            }
+            model.addAttribute("folderMasteredCounts", folderMasteredCounts);
+            model.addAttribute("folderPercentages", folderPercentages);
         }
 
         long totalCount = noteService.countAll();
         long masteredCount = noteService.countByStatus(StudyStatus.MASTERED);
+        long inProgressCount = noteService.countByStatus(StudyStatus.IN_PROGRESS);
+        long needsReviewCount = noteService.countByStatus(StudyStatus.NEEDS_REVIEW);
+        long toStudyCount = noteService.countByStatus(StudyStatus.TO_STUDY);
+        long bookmarkedCount = noteService.bookmarked().size();
         int percentage = totalCount > 0 ? (int) Math.round(((double) masteredCount / totalCount) * 100) : 0;
+
+        // Resume reading note: pick first IN_PROGRESS, or NEEDS_REVIEW, or TO_STUDY
+        List<Note> allAll = noteService.all();
+        Note resumeNote = allAll.stream()
+                .filter(n -> n.getStatus() == StudyStatus.IN_PROGRESS)
+                .findFirst()
+                .orElseGet(() -> allAll.stream()
+                        .filter(n -> n.getStatus() == StudyStatus.NEEDS_REVIEW || n.getStatus() == StudyStatus.TO_STUDY)
+                        .findFirst()
+                        .orElse(!allAll.isEmpty() ? allAll.get(0) : null));
+
+        // 30 Ticks Mastery Distribution Bar
+        java.util.List<String> masteryTicksColors = new java.util.ArrayList<>();
+        int masteredTicks = totalCount > 0 ? (int) Math.round(((double) masteredCount / totalCount) * 30) : 0;
+        int inProgressTicks = totalCount > 0 ? (int) Math.round(((double) (inProgressCount + needsReviewCount) / totalCount) * 30) : 0;
+        for (int i = 0; i < 30; i++) {
+            if (i < masteredTicks) {
+                masteryTicksColors.add("#101828");
+            } else if (i < masteredTicks + inProgressTicks) {
+                masteryTicksColors.add("#B45309");
+            } else {
+                masteryTicksColors.add("#DDD8CE");
+            }
+        }
+
         model.addAttribute("totalCount", totalCount);
         model.addAttribute("masteredCount", masteredCount);
+        model.addAttribute("inProgressCount", inProgressCount);
+        model.addAttribute("needsReviewCount", needsReviewCount);
+        model.addAttribute("toStudyCount", toStudyCount);
+        model.addAttribute("bookmarkedCount", bookmarkedCount);
         model.addAttribute("masteryPercentage", percentage);
+        model.addAttribute("resumeNote", resumeNote);
+        model.addAttribute("masteryTicksColors", masteryTicksColors);
 
         model.addAttribute("q", q);
         model.addAttribute("selectedStatus", status);
         model.addAttribute("statuses", StudyStatus.values());
         return "notes/list";
     }
+
+    public static final java.util.Comparator<Topic> NATURAL_TOPIC_COMPARATOR = (t1, t2) -> {
+        String name1 = t1 != null && t1.getName() != null ? t1.getName() : "";
+        String name2 = t2 != null && t2.getName() != null ? t2.getName() : "";
+
+        Double num1 = extractLeadingNumber(name1);
+        Double num2 = extractLeadingNumber(name2);
+
+        if (num1 != null && num2 != null) {
+            int cmp = Double.compare(num1, num2);
+            if (cmp != 0) return cmp;
+        } else if (num1 != null) {
+            return -1;
+        } else if (num2 != null) {
+            return 1;
+        }
+        return String.CASE_INSENSITIVE_ORDER.compare(name1, name2);
+    };
 
     public static final java.util.Comparator<Note> NATURAL_NOTE_COMPARATOR = (n1, n2) -> {
         String t1 = n1.getTitle() != null ? n1.getTitle() : "";
@@ -154,15 +236,24 @@ public class NoteController {
         Note previousNote = (index > 0) ? peerNotes.get(index - 1) : null;
         Note nextNote = (index >= 0 && index < peerNotes.size() - 1) ? peerNotes.get(index + 1) : null;
 
-        // Group ALL notes for the Left Course Navigation Sidebar
+        String notePositionFormatted = String.format("%02d of %02d", index >= 0 ? index + 1 : 1, Math.max(peerNotes.size(), 1));
+
+        // Group ALL notes for the Left Course Navigation Sidebar, ordered by NATURAL_TOPIC_COMPARATOR
+        List<Topic> sortedTopics = topicRepository.findAllByOrderByNameAsc().stream()
+                .sorted(NATURAL_TOPIC_COMPARATOR)
+                .toList();
+
         List<Note> allNotes = new java.util.ArrayList<>(noteService.all());
-        allNotes.sort(NATURAL_NOTE_COMPARATOR);
-        java.util.Map<Topic, List<Note>> groupedNotes = allNotes.stream()
-                .collect(java.util.stream.Collectors.groupingBy(
-                        n -> n.getTopic() != null ? n.getTopic() : new Topic("General Notes", "Uncategorized study guides"),
-                        java.util.LinkedHashMap::new,
-                        java.util.stream.Collectors.toList()
-                ));
+        java.util.Map<Topic, List<Note>> groupedNotes = new java.util.LinkedHashMap<>();
+        for (Topic t : sortedTopics) {
+            List<Note> notesInTopic = allNotes.stream()
+                    .filter(n -> n.getTopic() != null && n.getTopic().getId().equals(t.getId()))
+                    .sorted(NATURAL_NOTE_COMPARATOR)
+                    .toList();
+            if (!notesInTopic.isEmpty()) {
+                groupedNotes.put(t, notesInTopic);
+            }
+        }
 
         long totalCount = noteService.countAll();
         long masteredCount = noteService.countByStatus(StudyStatus.MASTERED);
@@ -171,6 +262,7 @@ public class NoteController {
         model.addAttribute("note", note);
         model.addAttribute("previousNote", previousNote);
         model.addAttribute("nextNote", nextNote);
+        model.addAttribute("notePositionFormatted", notePositionFormatted);
         model.addAttribute("groupedNotes", groupedNotes);
         model.addAttribute("totalCount", totalCount);
         model.addAttribute("masteredCount", masteredCount);

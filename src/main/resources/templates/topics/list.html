@@ -1,50 +1,78 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/layout :: head('Topics')}"></head>
-<body class="bg-[#faf9f6] dark:bg-[#0B0C0E] text-slate-900 dark:text-[#EDEDE9] min-h-screen">
+<head th:replace="~{fragments/layout :: head('Syllabus')}"></head>
+<body class="bg-[#FAF9F6] dark:bg-[#0B0C0E] text-[#101828] dark:text-[#EDEDE9] min-h-screen font-sans">
 <nav th:replace="~{fragments/layout :: nav}"></nav>
 
-<main class="max-w-6xl mx-auto px-4 sm:px-6 py-8 space-y-8">
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-stone-200 dark:border-[#1E2126]">
-        <div>
-            <h1 class="text-2xl sm:text-3xl font-medium tracking-tight text-slate-900 dark:text-[#EDEDE9]">🗂️ Study Topics</h1>
-            <p class="font-mono text-xs text-slate-400 dark:text-[#6B7280] mt-1">Organize your study guides into subject categories</p>
+<main class="w-full max-w-[1800px] mx-auto px-6 sm:px-12 py-10 space-y-8">
+    <!-- Header with Summary Metrics -->
+    <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-6 border-b border-[#101828] dark:border-white">
+        <div class="max-w-xl space-y-2">
+            <h1 class="font-heading text-3xl sm:text-4xl font-semibold text-[#101828] dark:text-white tracking-tight">The syllabus</h1>
+            <p class="font-sans text-base text-[#6B7280] dark:text-[#A2A9B1] leading-relaxed">
+                Ten parts, in the order they build on each other. Foundations before distribution, distribution before the interview questions that assume both.
+            </p>
         </div>
-        <form action="/topics/sync-files" method="post">
-            <button type="submit" class="font-mono text-xs font-semibold px-3.5 py-2 rounded-sm border border-stone-300 dark:border-[#2A2E35] bg-stone-100 dark:bg-[#121418] text-slate-800 dark:text-[#EDEDE9] hover:bg-stone-200 dark:hover:bg-[#1A1D23] transition shadow-xs flex items-center gap-1.5 cursor-pointer">
-                <span>🔄 Sync Local Files</span>
-            </button>
-        </form>
+
+        <!-- Metric Summary Boxes -->
+        <div class="flex flex-wrap gap-8 shrink-0">
+            <div>
+                <div class="font-mono text-[10.5px] uppercase tracking-widest text-[#8A9099]">Mastered</div>
+                <div class="font-heading text-3xl font-semibold text-[#101828] dark:text-white" th:text="${masteredCount}">12</div>
+            </div>
+            <div>
+                <div class="font-mono text-[10.5px] uppercase tracking-widest text-[#8A9099]">In progress</div>
+                <div class="font-heading text-3xl font-semibold text-[#B45309]" th:text="${inProgressCount}">4</div>
+            </div>
+            <div>
+                <div class="font-mono text-[10.5px] uppercase tracking-widest text-[#8A9099]">Remaining</div>
+                <div class="font-heading text-3xl font-semibold text-[#101828] dark:text-white" th:text="${remainingCount}">133</div>
+            </div>
+            <div>
+                <div class="font-mono text-[10.5px] uppercase tracking-widest text-[#8A9099]">Est. left</div>
+                <div class="font-heading text-3xl font-semibold text-[#101828] dark:text-white" th:text="${totalEstHoursLeft}">27h</div>
+            </div>
+        </div>
     </div>
 
-    <!-- Alert / Message -->
-    <div th:if="${message}" class="p-4 rounded-md bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/60 font-mono text-amber-800 dark:text-[#FFB84D] text-xs font-medium">
+    <!-- Alert Message -->
+    <div th:if="${message}" class="p-4 rounded border border-[#DDD8CE] bg-white dark:bg-[#121418] font-mono text-[#B45309] text-xs font-medium">
         <span th:text="${message}">Message</span>
     </div>
 
     <!-- Empty State -->
-    <div th:if="${topics.isEmpty()}" class="font-mono text-slate-400 text-center py-12 border rounded-md bg-white dark:bg-[#0B0C0E] border-stone-200 dark:border-[#1E2126] text-xs">
-        No study topics loaded yet. Click <strong>"🔄 Sync Local Files"</strong> above to import your Markdown study guides!
+    <div th:if="${topics.isEmpty()}" class="font-mono text-[#8A9099] text-center py-12 border border-[#DDD8CE] rounded text-xs">
+        No study topics loaded yet. Click <strong>"Sync Files"</strong> to import your study guides.
     </div>
 
-    <!-- Topics Grid Cards -->
-    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <div th:each="t : ${topics}"
-             class="group relative flex flex-col justify-between p-6 rounded-md border border-stone-200 dark:border-[#1E2126] bg-white dark:bg-[#0B0C0E] hover:border-amber-500 dark:hover:border-[#FFB84D] hover:bg-stone-50/50 dark:hover:bg-[#121418]/50 transition-all duration-200">
-            <a th:href="@{/notes(topicId=${t.id})}" class="block space-y-3">
-                <div class="flex items-center justify-between gap-2">
-                    <h3 class="font-medium text-lg text-slate-900 dark:text-[#EDEDE9] group-hover:text-amber-600 dark:group-hover:text-[#FFB84D] transition" th:text="${t.name}">Topic Name</h3>
-                    <span class="px-2.5 py-1 text-xs font-mono rounded-sm bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-[#FFB84D] font-bold border border-amber-200 dark:border-amber-900/60 shrink-0"
-                          th:text="${(topicNoteCounts != null and topicNoteCounts.get(t.id) != null) ? topicNoteCounts.get(t.id) : 0} + ' docs'">0 docs</span>
-                </div>
-                <p class="text-xs text-slate-500 dark:text-[#8E959D] line-clamp-2" th:text="${t.description != null and !t.description.isBlank()} ? ${t.description} : 'No description provided.'">Description</p>
-            </a>
+    <!-- Numbered Syllabus Rows -->
+    <div class="divide-y divide-[#DDD8CE] dark:divide-[#1E2126] pb-16">
+        <div th:each="t, stat : ${topics}"
+             class="grid grid-cols-[40px_minmax(0,1.2fr)_160px] sm:grid-cols-[52px_minmax(0,1fr)_340px_180px_96px] gap-4 sm:gap-7 items-center py-5 hover:bg-[#F5F2EC]/50 dark:hover:bg-[#121418]/50 transition px-2 rounded">
+            <!-- Index Number -->
+            <div class="font-mono text-xl sm:text-2xl font-medium text-[#CFC8BC]" th:text="${#numbers.formatInteger(stat.index, 2)}">00</div>
 
-            <div class="flex items-center justify-between mt-5 pt-3.5 border-t border-stone-100 dark:border-[#16191D] font-mono text-xs">
-                <a th:href="@{/notes(topicId=${t.id})}" class="text-[#1D4ED8] font-medium hover:underline flex items-center gap-1">
-                    Explore Docs &rarr;
-                </a>
+            <!-- Topic Title & Subtitle -->
+            <div class="space-y-1 min-w-0">
+                <a th:href="@{/notes(topicId=${t.id})}" class="font-heading text-lg font-semibold text-[#101828] dark:text-white hover:text-[#B45309] transition tracking-tight block truncate" th:text="${t.name}">Topic Name</a>
+                <div class="font-mono text-[10.5px] uppercase tracking-wider text-[#8A9099]" th:text="${t.name.contains('Foundations') ? 'DDIA Part I' : (t.name.contains('Distributed') ? 'DDIA Part II' : (t.name.contains('Derived') ? 'DDIA Part III' : 'System Design Core'))}">Source Subtitle</div>
             </div>
+
+            <!-- Description -->
+            <div class="font-sans text-xs text-[#6B7280] dark:text-[#A2A9B1] line-clamp-2 hidden sm:block" th:text="${t.description != null and !t.description.isBlank()} ? ${t.description} : 'Core system design concepts and reference material.'">Description</div>
+
+            <!-- Progress Bar -->
+            <div class="flex items-center gap-3">
+                <div class="flex-1 h-1 bg-[#DDD8CE] dark:bg-[#1E2126] overflow-hidden">
+                    <div class="h-full bg-[#B45309] transition-all"
+                         th:style="'width: ' + ${topicPercentages.get(t.id)} + '%;'"></div>
+                </div>
+                <span class="font-mono text-xs text-[#4B5563] dark:text-[#A2A9B1] shrink-0"
+                      th:text="${topicMasteredCounts.get(t.id)} + '/' + ${topicNoteCounts.get(t.id)}">1/1</span>
+            </div>
+
+            <!-- Hours Left -->
+            <div class="font-mono text-xs text-[#B0AAA0] text-right hidden sm:block" th:text="${topicHoursLeft.get(t.id)}">0h left</div>
         </div>
     </div>
 </main>

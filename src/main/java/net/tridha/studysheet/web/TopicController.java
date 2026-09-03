@@ -39,12 +39,51 @@ public class TopicController {
 
     @GetMapping
     public String list(Model model) {
-        List<Topic> topics = topicRepository.findAllByOrderByNameAsc();
+        List<Topic> topics = topicRepository.findAllByOrderByNameAsc().stream()
+                .sorted(NoteController.NATURAL_TOPIC_COMPARATOR)
+                .toList();
         Map<Long, Long> topicNoteCounts = topics.stream()
                 .collect(Collectors.toMap(Topic::getId, t -> noteService.countByTopic(t.getId())));
 
+        Map<Long, Long> topicMasteredCounts = topics.stream()
+                .collect(Collectors.toMap(Topic::getId, t -> noteService.byTopic(t.getId()).stream().filter(n -> n.getStatus() == net.tridha.studysheet.domain.StudyStatus.MASTERED).count()));
+
+        Map<Long, Integer> topicPercentages = topics.stream()
+                .collect(Collectors.toMap(Topic::getId, t -> {
+                    long total = topicNoteCounts.getOrDefault(t.getId(), 0L);
+                    long mastered = topicMasteredCounts.getOrDefault(t.getId(), 0L);
+                    return total > 0 ? (int) Math.round(((double) mastered / total) * 100) : 0;
+                }));
+
+        Map<Long, String> topicHoursLeft = topics.stream()
+                .collect(Collectors.toMap(Topic::getId, t -> {
+                    long totalMins = noteService.byTopic(t.getId()).stream()
+                            .filter(n -> n.getStatus() != net.tridha.studysheet.domain.StudyStatus.MASTERED)
+                            .mapToLong(Note::getEstimatedReadingTimeMinutes)
+                            .sum();
+                    long hours = (long) Math.ceil((double) totalMins / 60);
+                    return hours + "h left";
+                }));
+
+        long masteredCount = noteService.countByStatus(net.tridha.studysheet.domain.StudyStatus.MASTERED);
+        long inProgressCount = noteService.countByStatus(net.tridha.studysheet.domain.StudyStatus.IN_PROGRESS) + noteService.countByStatus(net.tridha.studysheet.domain.StudyStatus.NEEDS_REVIEW);
+        long remainingCount = noteService.countByStatus(net.tridha.studysheet.domain.StudyStatus.TO_STUDY);
+        long totalMinsLeft = noteService.all().stream()
+                .filter(n -> n.getStatus() != net.tridha.studysheet.domain.StudyStatus.MASTERED)
+                .mapToLong(Note::getEstimatedReadingTimeMinutes)
+                .sum();
+        long totalEstHoursLeft = (long) Math.ceil((double) totalMinsLeft / 60);
+
         model.addAttribute("topics", topics);
         model.addAttribute("topicNoteCounts", topicNoteCounts);
+        model.addAttribute("topicMasteredCounts", topicMasteredCounts);
+        model.addAttribute("topicPercentages", topicPercentages);
+        model.addAttribute("topicHoursLeft", topicHoursLeft);
+
+        model.addAttribute("masteredCount", masteredCount);
+        model.addAttribute("inProgressCount", inProgressCount);
+        model.addAttribute("remainingCount", remainingCount);
+        model.addAttribute("totalEstHoursLeft", totalEstHoursLeft + "h");
         model.addAttribute("newTopic", new Topic());
         return "topics/list";
     }

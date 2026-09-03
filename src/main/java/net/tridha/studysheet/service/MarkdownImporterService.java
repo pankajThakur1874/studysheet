@@ -166,18 +166,42 @@ public class MarkdownImporterService {
 
         if (relativePath.getNameCount() > 1) {
             String folderName = relativePath.getName(0).toString();
-            if ("01-foundations".equalsIgnoreCase(folderName)) {
-                topicName = "DDIA - Foundations";
-                description = "Part I: Foundations of Data Systems (Reliability, Scalability, Storage Engines & Data Models)";
+            if ("00-start-here".equalsIgnoreCase(folderName)) {
+                topicName = "00 Start Here";
+                description = "Reading order, how the parts relate, and what to skip on a second pass";
+            } else if ("01-foundations".equalsIgnoreCase(folderName)) {
+                topicName = "01 Foundations";
+                description = "DDIA Part I: Reliability, scalability, relational vs document, storage engines";
             } else if ("02-distributed-data".equalsIgnoreCase(folderName)) {
-                topicName = "DDIA - Distributed Data";
-                description = "Part II: Distributed Data Systems (Replication, Partitioning, Consistency & Consensus)";
+                topicName = "02 Distributed Data";
+                description = "DDIA Part II: Replication, partitioning, transactions, consistency and consensus";
+            } else if ("03-derived-data".equalsIgnoreCase(folderName)) {
+                topicName = "03 Derived Data";
+                description = "DDIA Part III: Batch & stream processing, CDC, event sourcing, data integration";
+            } else if ("04-book-vol-1".equalsIgnoreCase(folderName)) {
+                topicName = "04 Book Vol. 1";
+                description = "Alex Xu Vol. 1: Worked system design guides (Rate limiters, Key-Value stores)";
+            } else if ("05-book-vol-2".equalsIgnoreCase(folderName)) {
+                topicName = "05 Book Vol. 2";
+                description = "Alex Xu Vol. 2: Enterprise worked systems (Payment systems, Stock Exchange)";
+            } else if ("06-concepts-bytebytego".equalsIgnoreCase(folderName)) {
+                topicName = "06 Core Concepts";
+                description = "Networking, caching, security, and cloud primitives reference";
+            } else if ("07-design-questions".equalsIgnoreCase(folderName)) {
+                topicName = "07 Design Questions";
+                description = "Interview drills: Worked end-to-end system design questions";
+            } else if ("08-edge-cases".equalsIgnoreCase(folderName)) {
+                topicName = "08 Edge Cases";
+                description = "Production failure modes, Kafka internals, distributed transaction corners";
+            } else if ("09-agentic-ai".equalsIgnoreCase(folderName)) {
+                topicName = "09 Agentic AI";
+                description = "LLM agent loops, tool use, RAG, evals, guardrails, and deployment";
             } else {
-                topicName = folderName.replace("-", " ").replace("_", " ").trim();
-                description = "Study guides & system design documentation in " + topicName;
+                topicName = formatTopicTitle(folderName);
+                description = "Study guides and system design documentation in " + topicName;
             }
         } else {
-            topicName = "DDIA - Master Guide";
+            topicName = "00 Start Here";
             description = "Designing Data-Intensive Applications Learning Roadmap & Course Outline";
         }
 
@@ -187,6 +211,21 @@ public class MarkdownImporterService {
                 .filter(t -> t.getName().equalsIgnoreCase(finalTopicName))
                 .findFirst()
                 .orElseGet(() -> topicRepository.save(new Topic(finalTopicName, finalDescription)));
+    }
+
+    private String formatTopicTitle(String folderName) {
+        String[] words = folderName.split("[-_\\s]+");
+        StringBuilder sb = new StringBuilder();
+        for (String w : words) {
+            if (w.isEmpty()) continue;
+            if (sb.length() > 0) sb.append(" ");
+            if (w.matches("^\\d+$")) {
+                sb.append(w.length() == 1 ? "0" + w : w);
+            } else {
+                sb.append(Character.toUpperCase(w.charAt(0))).append(w.substring(1));
+            }
+        }
+        return sb.toString();
     }
 
     private String resolveTagsCsv(String fileName, String pathStr) {
